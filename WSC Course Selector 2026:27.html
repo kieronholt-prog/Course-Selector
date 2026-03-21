@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>WSC Course Selector 2026/27</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1628;--accent:#e8a020;--accent2:#f0c060;
+  --port-bg:rgba(192,57,43,0.18);--stbd-bg:rgba(39,174,96,0.18);
+  --text:#e8edf5;--muted:#7a96bc;--border:rgba(255,255,255,0.09);
+  --card-bg:rgba(255,255,255,0.04);--card-hi:rgba(255,255,255,0.07);
+  --r:10px;--rs:6px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Barlow',sans-serif;background:var(--navy);color:var(--text);min-height:100vh;
+  padding-bottom:env(safe-area-inset-bottom);position:relative;
+  background-image:radial-gradient(ellipse 90% 40% at 50% 0%,rgba(30,58,110,.55) 0%,transparent 70%),
+  repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,.013) 39px,rgba(255,255,255,.013) 40px),
+  repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,255,255,.013) 39px,rgba(255,255,255,.013) 40px);}
+
+/* ── Header ── */
+header{background:rgba(10,22,40,.96);border-bottom:1px solid var(--border);padding:0 18px;
+  display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);height:52px;}
+.logo-mark{width:32px;height:32px;background:var(--accent);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.logo-mark svg{width:18px;height:18px;}
+.header-text h1{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;
+  letter-spacing:.05em;text-transform:uppercase;color:#fff;line-height:1.1;}
+.header-text p{font-size:10px;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;margin-top:1px;}
+.screen{max-width:880px;margin:0 auto;padding:18px 14px 50px;}
+
+/* ── Controls ── */
+.controls{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--r);
+  padding:16px;margin-bottom:14px;}
+.ctrl-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:5px;}
+
+/* ── Compass ── */
+.wind-section{display:flex;gap:20px;align-items:center;margin-bottom:14px;}
+.compass-wrap{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.compass-container{position:relative;width:158px;height:158px;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;touch-action:none;
+  user-select:none;-webkit-user-select:none;}
+
+/* Static outer ring */
+.compass-outer{position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#2a4070,#0d1e3a);
+  border:2px solid rgba(255,255,255,.15);
+  box-shadow:0 0 0 1px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.1),0 4px 20px rgba(0,0,0,.5);}
+
+/* Static bezel — does NOT rotate */
+.compass-bezel-static{position:absolute;inset:14px;border-radius:50%;
+  background:conic-gradient(from 0deg,#1a3060 0deg 22.5deg,#0f2048 22.5deg 45deg,#1a3060 45deg 67.5deg,#0f2048 67.5deg 90deg,#1a3060 90deg 112.5deg,#0f2048 112.5deg 135deg,#1a3060 135deg 157.5deg,#0f2048 157.5deg 180deg,#1a3060 180deg 202.5deg,#0f2048 202.5deg 225deg,#1a3060 225deg 247.5deg,#0f2048 247.5deg 270deg,#1a3060 270deg 292.5deg,#0f2048 292.5deg 315deg,#1a3060 315deg 337.5deg,#0f2048 337.5deg 360deg);
+  border:1.5px solid rgba(255,255,255,.12);
+  box-shadow:inset 0 2px 4px rgba(0,0,0,.4),0 0 0 1px rgba(0,0,0,.3);}
+
+/* Static bezel labels container — does NOT rotate */
+.bezel-labels-static{position:absolute;inset:14px;border-radius:50%;pointer-events:none;}
+.bezel-label{position:absolute;left:50%;top:50%;
+  font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;
+  color:rgba(255,255,255,.6);line-height:1;}
+
+/* Rotating needle canvas — sits above bezel, below hub */
+#needleCanvas{position:absolute;inset:0;border-radius:50%;pointer-events:none;z-index:5;
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1);}
+
+/* Centre hub */
+.compass-hub{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:16px;height:16px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#3a5080,#0d1e3a);
+  border:1.5px solid rgba(255,255,255,.25);box-shadow:0 1px 4px rgba(0,0,0,.6);
+  z-index:10;pointer-events:none;}
+
+.wind-label-wrap{flex:1;}
+.wind-dir-display{font-family:'Barlow Condensed',sans-serif;font-size:40px;font-weight:700;
+  color:#fff;line-height:1;margin-bottom:4px;}
+.wind-dir-sub{font-size:12px;color:var(--muted);}
+
+/* ── Selects ── */
+.selects-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:10px;}
+@media(max-width:600px){.selects-row{grid-template-columns:1fr 1fr;}}
+.ctrl-wrap{display:flex;flex-direction:column;}
+.py-wrap{position:relative;}
+.speed-tag{position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:.05em;color:var(--accent2);pointer-events:none;white-space:nowrap;}
+select,input[type=number]{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+  border-radius:var(--rs);color:var(--text);font-family:'Barlow',sans-serif;font-size:13px;
+  padding:7px 10px;width:100%;appearance:none;-webkit-appearance:none;
+  transition:border-color .15s,background .15s;cursor:pointer;}
+select:focus,input:focus{outline:none;border-color:var(--accent);background:rgba(232,160,32,.08);}
+select option{background:#0f2044;}
+
+/* ── Course length checkboxes ── */
+.check-row{display:flex;gap:6px;flex-wrap:wrap;}
+.check-pill{display:flex;align-items:center;gap:5px;cursor:pointer;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);
+  border-radius:var(--rs);padding:5px 10px;transition:all .15s;
+  -webkit-tap-highlight-color:transparent;user-select:none;}
+.check-pill:hover{background:rgba(255,255,255,.1);}
+.check-pill input[type=checkbox]{width:13px;height:13px;accent-color:var(--accent);cursor:pointer;flex-shrink:0;}
+.check-pill span{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;
+  letter-spacing:.05em;color:var(--text);}
+.check-pill.active-SC{border-color:rgba(26,111,168,.6);background:rgba(26,111,168,.12);}
+.check-pill.active-MC{border-color:rgba(180,100,30,.6);background:rgba(180,100,30,.12);}
+.check-pill.active-LC{border-color:rgba(100,50,170,.6);background:rgba(100,50,170,.12);}
+
+/* ── Legend ── */
+.legend{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:8px 12px;margin-bottom:14px;
+  background:var(--card-bg);border:1px solid var(--border);border-radius:var(--rs);}
+.leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);}
+.leg-sw{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
+.leg-sep{width:1px;height:12px;background:var(--border);margin:0 2px;}
+
+/* ── Results ── */
+.res-meta{font-size:12px;color:var(--muted);margin-bottom:10px;
+  display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.res-dot{width:3px;height:3px;border-radius:50%;background:var(--muted);flex-shrink:0;}
+
+/* ── Course cards ── */
+.course-card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--r);
+  padding:12px;margin-bottom:9px;display:grid;grid-template-columns:84px 1fr;gap:12px;
+  align-items:start;transition:border-color .15s,background .15s;animation:fadeUp .22s ease both;}
+.course-card:hover{background:var(--card-hi);border-color:rgba(255,255,255,.16);}
+.course-card.best{border-color:var(--accent);background:rgba(232,160,32,.05);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.course-card:nth-child(1){animation-delay:0ms}.course-card:nth-child(2){animation-delay:40ms}
+.course-card:nth-child(3){animation-delay:80ms}.course-card:nth-child(4){animation-delay:120ms}
+.course-card:nth-child(5){animation-delay:160ms}.course-card:nth-child(6){animation-delay:200ms}
+.course-card:nth-child(7){animation-delay:240ms}.course-card:nth-child(8){animation-delay:280ms}
+.course-card:nth-child(9){animation-delay:320ms}.course-card:nth-child(10){animation-delay:360ms}
+
+canvas.mini{display:block;border-radius:var(--rs);background:rgba(0,0,0,.28);
+  border:1px solid rgba(255,255,255,.07);width:84px;height:84px;cursor:pointer;}
+canvas.mini:hover{border-color:rgba(232,160,32,.5);}
+
+.card-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7px;gap:6px;}
+.card-title{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap;}
+.c-letter{font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:700;color:#fff;line-height:1;}
+.c-type{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:.09em;text-transform:uppercase;padding:2px 6px;border-radius:4px;}
+.t-SC{background:rgba(26,111,168,.22);color:#5bb5e8;border:1px solid rgba(26,111,168,.35);}
+.t-MC{background:rgba(180,100,30,.22);color:#d4884a;border:1px solid rgba(180,100,30,.35);}
+.t-LC{background:rgba(100,50,170,.22);color:#b07ae0;border:1px solid rgba(100,50,170,.35);}
+.badges{display:flex;gap:4px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;}
+.badge-best{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;background:var(--accent);color:var(--navy);padding:2px 7px;border-radius:4px;}
+.badge-warn{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;
+  letter-spacing:.05em;text-transform:uppercase;background:rgba(232,160,32,.12);color:var(--accent2);
+  border:1px solid rgba(232,160,32,.28);padding:2px 6px;border-radius:4px;}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:9px;}
+.stat{background:rgba(0,0,0,.22);border-radius:var(--rs);padding:5px 7px;border:1px solid rgba(255,255,255,.05);}
+.stat-lbl{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:1px;}
+.stat-val{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:#fff;line-height:1;}
+.stat-unit{font-size:10px;font-weight:400;color:var(--muted);margin-left:1px;}
+.marks-row{display:flex;flex-wrap:wrap;align-items:center;gap:3px;margin-bottom:8px;}
+.mk{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;
+  padding:2px 6px;border-radius:3px;white-space:nowrap;line-height:1.4;}
+.mk-P{background:var(--port-bg);color:#e87070;border:1px solid rgba(192,57,43,.32);}
+.mk-S{background:var(--stbd-bg);color:#5ecb80;border:1px solid rgba(39,174,96,.32);}
+.mk-end{background:rgba(255,255,255,.07);color:var(--muted);border:1px solid var(--border);}
+.mk-once{opacity:.45;}
+.mk-arr{color:rgba(255,255,255,.18);font-size:9px;line-height:1;}
+.course-edit{display:flex;align-items:center;gap:8px;padding:7px 0 0;border-top:1px solid rgba(255,255,255,.06);}
+.edit-label{font-size:11px;color:var(--muted);white-space:nowrap;}
+.laps-ctrl{display:flex;align-items:center;gap:4px;}
+.laps-btn{width:24px;height:24px;border-radius:4px;border:1px solid rgba(255,255,255,.15);
+  background:rgba(255,255,255,.06);color:var(--text);font-size:16px;line-height:1;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:background .12s;-webkit-tap-highlight-color:transparent;}
+.laps-btn:hover{background:rgba(255,255,255,.14);}
+.laps-val{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;
+  color:#fff;min-width:18px;text-align:center;}
+.edit-stats{display:flex;gap:10px;margin-left:auto;flex-wrap:wrap;}
+.edit-stat{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--muted);}
+.edit-stat strong{color:var(--accent2);font-weight:700;}
+.empty{text-align:center;padding:50px 20px;color:var(--muted);}
+.empty-ico{font-size:36px;margin-bottom:12px;filter:grayscale(1) opacity(.35);}
+.empty h3{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:600;
+  letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.empty p{font-size:13px;}
+.footnote{margin-top:16px;font-size:11px;color:rgba(122,150,188,.55);line-height:1.65;
+  padding:11px 12px;border:1px solid rgba(255,255,255,.04);border-radius:var(--rs);}
+.footnote strong{color:rgba(122,150,188,.75);}
+
+/* ── Full-screen course overlay ── */
+.overlay{display:none;position:fixed;inset:0;
+  z-index:200;background:rgba(8,16,32,.97);flex-direction:column;
+  -webkit-tap-highlight-color:transparent;}
+.overlay.open{display:flex;}
+.overlay-header{display:flex;align-items:center;gap:10px;padding:14px 18px;
+  padding-top:max(14px, env(safe-area-inset-top));
+  border-bottom:1px solid var(--border);flex-shrink:0;}
+.overlay-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;
+  letter-spacing:.04em;text-transform:uppercase;color:#fff;flex:1;}
+.overlay-close{width:36px;height:36px;border-radius:6px;border:1px solid rgba(255,255,255,.15);
+  background:rgba(255,255,255,.06);color:var(--text);font-size:20px;line-height:1;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.overlay-close:hover{background:rgba(255,255,255,.14);}
+/* Body fills all remaining space — no fixed height, flex does the work */
+.overlay-body{flex:1;display:flex;flex-direction:row;overflow:hidden;min-height:0;}
+/* Canvas area stretches to fill */
+.overlay-canvas-wrap{flex:1;position:relative;overflow:hidden;padding:12px;min-width:0;min-height:0;}
+#overlayCanvas{display:block;border-radius:var(--r);background:rgba(0,0,0,.3);width:100%;height:100%;}
+/* Sidebar fixed width */
+.overlay-sidebar{width:140px;flex-shrink:0;display:flex;flex-direction:column;
+  padding:12px 12px 12px 8px;gap:10px;overflow-y:auto;border-left:1px solid var(--border);}
+.ovl-stat{background:rgba(0,0,0,.3);border-radius:var(--rs);padding:8px 10px;border:1px solid rgba(255,255,255,.05);}
+.ovl-stat-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+.ovl-stat-val{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:#fff;line-height:1;}
+.ovl-stat-unit{font-size:11px;font-weight:400;color:var(--muted);margin-left:2px;}
+.ovl-marks{font-size:11px;color:var(--muted);line-height:1.8;margin-top:4px;}
+.ovl-marks .mk{font-size:11px;display:inline-block;margin:2px 1px;}
+
+@media(max-width:500px){
+  .overlay-body{flex-direction:column;}
+  .overlay-sidebar{width:100%;flex-direction:row;flex-wrap:wrap;height:auto;flex-shrink:0;
+    border-left:none;border-top:1px solid var(--border);padding:10px;gap:8px;overflow-y:visible;}
+  .overlay-canvas-wrap{flex:1;min-height:0;}
+  .ovl-marks{display:none;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-mark">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#0a1628" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3L12 20"/><path d="M12 3L21 15"/><path d="M12 3L4 16"/>
+      <line x1="3" y1="20" x2="21" y2="20"/>
+    </svg>
+  </div>
+  <div class="header-text">
+    <h1>WSC Course Selector</h1>
+    <p>Warsash SC · 2026/27</p>
+  </div>
+</header>
+
+<!-- Full-screen overlay -->
+<div class="overlay" id="overlay">
+  <div class="overlay-header">
+    <div class="overlay-title" id="ovlTitle">Course A</div>
+    <div class="overlay-meta" id="ovlMeta"></div>
+    <button class="overlay-close" id="overlayClose">✕</button>
+  </div>
+  <div class="overlay-body">
+    <div class="overlay-canvas-wrap">
+      <canvas id="overlayCanvas"></canvas>
+    </div>
+    <div class="overlay-sidebar" id="ovlSidebar"></div>
+  </div>
+</div>
+
+<div class="screen">
+  <div class="controls">
+    <div class="wind-section">
+      <div class="compass-wrap">
+        <span class="ctrl-label">Wind from</span>
+        <div class="compass-container" id="compassContainer">
+          <!-- Static outer shell -->
+          <div class="compass-outer"></div>
+          <!-- Static bezel segments -->
+          <div class="compass-bezel-static"></div>
+          <!-- Static bezel labels + ticks (drawn on canvas) -->
+          <canvas id="bezelCanvas" style="position:absolute;inset:14px;width:calc(100% - 28px);height:calc(100% - 28px);border-radius:50%;pointer-events:none;z-index:2;"></canvas>
+          <!-- Rotating needle canvas -->
+          <canvas id="needleCanvas" width="158" height="158" style="position:absolute;inset:0;border-radius:50%;pointer-events:none;z-index:5;"></canvas>
+          <!-- Centre hub -->
+          <div class="compass-hub"></div>
+        </div>
+      </div>
+      <div class="wind-label-wrap">
+        <span class="ctrl-label">Selected direction</span>
+        <div class="wind-dir-display" id="windDirDisplay">—</div>
+        <div class="wind-dir-sub" id="windDirSub">Tap or drag the compass</div>
+      </div>
+    </div>
+
+    <div class="selects-row">
+      <div class="ctrl-wrap">
+        <span class="ctrl-label">Tidal state</span>
+        <select id="tide">
+          <option value="mid">Mid tide</option>
+          <option value="hw">High water</option>
+          <option value="lw">Low water</option>
+        </select>
+      </div>
+      <div class="ctrl-wrap">
+        <span class="ctrl-label">Target duration</span>
+        <select id="duration">
+          <option value="50" selected>50 min</option>
+          <option value="60">60 min</option>
+          <option value="70">70 min</option>
+          <option value="80">80 min</option>
+        </select>
+      </div>
+      <div class="ctrl-wrap">
+        <span class="ctrl-label">Fleet</span>
+        <select id="fleet">
+          <option value="all">All fleets</option>
+          <option value="fast">Fast · PY ≤ 1033</option>
+          <option value="medium">Medium · PY 1034–1120</option>
+          <option value="slow">Slow · PY ≥ 1121</option>
+        </select>
+      </div>
+      <div class="ctrl-wrap py-wrap">
+        <span class="ctrl-label">PY override</span>
+        <input type="number" id="py" placeholder="e.g. 1100" min="600" max="1500" style="padding-right:44px">
+        <span class="speed-tag" id="speedTag"></span>
+      </div>
+    </div>
+
+    <div>
+      <span class="ctrl-label">Course length</span>
+      <div class="check-row">
+        <label class="check-pill" id="pill-SC">
+          <input type="checkbox" value="SC" checked onchange="updatePillStyle(this);render()">
+          <span>Short (SC)</span>
+        </label>
+        <label class="check-pill" id="pill-MC">
+          <input type="checkbox" value="MC" checked onchange="updatePillStyle(this);render()">
+          <span>Medium (MC)</span>
+        </label>
+        <label class="check-pill" id="pill-LC">
+          <input type="checkbox" value="LC" checked onchange="updatePillStyle(this);render()">
+          <span>Long (LC)</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="leg"><div class="leg-sw" style="background:var(--port-bg);border:1px solid rgba(192,57,43,.38)"></div>Port (P)</div>
+    <div class="leg-sep"></div>
+    <div class="leg"><div class="leg-sw" style="background:var(--stbd-bg);border:1px solid rgba(39,174,96,.38)"></div>Starboard (S)</div>
+    <div class="leg-sep"></div>
+    <div class="leg"><div class="leg-sw" style="background:rgba(255,255,255,.07);border:1px solid var(--border)"></div>Start/Finish</div>
+    <div class="leg-sep"></div>
+    <div class="leg"><span style="opacity:.4;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:11px">DIMMED</span>&nbsp;= once only</div>
+    <div class="leg-sep"></div>
+    <div class="leg" style="margin-left:auto;font-size:10px;opacity:.6">Tap map to expand ↗</div>
+  </div>
+
+  <div id="results">
+    <div class="empty">
+      <div class="empty-ico">🧭</div>
+      <h3>Select a wind direction</h3>
+      <p>Tap or drag the compass above to set the wind direction</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────────
+// MARKS — WSC GPS revised March 2026
+// ─────────────────────────────────────────────────────────────────
+const MARKS={
+  "START/FINISH":{lat:50.85151,lon:-1.30851},
+  "BUOY 11":     {lat:50.84878,lon:-1.30796},
+  "PILE 1":      {lat:50.83904,lon:-1.31060},
+  "PILE 2":      {lat:50.83991,lon:-1.31280},
+  "PILE 3":      {lat:50.84081,lon:-1.31075},
+  "PILE 4":      {lat:50.84155,lon:-1.31376},
+  "PILE 5":      {lat:50.84231,lon:-1.31192},
+  "PILE 6":      {lat:50.84378,lon:-1.31383},
+  "PILE 7":      {lat:50.84333,lon:-1.31151},
+  "PILE 8":      {lat:50.84544,lon:-1.31176},
+  "PILE 9":      {lat:50.84635,lon:-1.30927},
+  "PILE 10":     {lat:50.84831,lon:-1.30974},
+  "WARSASH SC":  {lat:50.8435, lon:-1.3207},
+  "HAMBLE PT":   {lat:50.8358, lon:-1.3110},
+  "BALD HEAD":   {lat:50.8300, lon:-1.3012},
+  "WILLIAM":     {lat:50.8277, lon:-1.2932},
+  "CORONATION":  {lat:50.8258, lon:-1.2937},
+  "CHIEFTAIN TR":{lat:50.8242, lon:-1.2818},
+  "FUMESY":      {lat:50.8202, lon:-1.2910},
+  "LAID MK A":   {lat:50.83733,lon:-1.31583},
+  "LAID MK B":   {lat:50.83494,lon:-1.30201},
+  "LAID MK C":   {lat:50.84948,lon:-1.31796},
+  "LAID MK D":   {lat:50.82394,lon:-1.29986},
+};
+
+// ─────────────────────────────────────────────────────────────────
+// COURSES
+// ─────────────────────────────────────────────────────────────────
+const COURSES={
+  A:{type:"SC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["BUOY 11","S"],["PILE 6","S"],["PILE 10","S"],["START/FINISH",null]],
+    initial:[],lap:[["BUOY 11","S"],["PILE 6","S"],["PILE 10","S"]],final:[]},
+  B:{type:"SC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["PILE 2","P"],["PILE 3","P"],["PILE 10","P"],["START/FINISH",null]],
+    initial:[],lap:[["PILE 2","P"],["PILE 3","P"],["PILE 10","P"]],final:[]},
+  C:{type:"SC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["BUOY 11","S"],["PILE 1","S"],["PILE 2","S"],["START/FINISH",null]],
+    initial:[],lap:[["BUOY 11","S"],["PILE 1","S"],["PILE 2","S"]],final:[]},
+  D:{type:"SC",hwOnly:true,avoidLW:false,
+    marks:[["START/FINISH",null],["PILE 2","S"],["WARSASH SC","S"],["PILE 10","S"],["START/FINISH",null]],
+    initial:[],lap:[["PILE 2","S"],["WARSASH SC","S"],["PILE 10","S"]],final:[]},
+  E:{type:"SC",hwOnly:true,avoidLW:false,
+    marks:[["START/FINISH",null],["PILE 10","P"],["WARSASH SC","P"],["PILE 2","P"],["START/FINISH",null]],
+    initial:[],lap:[["PILE 10","P"],["WARSASH SC","P"],["PILE 2","P"]],final:[]},
+  F:{type:"SC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["PILE 2","S"],["LAID MK A","P"],["HAMBLE PT","P"],["PILE 5","P"],["START/FINISH",null]],
+    initial:[],lap:[["PILE 2","S"],["LAID MK A","P"],["HAMBLE PT","P"],["PILE 5","P"]],final:[]},
+  G:{type:"SC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["PILE 5","S"],["HAMBLE PT","S"],["LAID MK A","S"],["PILE 2","P"],["START/FINISH",null]],
+    initial:[],lap:[["PILE 5","S"],["HAMBLE PT","S"],["LAID MK A","S"],["PILE 2","P"]],final:[]},
+  H:{type:"SC",hwOnly:true,avoidLW:false,
+    marks:[["START/FINISH",null],["PILE 10","P"],["WARSASH SC","P"],["HAMBLE PT","P"],["START/FINISH",null]],
+    initial:[],lap:[["PILE 10","P"],["WARSASH SC","P"],["HAMBLE PT","P"]],final:[]},
+  I:{type:"SC",hwOnly:true,avoidLW:false,
+    marks:[["START/FINISH",null],["HAMBLE PT","S"],["WARSASH SC","S"],["PILE 10","S"],["START/FINISH",null]],
+    initial:[],lap:[["HAMBLE PT","S"],["WARSASH SC","S"],["PILE 10","S"]],final:[]},
+  J:{type:"SC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["PILE 3","S"],["BALD HEAD","S"],["HAMBLE PT","S"],["START/FINISH",null]],
+    initial:[],lap:[["PILE 3","S"],["BALD HEAD","S"],["HAMBLE PT","S"]],final:[]},
+  K:{type:"SC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["HAMBLE PT","P"],["BALD HEAD","P"],["PILE 3","P"],["START/FINISH",null]],
+    initial:[],lap:[["HAMBLE PT","P"],["BALD HEAD","P"],["PILE 3","P"]],final:[]},
+  M:{type:"SC",hwOnly:false,avoidLW:true,
+    marks:[["START/FINISH",null],["PILE 3","P"],["LAID MK B","S"],["HAMBLE PT","S"],["LAID MK B","S"],["HAMBLE PT","S"],["PILE 2","S"],["START/FINISH",null]],
+    initial:[["PILE 3","P"]],lap:[["LAID MK B","S"],["HAMBLE PT","S"]],final:[["PILE 2","S"]]},
+  N:{type:"SC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["PILE 5","S"],["HAMBLE PT","S"],["WARSASH SC","S"],["PILE 2","P"],["START/FINISH",null]],
+    initial:[],lap:[["PILE 5","S"],["HAMBLE PT","S"],["WARSASH SC","S"],["PILE 2","P"]],final:[]},
+  P:{type:"SC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["PILE 2","S"],["WARSASH SC","P"],["HAMBLE PT","P"],["PILE 5","P"],["START/FINISH",null]],
+    initial:[],lap:[["PILE 2","S"],["WARSASH SC","P"],["HAMBLE PT","P"],["PILE 5","P"]],final:[]},
+  Q:{type:"SC",hwOnly:true,avoidLW:false,
+    marks:[["START/FINISH",null],["PILE 2","S"],["LAID MK C","P"],["WARSASH SC","P"],["PILE 2","P"],["START/FINISH",null]],
+    initial:[["PILE 2","S"]],lap:[["LAID MK C","P"],["WARSASH SC","P"],["PILE 2","P"]],final:[]},
+  R:{type:"MC",hwOnly:true,avoidLW:false,
+    marks:[["START/FINISH",null],["PILE 2","S"],["WARSASH SC","S"],["PILE 10","S"],["PILE 2","S"],["PILE 10","S"],["START/FINISH",null]],
+    initial:[],lap:[["PILE 2","S"],["WARSASH SC","S"],["PILE 10","S"]],final:[]},
+  S:{type:"MC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["HAMBLE PT","P"],["WILLIAM","S"],["LAID MK D","S"],["START/FINISH",null]],
+    initial:[["HAMBLE PT","P"]],lap:[["WILLIAM","S"],["LAID MK D","S"]],final:[]},
+  T:{type:"MC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["HAMBLE PT","P"],["BALD HEAD","P"],["CORONATION","P"],["WILLIAM","P"],["START/FINISH",null]],
+    initial:[["HAMBLE PT","P"]],lap:[["BALD HEAD","P"],["CORONATION","P"],["WILLIAM","P"]],final:[]},
+  U:{type:"MC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["HAMBLE PT","P"],["WILLIAM","S"],["CORONATION","S"],["HAMBLE PT","S"],["START/FINISH",null]],
+    initial:[["HAMBLE PT","P"]],lap:[["WILLIAM","S"],["CORONATION","S"]],final:[["HAMBLE PT","S"]]},
+  V:{type:"LC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["HAMBLE PT","P"],["CHIEFTAIN TR","S"],["FUMESY","S"],["START/FINISH",null]],
+    initial:[["HAMBLE PT","P"]],lap:[["CHIEFTAIN TR","S"],["FUMESY","S"]],final:[]},
+  W:{type:"LC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["HAMBLE PT","P"],["WILLIAM","S"],["CHIEFTAIN TR","S"],["FUMESY","S"],["START/FINISH",null]],
+    initial:[["HAMBLE PT","P"]],lap:[["WILLIAM","S"],["CHIEFTAIN TR","S"],["FUMESY","S"]],final:[]},
+  X:{type:"LC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["HAMBLE PT","P"],["FUMESY","P"],["CHIEFTAIN TR","P"],["WILLIAM","P"],["START/FINISH",null]],
+    initial:[["HAMBLE PT","P"]],lap:[["FUMESY","P"],["CHIEFTAIN TR","P"],["WILLIAM","P"]],final:[]},
+  Y:{type:"LC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["HAMBLE PT","P"],["WILLIAM","S"],["CORONATION","P"],["CHIEFTAIN TR","S"],["FUMESY","S"],["BALD HEAD","S"],["START/FINISH",null]],
+    initial:[["HAMBLE PT","P"]],lap:[["WILLIAM","S"],["CORONATION","P"],["CHIEFTAIN TR","S"],["FUMESY","S"],["BALD HEAD","S"]],final:[]},
+};
+
+const WIND_MAP={
+  N:  ["B","C","E","F","H"],
+  NNE:["A","B","C","E","H","S"],
+  NE: ["A","D","I","S","V","X"],
+  ENE:["D","I","S","V","X"],
+  E:  ["M","S"],
+  ESE:["E","T","U","W","Y"],
+  SE: ["E","F","H","J","K","P","T","U","W","Y"],
+  SSE:["G","H","J","P","U","W"],
+  S:  ["A","B","C","D","F","I","M","Q","R","S"],
+  SSW:["A","E","F","H","M","S","V","W"],
+  SW: ["E","F","H","M","S","V","W"],
+  WSW:["D","G","I","K","N","T","U","Y"],
+  W:  ["F","M","S"],
+  WNW:["D","G","T","U"],
+  NW: ["B","C","D","G","I","K","N","Q","R"],
+  NNW:["F","I","K","N","Y"],
+};
+
+const BASE_PY=955,BASE_SPEED=5.65;
+const FLEET_MID_PY={all:955,fast:955,medium:1077,slow:1160};
+function pyToSpeed(py){return BASE_SPEED*(BASE_PY/py);}
+
+function hav(a,b){
+  const R=3440.065,φ1=a.lat*Math.PI/180,φ2=b.lat*Math.PI/180;
+  const dφ=(b.lat-a.lat)*Math.PI/180,dλ=(b.lon-a.lon)*Math.PI/180;
+  const s=Math.sin(dφ/2)**2+Math.cos(φ1)*Math.cos(φ2)*Math.sin(dλ/2)**2;
+  return R*2*Math.atan2(Math.sqrt(s),Math.sqrt(1-s));
+}
+function segDist(seq){
+  let d=0;for(let i=1;i<seq.length;i++){const a=MARKS[seq[i-1][0]],b=MARKS[seq[i][0]];if(a&&b)d+=hav(a,b);}return d;
+}
+function calcDists(c){
+  const SF=["START/FINISH",null],lap=c.lap;
+  const lapDist=lap.length>=2?segDist([...lap,lap[0]]):0;
+  const initDist=segDist([SF,...c.initial,lap[0]]);
+  const finalDist=segDist([lap[lap.length-1],...c.final,SF]);
+  return{lapDist,initDist,finalDist};
+}
+function calcFromLaps(c,laps,speed){
+  const{lapDist,initDist,finalDist}=calcDists(c);
+  const totalNm=initDist+laps*lapDist+finalDist;
+  const timeMins=(totalNm/speed)*60;
+  return{lapDist,initDist,finalDist,totalNm,timeMins};
+}
+
+// ─────────────────────────────────────────────────────────────────
+// COMPASS — static bezel, rotating needle
+// ─────────────────────────────────────────────────────────────────
+const DIRS=["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
+const DIR_DEGS={N:0,NNE:22.5,NE:45,ENE:67.5,E:90,ESE:112.5,SE:135,SSE:157.5,
+  S:180,SSW:202.5,SW:225,WSW:247.5,W:270,WNW:292.5,NW:315,NNW:337.5};
+const DIR_DESC={N:"North",NNE:"North-northeast",NE:"Northeast",ENE:"East-northeast",
+  E:"East",ESE:"East-southeast",SE:"Southeast",SSE:"South-southeast",
+  S:"South",SSW:"South-southwest",SW:"Southwest",WSW:"West-southwest",
+  W:"West",WNW:"West-northwest",NW:"Northwest",NNW:"North-northwest"};
+let selWind=null;
+
+// Draw static bezel (ticks + labels) — called once
+(function drawStaticBezel(){
+  const cv=document.getElementById("bezelCanvas");
+  const sz=cv.parentElement.offsetWidth-28||130;
+  cv.width=sz*2;cv.height=sz*2;
+  cv.style.width=sz+"px";cv.style.height=sz+"px";
+  const ctx=cv.getContext("2d");
+  ctx.scale(2,2);
+  const cx=sz/2,cy=sz/2,R=sz/2-1;
+
+  // Ticks
+  for(let i=0;i<32;i++){
+    const a=(i/32)*Math.PI*2-Math.PI/2;
+    const isMajor=i%2===0,len=isMajor?8:5;
+    ctx.beginPath();
+    ctx.moveTo(cx+(R-1)*Math.cos(a),cy+(R-1)*Math.sin(a));
+    ctx.lineTo(cx+(R-len)*Math.cos(a),cy+(R-len)*Math.sin(a));
+    ctx.strokeStyle=isMajor?"rgba(255,255,255,.55)":"rgba(255,255,255,.22)";
+    ctx.lineWidth=isMajor?1.5:1;ctx.stroke();
+  }
+
+  // Direction labels
+  DIRS.forEach(dir=>{
+    const deg=DIR_DEGS[dir];
+    const rad=(deg-90)*Math.PI/180;
+    const lr=R-16;
+    const x=cx+lr*Math.cos(rad),y=cy+lr*Math.sin(rad);
+    const isCard=["N","E","S","W"].includes(dir);
+    ctx.save();
+    ctx.translate(x,y);ctx.rotate(deg*Math.PI/180);
+    ctx.font=`${isCard?"bold ":""}${isCard?9:7.5}px 'Barlow Condensed',sans-serif`;
+    ctx.fillStyle=isCard?"rgba(255,255,255,.9)":"rgba(255,255,255,.5)";
+    ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.fillText(dir,0,0);
+    ctx.restore();
+  });
+})();
+
+// Draw rotating needle — redrawn on each wind change
+function drawNeedle(dirDeg){
+  const cv=document.getElementById("needleCanvas");
+  const ctx=cv.getContext("2d");
+  const W=cv.width,H=cv.height,cx=W/2,cy=H/2;
+  ctx.clearRect(0,0,W,H);
+
+  // dirDeg = wind FROM direction (0=N, 90=E, etc.)
+  // The wind comes FROM dirDeg, so:
+  //   Base (tail, blunt end) = at dirDeg (wind source)
+  //   Point (arrowhead) = at dirDeg+180 (wind going TO, i.e. reciprocal)
+  // Needle runs through centre, touching inside edge of bezel on both sides
+  const bezelR=57; // radius to inner edge of bezel ring
+  const rad=dirDeg*Math.PI/180;
+
+  // Tail position (wind source direction)
+  const tx=cx+bezelR*Math.sin(rad);
+  const ty=cy-bezelR*Math.cos(rad);
+  // Point position (reciprocal = where wind is going TO)
+  const px=cx-bezelR*Math.sin(rad);
+  const py=cy+bezelR*Math.cos(rad);
+
+  // Shaft
+  ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(px,py);
+  ctx.strokeStyle="rgba(232,160,32,.9)";ctx.lineWidth=2.5;
+  ctx.lineCap="round";ctx.stroke();
+
+  // Arrowhead at the POINT end (reciprocal)
+  const headLen=14,headW=7;
+  // Vector from tail to point
+  const dx=px-tx,dy=py-ty;
+  const dist=Math.sqrt(dx*dx+dy*dy);
+  const ux=dx/dist,uy=dy/dist;
+  // Perpendicular
+  const vx=-uy,vy=ux;
+  const hx=px-ux*headLen,hy=py-uy*headLen;
+  ctx.beginPath();
+  ctx.moveTo(px,py);
+  ctx.lineTo(hx+vx*headW,hy+vy*headW);
+  ctx.lineTo(hx-vx*headW,hy-vy*headW);
+  ctx.closePath();
+  ctx.fillStyle="#e8a020";ctx.fill();
+
+  // Tail blunt cap — small cross/block to indicate wind source
+  ctx.beginPath();
+  ctx.arc(tx,ty,4,0,Math.PI*2);
+  ctx.fillStyle="rgba(232,160,32,.4)";ctx.fill();
+  ctx.strokeStyle="#e8a020";ctx.lineWidth=1.5;ctx.stroke();
+}
+
+function snapToNearest(deg){
+  deg=((deg%360)+360)%360;
+  let best=DIRS[0],bestDiff=360;
+  for(const d of DIRS){let diff=Math.abs(DIR_DEGS[d]-deg);if(diff>180)diff=360-diff;if(diff<bestDiff){bestDiff=diff;best=d;}}
+  return best;
+}
+
+function setWindDir(dir){
+  selWind=dir;
+  drawNeedle(DIR_DEGS[dir]);
+  document.getElementById("windDirDisplay").textContent=dir;
+  document.getElementById("windDirSub").textContent="Wind from the "+DIR_DESC[dir];
+  render();
+}
+
+// Compass interaction
+(function(){
+  const el=document.getElementById("compassContainer");let dragging=false;
+  function getAngle(e){
+    const r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+    const pt=e.touches?e.touches[0]:e;
+    return((Math.atan2(pt.clientX-cx,-(pt.clientY-cy))*180/Math.PI)+360)%360;
+  }
+  function handle(e){if(!dragging)return;e.preventDefault();const dir=snapToNearest(getAngle(e));if(dir!==selWind)setWindDir(dir);}
+  el.addEventListener("mousedown",e=>{dragging=true;setWindDir(snapToNearest(getAngle(e)));});
+  el.addEventListener("touchstart",e=>{dragging=true;e.preventDefault();setWindDir(snapToNearest(getAngle(e)));},{passive:false});
+  window.addEventListener("mousemove",handle);window.addEventListener("touchmove",handle,{passive:false});
+  window.addEventListener("mouseup",()=>dragging=false);window.addEventListener("touchend",()=>dragging=false);
+})();
+
+// ─────────────────────────────────────────────────────────────────
+// COURSE MAP DRAWING — shared by mini and overlay
+// ─────────────────────────────────────────────────────────────────
+function drawCourseMap(canvas, course, windDir, large){
+  const ctx=canvas.getContext("2d");
+  const dpr=window.devicePixelRatio||1;
+  // Always draw in CSS/logical pixels — ctx is already scaled by dpr from the caller
+  const W=canvas.width/dpr, H=canvas.height/dpr;
+  ctx.clearRect(0,0,W,H);
+  const all=course.marks;
+  const coords=all.map(m=>MARKS[m[0]]).filter(Boolean);
+  if(coords.length<2)return;
+  const lats=coords.map(c=>c.lat),lons=coords.map(c=>c.lon);
+  const minLat=Math.min(...lats),maxLat=Math.max(...lats);
+  const minLon=Math.min(...lons),maxLon=Math.max(...lons);
+  const cosLat=Math.cos((minLat+maxLat)/2*Math.PI/180);
+  const ranLat=(maxLat-minLat)||0.0005,ranLon=(maxLon-minLon)||0.0005;
+  // Reserve space for wind arrow box in top-right for large view
+  const windBoxW=large?70:0;
+  const padL=large?28:11, padR=(large?28:11)+windBoxW;
+  const padT=large?28:11, padB=large?28:11;
+  const sc=Math.min((W-padL-padR)/(ranLon/cosLat),(H-padT-padB)/ranLat);
+  const ox=padL+(W-padL-padR-(ranLon/cosLat)*sc)/2;
+  const oy=padT+(H-padT-padB-ranLat*sc)/2;
+  function xy(c){return[ox+(c.lon-minLon)/cosLat*sc,oy+(maxLat-c.lat)*sc];}
+  const pts=all.map(m=>MARKS[m[0]]?xy(MARKS[m[0]]):null);
+
+  // N indicator
+  ctx.fillStyle="rgba(255,255,255,.35)";
+  ctx.font=`bold ${large?12:7}px sans-serif`;
+  ctx.textAlign="left";
+  ctx.fillText("N↑",8,large?18:10);
+
+  // Route
+  ctx.strokeStyle="rgba(91,181,232,.7)";ctx.lineWidth=large?2.5:1.5;ctx.lineJoin="round";
+  ctx.beginPath();
+  pts.forEach((p,i)=>{if(!p)return;i===0?ctx.moveTo(p[0],p[1]):ctx.lineTo(p[0],p[1]);});
+  ctx.stroke();
+
+  // Direction tick arrows at leg midpoints
+  for(let i=0;i<pts.length-1;i++){
+    if(!pts[i]||!pts[i+1])continue;
+    const ax=pts[i][0],ay=pts[i][1],bx=pts[i+1][0],by=pts[i+1][1];
+    const mx=(ax+bx)/2,my=(ay+by)/2,ang=Math.atan2(by-ay,bx-ax),tl=large?7:3.5;
+    ctx.save();ctx.strokeStyle="rgba(91,181,232,.4)";ctx.lineWidth=large?2:1;
+    ctx.translate(mx,my);ctx.rotate(ang);
+    ctx.beginPath();ctx.moveTo(-tl,-tl/1.6);ctx.lineTo(0,0);ctx.lineTo(-tl,tl/1.6);ctx.stroke();
+    ctx.restore();
+  }
+
+  // Mark dots + labels
+  const dotR=large?7:3,endR=large?9:4.5;
+  all.forEach((m,i)=>{
+    const coord=MARKS[m[0]];if(!coord)return;
+    const[x,y]=xy(coord),side=m[1],isEnd=i===0||i===all.length-1;
+    ctx.beginPath();ctx.arc(x,y,isEnd?endR:dotR,0,Math.PI*2);
+    ctx.fillStyle=isEnd?"#e8a020":side==="P"?"#e87070":"#5ecb80";ctx.fill();
+    if(large){
+      // Draw label with background for legibility
+      const lbl=isEnd?"S/F":m[0].replace("START/FINISH","S/F");
+      const lx=x+(isEnd?endR:dotR)+4, ly=y+4;
+      ctx.font="bold 11px 'Barlow Condensed',sans-serif";
+      ctx.textAlign="left";
+      const tw=ctx.measureText(lbl).width;
+      ctx.fillStyle="rgba(8,16,32,.65)";
+      ctx.fillRect(lx-2,ly-11,tw+4,14);
+      ctx.fillStyle=isEnd?"#e8a020":side==="P"?"#e87070":"#5ecb80";
+      ctx.fillText(lbl,lx,ly);
+    } else if(isEnd&&i===0){
+      ctx.fillStyle="rgba(232,160,32,.65)";ctx.font="bold 6px sans-serif";
+      ctx.fillText("S/F",x+5,y+2.5);
+    }
+  });
+
+  // Wind arrow — top-right corner, contained within windBoxW
+  if(large&&windDir!==null){
+    const bx=W-windBoxW+8, by=14;   // top-left of wind box
+    const bw=windBoxW-10, bh=80;
+    const cx2=bx+bw/2, cy2=by+bh/2;
+    const arrowLen=30;
+    // Arrow points downwind (FROM windDir, so arrow tip at reciprocal)
+    const rad=(DIR_DEGS[windDir])*Math.PI/180;
+    // tail = wind source side, tip = downwind side
+    // Arrow points FROM where wind comes (tail downwind, head at wind source)
+    const tx2=cx2+arrowLen*Math.sin(rad), ty2=cy2-arrowLen*Math.cos(rad);
+    const ex2=cx2-arrowLen*Math.sin(rad), ey2=cy2+arrowLen*Math.cos(rad);
+    // Shaft
+    ctx.strokeStyle="rgba(232,160,32,.9)";ctx.lineWidth=3;ctx.lineCap="round";
+    ctx.beginPath();ctx.moveTo(tx2,ty2);ctx.lineTo(ex2,ey2);ctx.stroke();
+    // Arrowhead at tip
+    const ddx=ex2-tx2,ddy=ey2-ty2,dist=Math.sqrt(ddx*ddx+ddy*ddy);
+    const ux=ddx/dist,uy=ddy/dist,vx=-uy,vy=ux,hl=11,hw=6;
+    const hx2=ex2-ux*hl,hy2=ey2-uy*hl;
+    ctx.beginPath();ctx.moveTo(ex2,ey2);
+    ctx.lineTo(hx2+vx*hw,hy2+vy*hw);ctx.lineTo(hx2-vx*hw,hy2-vy*hw);
+    ctx.closePath();ctx.fillStyle="#e8a020";ctx.fill();
+    // Tail circle
+    ctx.beginPath();ctx.arc(tx2,ty2,4,0,Math.PI*2);
+    ctx.fillStyle="rgba(232,160,32,.35)";ctx.fill();
+    ctx.strokeStyle="#e8a020";ctx.lineWidth=1.5;ctx.stroke();
+    // Direction label below arrow
+    ctx.font="bold 22px 'Barlow Condensed',sans-serif";
+    ctx.fillStyle="#e8a020";ctx.textAlign="center";
+    ctx.fillText(windDir,cx2,by+bh+14);
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────
+// FULL-SCREEN OVERLAY
+// ─────────────────────────────────────────────────────────────────
+function openOverlay(courseData){
+  const{letter,c,laps,totalNm,timeMins,lapDist}=courseData;
+  const tLabel={SC:"Short Course",MC:"Medium Course",LC:"Long Course"};
+  document.getElementById("ovlTitle").textContent=`Course ${letter}  ·  ${tLabel[c.type]}`;
+
+  // Sidebar stats
+  const warns=[];
+  if(c.hwOnly)warns.push("HW only");if(c.avoidLW)warns.push("Avoid LW");
+  document.getElementById("ovlSidebar").innerHTML=`
+    <div class="ovl-stat"><div class="ovl-stat-lbl">Lap dist.</div>
+      <div class="ovl-stat-val">${lapDist.toFixed(2)}<span class="ovl-stat-unit">nm</span></div></div>
+    <div class="ovl-stat"><div class="ovl-stat-lbl">Laps</div>
+      <div class="ovl-stat-val">${laps}</div></div>
+    <div class="ovl-stat"><div class="ovl-stat-lbl">Total</div>
+      <div class="ovl-stat-val">${totalNm.toFixed(2)}<span class="ovl-stat-unit">nm</span></div></div>
+    <div class="ovl-stat"><div class="ovl-stat-lbl">Est. time</div>
+      <div class="ovl-stat-val">${Math.round(timeMins)}<span class="ovl-stat-unit">min</span></div></div>
+    ${warns.map(w=>`<div class="ovl-stat"><div class="ovl-stat-val" style="font-size:13px;color:var(--accent2)">${w}</div></div>`).join("")}
+    <div class="ovl-marks" id="ovlMarksDetail"></div>`;
+
+  // Marks detail
+  const lapSet=new Set(c.lap.map(m=>m[0]));
+  const finalSet=new Set(c.final.map(m=>m[0]));
+  const initialSet=new Set(c.initial.map(m=>m[0]));
+  const marksHtml=c.marks.map((m,i)=>{
+    const[name,side]=m;
+    const isEnd=i===0||i===c.marks.length-1;
+    const isInitial=initialSet.has(name)&&!lapSet.has(name)&&!finalSet.has(name);
+    let cls="mk ";
+    if(isEnd)cls+="mk-end";else if(side==="P")cls+="mk-P";else cls+="mk-S";
+    if(!isEnd&&isInitial)cls+=" mk-once";
+    const label=(isEnd?"S/F":name)+(side&&!isEnd?` (${side})`:"");
+    const arrow=i<c.marks.length-1?'<span class="mk-arr">›</span>':"";
+    return`<span class="${cls}">${label}</span>${arrow}`;
+  }).join("");
+  const marksEl=document.getElementById("ovlMarksDetail");
+  if(marksEl)marksEl.innerHTML=marksHtml;
+
+  document.getElementById("overlay").classList.add("open");
+
+  // Double rAF ensures layout is fully settled before reading dimensions
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    const wrap=document.querySelector(".overlay-canvas-wrap");
+    const dpr=window.devicePixelRatio||1;
+    const W=Math.max(1, wrap.offsetWidth-24);
+    const H=Math.max(1, wrap.offsetHeight-24);
+    const cv=document.getElementById("overlayCanvas");
+    cv.width=W*dpr; cv.height=H*dpr;
+    cv.style.width=W+"px"; cv.style.height=H+"px";
+    const ctx=cv.getContext("2d");
+    ctx.setTransform(1,0,0,1,0,0); // reset any previous transform
+    ctx.scale(dpr,dpr);
+    drawCourseMap(cv,c,selWind,true);
+  }));
+}
+
+document.getElementById("overlayClose").addEventListener("click",()=>{
+  document.getElementById("overlay").classList.remove("open");
+});
+document.getElementById("overlay").addEventListener("click",e=>{
+  if(e.target===document.getElementById("overlay"))
+    document.getElementById("overlay").classList.remove("open");
+});
+// Close on Escape
+document.addEventListener("keydown",e=>{if(e.key==="Escape")document.getElementById("overlay").classList.remove("open");});
+
+// ─────────────────────────────────────────────────────────────────
+// CHECKBOX PILLS
+// ─────────────────────────────────────────────────────────────────
+function updatePillStyle(cb){
+  document.getElementById("pill-"+cb.value).classList.toggle("active-"+cb.value,cb.checked);
+}
+document.querySelectorAll(".check-pill input[type=checkbox]").forEach(cb=>updatePillStyle(cb));
+function getSelectedLengths(){
+  return[...document.querySelectorAll(".check-pill input[type=checkbox]")].filter(cb=>cb.checked).map(cb=>cb.value);
+}
+
+// ─────────────────────────────────────────────────────────────────
+// LAP OVERRIDES
+// ─────────────────────────────────────────────────────────────────
+const lapOverrides={};
+
+// ─────────────────────────────────────────────────────────────────
+// MAIN RENDER
+// ─────────────────────────────────────────────────────────────────
+function render(){
+  const tide=document.getElementById("tide").value;
+  const duration=parseInt(document.getElementById("duration").value);
+  const fleet=document.getElementById("fleet").value;
+  const selectedLens=getSelectedLengths();
+  const pyRaw=parseInt(document.getElementById("py").value);
+  const effectivePY=!isNaN(pyRaw)?Math.max(600,Math.min(1500,pyRaw)):FLEET_MID_PY[fleet]||BASE_PY;
+  const speed=pyToSpeed(effectivePY);
+  const speedLabel=!isNaN(pyRaw)?`PY ${effectivePY} · ${speed.toFixed(2)} kts`
+    :fleet==="all"?`PY 955 · ${speed.toFixed(2)} kts`
+    :`${fleet} mid-PY ${effectivePY} · ${speed.toFixed(2)} kts`;
+  document.getElementById("speedTag").textContent=!isNaN(pyRaw)?speed.toFixed(2)+" kt":"";
+
+  const el=document.getElementById("results");
+  if(!selWind){
+    el.innerHTML=`<div class="empty"><div class="empty-ico">🧭</div><h3>Select a wind direction</h3><p>Tap or drag the compass above to set the wind direction</p></div>`;
+    return;
+  }
+  if(!selectedLens.length){
+    el.innerHTML=`<div class="empty"><div class="empty-ico">⚓</div><h3>No course types selected</h3><p>Tick at least one course length above.</p></div>`;
+    return;
+  }
+
+  const slow=fleet==="slow";
+  const candidates=(WIND_MAP[selWind]||[]).filter(l=>{
+    const c=COURSES[l];if(!c)return false;
+    if(slow&&(c.type==="MC"||c.type==="LC"))return false;
+    if(!selectedLens.includes(c.type))return false;
+    if(c.hwOnly&&tide!=="hw")return false;
+    if(c.avoidLW&&tide==="lw")return false;
+    return true;
+  });
+
+  if(!candidates.length){
+    el.innerHTML=`<div class="empty"><div class="empty-ico">⚓</div><h3>No courses available</h3><p>No courses match the selected conditions.</p></div>`;
+    return;
+  }
+
+  const scored=candidates.map(l=>{
+    const c=COURSES[l];
+    const{lapDist,initDist,finalDist}=calcDists(c);
+    const targetNm=speed*(duration/60);
+    const laps=lapOverrides[l]!==undefined?lapOverrides[l]:
+      Math.min(6,Math.max(1,Math.round((targetNm-initDist-finalDist)/lapDist)));
+    const totalNm=initDist+laps*lapDist+finalDist;
+    const timeMins=(totalNm/speed)*60;
+    return{l,c,lapDist,initDist,finalDist,laps,totalNm,timeMins,diff:Math.abs(timeMins-duration)};
+  }).sort((a,b)=>{const o={SC:0,MC:1,LC:2};return o[a.c.type]-o[b.c.type]||a.diff-b.diff;});
+
+  const bestIdx=scored.reduce((bi,s,i)=>s.diff<scored[bi].diff?i:bi,0);
+  const tLabel={SC:"Short Course",MC:"Medium Course",LC:"Long Course"};
+  const tideStr=tide==="hw"?"High water":tide==="lw"?"Low water":"Mid tide";
+
+  let html=`<div class="res-meta">
+    <span>${candidates.length} course${candidates.length!==1?"s":""}</span>
+    <span class="res-dot"></span><span>${selWind} wind</span>
+    <span class="res-dot"></span><span>${tideStr}</span>
+    <span class="res-dot"></span><span>${duration} min target</span>
+    <span class="res-dot"></span><span>${speedLabel}</span>
+  </div>`;
+
+  scored.forEach((s,idx)=>{
+    const lapSet=new Set(s.c.lap.map(m=>m[0]));
+    const finalSet=new Set(s.c.final.map(m=>m[0]));
+    const initialSet=new Set(s.c.initial.map(m=>m[0]));
+    const isRec=idx===bestIdx;
+    const warns=[];
+    if(s.c.hwOnly)warns.push("HW only");if(s.c.avoidLW)warns.push("Avoid LW");
+    const marksHtml=s.c.marks.map((m,i)=>{
+      const[name,side]=m;
+      const isEnd=i===0||i===s.c.marks.length-1;
+      const isLap=lapSet.has(name),isFinal=finalSet.has(name),isInitial=initialSet.has(name);
+      let cls="mk ";
+      if(isEnd)cls+="mk-end";else if(side==="P")cls+="mk-P";else cls+="mk-S";
+      if(!isEnd&&isInitial&&!isLap&&!isFinal)cls+=" mk-once";
+      const label=(isEnd?"Start/Finish":name)+(side&&!isEnd?` (${side})`:"");
+      const arrow=i<s.c.marks.length-1?'<span class="mk-arr">›</span>':"";
+      return`<span class="${cls}">${label}</span>${arrow}`;
+    }).join("");
+
+    html+=`<div class="course-card${isRec?" best":""}">
+      <canvas class="mini" id="cv_${s.l}_${idx}" width="84" height="84" title="Tap to expand"></canvas>
+      <div>
+        <div class="card-hdr">
+          <div class="card-title">
+            <span class="c-letter">Course ${s.l}</span>
+            <span class="c-type t-${s.c.type}">${tLabel[s.c.type]}</span>
+            ${warns.map(w=>`<span class="badge-warn">${w}</span>`).join("")}
+          </div>
+          <div class="badges">${isRec?'<span class="badge-best">Best match</span>':""}</div>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="stat-lbl">Lap dist.</div>
+            <div class="stat-val">${s.lapDist.toFixed(2)}<span class="stat-unit">nm</span></div></div>
+          <div class="stat"><div class="stat-lbl">Laps</div>
+            <div class="stat-val" id="laps-val-${s.l}">${s.laps}</div></div>
+          <div class="stat"><div class="stat-lbl">Total dist.</div>
+            <div class="stat-val" id="edit-total-${s.l}">${s.totalNm.toFixed(2)}<span class="stat-unit">nm</span></div></div>
+          <div class="stat"><div class="stat-lbl">Est. time</div>
+            <div class="stat-val" id="edit-time-${s.l}">${Math.round(s.timeMins)}<span class="stat-unit">min</span></div></div>
+        </div>
+        <div class="marks-row">${marksHtml}</div>
+        <div class="course-edit">
+          <span class="edit-label">Adjust laps:</span>
+          <div class="laps-ctrl">
+            <button class="laps-btn" data-letter="${s.l}" data-delta="-1">−</button>
+            <span class="laps-val" id="laps-val-${s.l}-edit">${s.laps}</span>
+            <button class="laps-btn" data-letter="${s.l}" data-delta="1">+</button>
+          </div>
+          <div class="edit-stats">
+            <span class="edit-stat">Total: <strong id="edit-total-${s.l}-e">${s.totalNm.toFixed(2)} nm</strong></span>
+            <span class="edit-stat">Est: <strong id="edit-time-${s.l}-e">${Math.round(s.timeMins)} min</strong></span>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  });
+
+  html+=`<div class="footnote">
+    <strong>Lap distance</strong> = circuit of repeated marks including return to first. Total = initial + (laps × lap) + final.
+    <strong>Tap any course map</strong> to expand full screen with wind arrow.
+    GPS coordinates from WSC March 2026.
+  </div>`;
+
+  el.innerHTML=html;
+
+  // Wire mini canvases + laps buttons after DOM insert
+  scored.forEach((s)=>{
+    const cv=document.getElementById(`cv_${s.l}_${scored.indexOf(s)}`);
+    if(cv){
+      // Set up retina scaling for mini canvas
+      const dpr=window.devicePixelRatio||1;
+      cv.width=84*dpr; cv.height=84*dpr;
+      cv.style.width="84px"; cv.style.height="84px";
+      const ctx=cv.getContext("2d");
+      ctx.setTransform(1,0,0,1,0,0);
+      ctx.scale(dpr,dpr);
+      cv.addEventListener("click",()=>openOverlay({letter:s.l,...s}));
+      drawCourseMap(cv,s.c,null,false);
+    }
+    const editEl=document.getElementById("laps-val-"+s.l+"-edit");
+    const statEl=document.getElementById("laps-val-"+s.l);
+    const totalStatEl=document.getElementById("edit-total-"+s.l);
+    const timeStatEl=document.getElementById("edit-time-"+s.l);
+    const totalEditEl=document.getElementById("edit-total-"+s.l+"-e");
+    const timeEditEl=document.getElementById("edit-time-"+s.l+"-e");
+    window["_cl_"+s.l]=(delta)=>{
+      const cur=parseInt(editEl.textContent)||1;
+      const next=Math.min(6,Math.max(1,cur+delta));
+      lapOverrides[s.l]=next;
+      [statEl,editEl].forEach(el=>el&&(el.textContent=next));
+      const{totalNm,timeMins}=calcFromLaps(s.c,next,speed);
+      const tot=totalNm.toFixed(2)+" nm",tim=Math.round(timeMins)+" min";
+      [totalStatEl,totalEditEl].forEach(el=>el&&(el.textContent=tot));
+      [timeStatEl,timeEditEl].forEach(el=>el&&(el.textContent=tim));
+    };
+  });
+
+  // Wire laps buttons
+  document.querySelectorAll(".laps-btn[data-letter]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const fn=window["_cl_"+btn.dataset.letter];
+      if(fn)fn(parseInt(btn.dataset.delta));
+    });
+  });
+
+}
+
+["tide","duration","fleet","py"].forEach(id=>{
+  const el=document.getElementById(id);
+  if(el){el.addEventListener("change",render);el.addEventListener("input",render);}
+});
+</script>
+</body>
+</html>
