@@ -1410,13 +1410,14 @@ function openOverlay(courseData){
     <div class="ovl-marks" id="ovlMarksDetail"></div>`;
 
   // Marks detail
-  const lapSet=new Set(c.lap.map(m=>m[0]));
-  const finalSet=new Set(c.final.map(m=>m[0]));
-  const initialSet=new Set(c.initial.map(m=>m[0]));
+  const lapSet=new Set(c.lap.map(m=>m[0]+'|'+m[1]));
+  const finalSet=new Set(c.final.map(m=>m[0]+'|'+m[1]));
+  const initialSet=new Set(c.initial.map(m=>m[0]+'|'+m[1]));
   const marksHtml=c.marks.map((m,i)=>{
     const[name,side]=m;
     const isEnd=i===0||i===c.marks.length-1;
-    const isInitial=initialSet.has(name)&&!lapSet.has(name)&&!finalSet.has(name);
+    const key=name+'|'+side;
+    const isInitial=initialSet.has(key)&&!lapSet.has(key)&&!finalSet.has(key);
     let cls="mk ";
     if(isEnd)cls+="mk-end";else if(side==="P")cls+="mk-P";else cls+="mk-S";
     if(!isEnd&&isInitial)cls+=" mk-once";
@@ -1565,8 +1566,7 @@ function render(){
       var _rw=(_tg-initDist-finalDist)/(lapOneway+returnDist);
       var _lo=Math.max(1,Math.floor(_rw)),_hi=Math.min(6,Math.ceil(_rw));
       var _l=_lo===_hi?_lo:(
-        Math.abs((initDist+_lo*lapOneway+(_lo-1)*returnDist+finalDist)/_sp*60-duration)
-        <=Math.abs((initDist+_hi*lapOneway+(_hi-1)*returnDist+finalDist)/_sp*60-duration)?_lo:_hi);
+        ((initDist+_lo*lapOneway+(_lo-1)*returnDist+finalDist)/_sp*60>=duration)?_lo:_hi);
       var _tot=initDist+_l*lapOneway+(_l-1)*returnDist+finalDist;
       return{laps:_l,mins:Math.round(_tot/_sp*60)};
     }
@@ -1582,16 +1582,17 @@ function render(){
   // Build compact rows: mini-canvas | letter+%WW+marks | laps+time only
   let html='';
   scored.forEach(function(s,idx){
-    const lapSet=new Set(s.c.lap.map(function(m){return m[0];}));
-    const finalSet=new Set(s.c.final.map(function(m){return m[0];}));
-    const initialSet=new Set(s.c.initial.map(function(m){return m[0];}));
+    const lapSet=new Set(s.c.lap.map(function(m){return m[0]+'|'+m[1];}));
+    const finalSet=new Set(s.c.final.map(function(m){return m[0]+'|'+m[1];}));
+    const initialSet=new Set(s.c.initial.map(function(m){return m[0]+'|'+m[1];}));
     const warns=[];
     if(s.c.hwOnly)warns.push('HW only');
     if(s.c.avoidLW)warns.push('Avoid LW');
     const marksHtml=s.c.marks.map(function(m,i){
       const name=m[0],side=m[1];
       const isEnd=i===0||i===s.c.marks.length-1;
-      const isOnce=initialSet.has(name)&&!lapSet.has(name)&&!finalSet.has(name)&&!isEnd;
+      const key=name+'|'+side;
+      const isOnce=initialSet.has(key)&&!lapSet.has(key)&&!finalSet.has(key)&&!isEnd;
       let cls='cs-mk '+(isEnd?'cs-mk-e':side==='P'?'cs-mk-p':'cs-mk-s')+(isOnce?' cs-mk-once':'');
       const lbl=isEnd?'S/F':name;
       const arr=i<s.c.marks.length-1?'<span style="color:rgba(255,255,255,.18);font-size:18px;margin:0 1px;">›</span>':'';
@@ -1711,8 +1712,7 @@ function openCsMap(letter){
     var _raw=(_tgt-s.initDist-s.finalDist)/(s.lapOneway+s.returnDist);
     var _lo=Math.max(1,Math.floor(_raw)),_hi=Math.min(6,Math.ceil(_raw));
     var _l=_lo===_hi?_lo:(
-      Math.abs((s.initDist+_lo*s.lapOneway+(_lo-1)*s.returnDist+s.finalDist)/_spd*60-_dur)
-      <=Math.abs((s.initDist+_hi*s.lapOneway+(_hi-1)*s.returnDist+s.finalDist)/_spd*60-_dur)?_lo:_hi);
+      ((s.initDist+_lo*s.lapOneway+(_lo-1)*s.returnDist+s.finalDist)/_spd*60>=_dur)?_lo:_hi);
     var _tot=s.initDist+_l*s.lapOneway+(_l-1)*s.returnDist+s.finalDist;
     var _racingNm=_tot-s.initDist-s.finalDist;
     return{laps:_l,totalMins:Math.round(_tot/_spd*60),lapMins:_l>0?Math.round(_racingNm/_l/_spd*60):0};
@@ -1723,12 +1723,13 @@ function openCsMap(letter){
     '<div class="cs-map-stat"><div class="cs-map-stat-lbl">Total course</div><div class="cs-map-stat-n">'+s.totalNm.toFixed(2)+'nm</div></div>'
     +'<div class="cs-map-stat"><div class="cs-map-stat-lbl">Per lap</div><div class="cs-map-stat-n">'+s.lapDist.toFixed(2)+'nm</div></div>'
     +'<div class="cs-map-stat cs-map-back-cell" id="cs-map-back-btn"><div class="cs-map-back-arr">←</div><div class="cs-map-stat-u">back</div></div>';
-  var _lS=new Set(s.c.lap.map(function(m){return m[0];}));
-  var _fS=new Set(s.c.final.map(function(m){return m[0];}));
-  var _iS=new Set(s.c.initial.map(function(m){return m[0];}));
+  var _lS=new Set(s.c.lap.map(function(m){return m[0]+'|'+m[1];}));
+  var _fS=new Set(s.c.final.map(function(m){return m[0]+'|'+m[1];}));
+  var _iS=new Set(s.c.initial.map(function(m){return m[0]+'|'+m[1];}));
   var marksHtml=s.c.marks.map(function(m,i){
     var name=m[0],side=m[1],isEnd=i===0||i===s.c.marks.length-1;
-    var isOnce=_iS.has(name)&&!_lS.has(name)&&!_fS.has(name)&&!isEnd;
+    var key=name+'|'+side;
+    var isOnce=_iS.has(key)&&!_lS.has(key)&&!_fS.has(key)&&!isEnd;
     var cls='cs-map-mk '+(isEnd?'cs-map-mk-e':side==='P'?'cs-map-mk-p':'cs-map-mk-s')+(isOnce?' cs-map-mk-once':'');
     var lbl=isEnd?'S/F':name+(side&&!isEnd?' ('+side+')':'');
     var arr=i<s.c.marks.length-1?'<span class="cs-map-arr">›</span>':'';
@@ -1767,7 +1768,7 @@ function openCsMap(letter){
 // ═══════════════════════════════════════════════════════
 // FORECAST SCREEN — API calls & logic
 // ═══════════════════════════════════════════════════════
-const APP_VERSION = 'v3.27 · 01 Apr 2026';
+const APP_VERSION = 'v3.28 · 01 Apr 2026';
 const ADMIRALTY_KEY  = '2ee4d4218fd040678f0cf6886bacc624';
 const ADMIRALTY_STATION = '0062'; // Southampton
 const FC_LAT  = 50.855;  // Hamble Point buoy
