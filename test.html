@@ -1357,13 +1357,13 @@ function drawCourseMap(canvas, course, windDir, large, windBandLabel, windKts, w
     if(windKts!==null&&windKts!==undefined){
       ctx.font="bold 28px 'Barlow Condensed',sans-serif";
       ctx.fillStyle="#ffffff";
-      ctx.fillText(windKts+"kt",cx2,by+bh+50);
+      ctx.fillText(windKts+"kt",cx2,by+bh+62);
     }
     // Gust
     if(windGust!==null&&windGust!==undefined){
       ctx.font="bold 20px 'Barlow Condensed',sans-serif";
       ctx.fillStyle="#e07070";
-      ctx.fillText("Gust "+windGust,cx2,by+bh+74);
+      ctx.fillText("Gust "+windGust,cx2,by+bh+86);
     }
   }
 }
@@ -1767,7 +1767,7 @@ function openCsMap(letter){
 // ═══════════════════════════════════════════════════════
 // FORECAST SCREEN — API calls & logic
 // ═══════════════════════════════════════════════════════
-const APP_VERSION = 'v3.26 · 01 Apr 2026';
+const APP_VERSION = 'v3.27 · 01 Apr 2026';
 const ADMIRALTY_KEY  = '2ee4d4218fd040678f0cf6886bacc624';
 const ADMIRALTY_STATION = '0062'; // Southampton
 const FC_LAT  = 50.855;  // Hamble Point buoy
