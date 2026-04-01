@@ -1572,7 +1572,7 @@ function render(){
     }
     var rowFast=_rowFL('fast'),rowMed=_rowFL('medium'),rowSlow=_rowFL('slow');
     return{l,c,lapDist,lapOneway,returnDist,initDist,finalDist,laps,totalNm,timeMins,lapTimeMins,
-      diff:Math.abs(timeMins-duration),totalWWnm,wwPct,wwLegsPerLap,wwLegsOnce,speed,
+      diff:Math.abs(timeMins-duration),totalWWnm,wwPct,wwFrac:wwFrac1,wwLegsPerLap,wwLegsOnce,speed,
       rowFast,rowMed,rowSlow};
   });
 
@@ -1705,8 +1705,8 @@ function openCsMap(letter){
   var _wb=getWindBand();
   function _fleetLaps(fleetKey){
     var _epy=FLEET_MID_PY[fleetKey]||1104;
-    // Use actual wwFrac from scored entry (same as course list rows use)
-    var _wwf=s.wwPct>0?s.wwPct/100:0.38;
+    // Use exact wwFrac stored at scoring time (same source as course list rows)
+    var _wwf=s.wwFrac>0?s.wwFrac:0.38;
     var _spd=courseSpeed(fleetKey,_wb,_wwf,_epy);
     var _tgt=_spd*(_dur/60);
     var _raw=(_tgt-s.initDist-s.finalDist)/(s.lapOneway+s.returnDist);
@@ -1714,8 +1714,9 @@ function openCsMap(letter){
     var _l=_lo===_hi?_lo:(
       ((s.initDist+_lo*s.lapOneway+(_lo-1)*s.returnDist+s.finalDist)/_spd*60>=_dur)?_lo:_hi);
     var _tot=s.initDist+_l*s.lapOneway+(_l-1)*s.returnDist+s.finalDist;
-    var _racingNm=_tot-s.initDist-s.finalDist;
-    return{laps:_l,totalMins:Math.round(_tot/_spd*60),lapMins:_l>0?Math.round(_racingNm/_l/_spd*60):0};
+    // Per-lap time = one full lap circuit (lapOneway + returnDist) at fleet speed
+    var _lapMins=_spd>0?Math.round(s.lapDist/_spd*60):0;
+    return{laps:_l,totalMins:Math.round(_tot/_spd*60),lapMins:_lapMins};
   }
   var fD=_fleetLaps('fast'),mD=_fleetLaps('medium'),sD=_fleetLaps('slow');
   var fLaps=fD.laps,mLaps=mD.laps,sLaps=sD.laps;
@@ -1768,7 +1769,7 @@ function openCsMap(letter){
 // ═══════════════════════════════════════════════════════
 // FORECAST SCREEN — API calls & logic
 // ═══════════════════════════════════════════════════════
-const APP_VERSION = 'v3.28 · 01 Apr 2026';
+const APP_VERSION = 'v3.29 · 01 Apr 2026';
 const ADMIRALTY_KEY  = '2ee4d4218fd040678f0cf6886bacc624';
 const ADMIRALTY_STATION = '0062'; // Southampton
 const FC_LAT  = 50.855;  // Hamble Point buoy
