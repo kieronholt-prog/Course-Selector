@@ -1346,10 +1346,13 @@ function drawCourseMap(canvas, course, windDir, large, windBandLabel, windKts, w
     ctx.font="bold 18px 'Barlow Condensed',sans-serif";
     ctx.fillStyle="rgba(232,160,32,.55)";ctx.textAlign="center";
     ctx.fillText("WIND",cx2,by-2);
-    // Direction
-    ctx.font="bold 32px 'Barlow Condensed',sans-serif";
+    // Direction — cardinal on first line, degrees on second line
+    ctx.font="bold 28px 'Barlow Condensed',sans-serif";
     ctx.fillStyle="#e8a020";
-    ctx.fillText(degToCard(windDir)+" "+Math.round(windDir)+"°",cx2,by+bh+20);
+    ctx.fillText(degToCard(windDir),cx2,by+bh+18);
+    ctx.font="bold 22px 'Barlow Condensed',sans-serif";
+    ctx.fillStyle="rgba(232,160,32,.75)";
+    ctx.fillText(Math.round(windDir)+"°",cx2,by+bh+40);
     // Wind speed (mean kts)
     if(windKts!==null&&windKts!==undefined){
       ctx.font="bold 28px 'Barlow Condensed',sans-serif";
@@ -1652,7 +1655,7 @@ function drawMiniCourse(ctx,W,H,course,windDir){
     return[(mk.lon-minLon)*sc+offX, H-(mk.lat-minLat)*sc-offY];
   }
   // Determine windward legs by calling isWindwardLeg directly on each pair
-  const windFromDeg=(windDir!==null&&windDir!==undefined&&DIR_DEGS[windDir]!==undefined)?DIR_DEGS[windDir]:null;
+  const windFromDeg=(windDir!==null&&windDir!==undefined)?windDir:null;
   // Draw all legs dashed first
   ctx.beginPath();
   var started=false;
