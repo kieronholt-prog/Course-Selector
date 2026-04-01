@@ -1,0 +1,2187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="WSC Courses">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<title>WSC Course Selector 2026/27</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1628;--accent:#e8a020;--accent2:#f0c060;
+  --port-bg:rgba(192,57,43,0.18);--stbd-bg:rgba(39,174,96,0.18);
+  --text:#e8edf5;--muted:#7a96bc;--border:rgba(255,255,255,0.09);
+  --card-bg:rgba(255,255,255,0.04);--card-hi:rgba(255,255,255,0.07);
+  --r:10px;--rs:6px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Barlow',sans-serif;background:var(--navy);color:var(--text);min-height:100vh;
+  padding-bottom:env(safe-area-inset-bottom);position:relative;
+  background-image:radial-gradient(ellipse 90% 40% at 50% 0%,rgba(30,58,110,.55) 0%,transparent 70%),
+  repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,.013) 39px,rgba(255,255,255,.013) 40px),
+  repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,255,255,.013) 39px,rgba(255,255,255,.013) 40px);}
+
+/* ── Header ── */
+header{background:rgba(10,22,40,.96);border-bottom:1px solid var(--border);padding:0 18px;
+  display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);height:52px;}
+.logo-mark{width:32px;height:32px;background:var(--accent);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.logo-mark svg{width:18px;height:18px;}
+.header-text h1{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:700;
+  letter-spacing:.05em;text-transform:uppercase;color:#fff;line-height:1.1;}
+.header-text p{font-size:22px;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;margin-top:1px;}
+.screen{max-width:880px;margin:0 auto;padding:18px 14px 50px;}
+
+/* ── Controls ── */
+.controls{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--r);
+  padding:16px;margin-bottom:14px;}
+.ctrl-label{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:5px;}
+
+/* ── Compass ── */
+.wind-section{display:flex;gap:20px;align-items:center;margin-bottom:14px;margin-top:6px;}
+.compass-wrap{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.compass-container{position:relative;width:158px;height:158px;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;touch-action:none;
+  user-select:none;-webkit-user-select:none;}
+
+
+
+/* Static bezel labels container — does NOT rotate */
+.bezel-labels-static{position:absolute;inset:14px;border-radius:50%;pointer-events:none;}
+.bezel-label{position:absolute;left:50%;top:50%;
+  font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;
+  color:rgba(255,255,255,.6);line-height:1;}
+
+/* Rotating needle canvas — sits above bezel, below hub */
+#needleCanvas{position:absolute;inset:0;border-radius:50%;pointer-events:none;z-index:5;
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1);}
+
+
+
+.wind-label-wrap{flex:1;}
+.wind-dir-display{font-family:'Barlow Condensed',sans-serif;font-size:40px;font-weight:700;
+  color:#fff;line-height:1;margin-bottom:4px;}
+.wind-dir-sub{font-size:24px;color:var(--muted);}
+
+/* ── Selects ── */
+.selects-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+@media(min-width:600px){.selects-row{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));}}
+.ctrl-wrap{display:flex;flex-direction:column;}
+select,input[type=number]{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+  border-radius:var(--rs);color:var(--text);font-family:'Barlow',sans-serif;font-size:22px;
+  padding:12px 10px;width:100%;appearance:none;-webkit-appearance:none;
+  transition:border-color .15s,background .15s;cursor:pointer;}
+select:focus,input:focus{outline:none;border-color:var(--accent);background:rgba(232,160,32,.08);}
+select option{background:#0f2044;}
+
+/* ── Course length checkboxes ── */
+.check-row{display:flex;gap:6px;flex-wrap:wrap;}
+.check-pill{display:flex;align-items:center;gap:5px;cursor:pointer;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);
+  border-radius:var(--rs);padding:10px 14px;transition:all .15s;
+  -webkit-tap-highlight-color:transparent;user-select:none;}
+.check-pill:hover{background:rgba(255,255,255,.1);}
+.check-pill input[type=checkbox]{width:22px;height:22px;accent-color:var(--accent);cursor:pointer;flex-shrink:0;}
+.check-pill span{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:600;
+  letter-spacing:.05em;color:var(--text);}
+.check-pill.active-SC{border-color:rgba(26,111,168,.6);background:rgba(26,111,168,.12);}
+.check-pill.active-MC{border-color:rgba(180,100,30,.6);background:rgba(180,100,30,.12);}
+.check-pill.active-LC{border-color:rgba(100,50,170,.6);background:rgba(100,50,170,.12);}
+
+/* ── Sort toggle ── */
+
+/* ── Windward badge on card ── */
+.badge-ww{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;
+  background:rgba(39,174,96,.14);color:#5ecb80;
+  border:1px solid rgba(39,174,96,.32);padding:3px 7px;border-radius:4px;}
+/* ── Legend ── */
+.legend{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:8px 12px;margin-bottom:14px;
+  background:var(--card-bg);border:1px solid var(--border);border-radius:var(--rs);}
+.leg{display:flex;align-items:center;gap:5px;font-size:22px;color:var(--muted);}
+.leg-sw{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
+.leg-sep{width:1px;height:12px;background:var(--border);margin:0 2px;}
+
+/* ── Results ── */
+.res-meta{font-size:22px;color:var(--muted);margin-bottom:10px;
+  display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.res-dot{width:3px;height:3px;border-radius:50%;background:var(--muted);flex-shrink:0;}
+
+/* ── Course cards ── */
+.course-card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--r);
+  padding:12px;margin-bottom:9px;overflow:hidden;
+  transition:border-color .15s,background .15s;animation:fadeUp .22s ease both;}
+.course-card:hover{background:var(--card-hi);border-color:rgba(255,255,255,.16);}
+.course-card.best{border-color:var(--accent);background:rgba(232,160,32,.05);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.course-card:nth-child(1){animation-delay:0ms}.course-card:nth-child(2){animation-delay:40ms}
+.course-card:nth-child(3){animation-delay:80ms}.course-card:nth-child(4){animation-delay:120ms}
+.course-card:nth-child(5){animation-delay:160ms}.course-card:nth-child(6){animation-delay:200ms}
+.course-card:nth-child(7){animation-delay:240ms}.course-card:nth-child(8){animation-delay:280ms}
+.course-card:nth-child(9){animation-delay:320ms}.course-card:nth-child(10){animation-delay:360ms}
+
+canvas.mini{display:block;border-radius:var(--rs);background:rgba(0,0,0,.28);
+  border:1px solid rgba(255,255,255,.07);width:100%;height:160px;cursor:pointer;margin-bottom:9px;}
+canvas.mini:hover{border-color:rgba(232,160,32,.5);}
+
+.card-hdr{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-bottom:10px;}
+.card-title{display:contents;}
+.c-letter{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:700;color:#fff;line-height:1;}
+.c-type{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;
+  letter-spacing:.09em;text-transform:uppercase;padding:3px 7px;border-radius:4px;}
+.t-SC{background:rgba(26,111,168,.22);color:#5bb5e8;border:1px solid rgba(26,111,168,.35);}
+.t-MC{background:rgba(180,100,30,.22);color:#d4884a;border:1px solid rgba(180,100,30,.35);}
+.t-LC{background:rgba(100,50,170,.22);color:#b07ae0;border:1px solid rgba(100,50,170,.35);}
+.badges{display:flex;gap:4px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;}
+
+.badge-warn{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:600;
+  letter-spacing:.05em;text-transform:uppercase;background:rgba(232,160,32,.12);color:var(--accent2);
+  border:1px solid rgba(232,160,32,.28);padding:3px 7px;border-radius:4px;}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:9px;align-items:stretch;}
+.stat{background:rgba(0,0,0,.22);border-radius:var(--rs);padding:10px 8px;border:1px solid rgba(255,255,255,.05);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+.stat-lbl{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.stat-val{font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:700;color:#fff;line-height:1;}
+.stat-unit{font-size:22px;font-weight:400;color:var(--muted);margin-left:1px;}
+.stat-sub{font-family:'Barlow Condensed',sans-serif;font-size:22px;color:var(--muted);margin-top:5px;line-height:1.3;}
+.marks-row{display:flex;flex-wrap:wrap;align-items:center;gap:3px;margin-bottom:8px;}
+.mk{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:600;
+  padding:3px 7px;border-radius:3px;white-space:nowrap;line-height:1.4;}
+.mk-P{background:var(--port-bg);color:#e87070;border:1px solid rgba(192,57,43,.32);}
+.mk-S{background:var(--stbd-bg);color:#5ecb80;border:1px solid rgba(39,174,96,.32);}
+.mk-end{background:rgba(255,255,255,.07);color:var(--muted);border:1px solid var(--border);}
+.mk-once{opacity:.45;}
+.mk-arr{color:rgba(255,255,255,.18);font-size:22px;line-height:1;}
+.empty{text-align:center;padding:50px 20px;color:var(--muted);}
+.empty-ico{font-size:36px;margin-bottom:12px;filter:grayscale(1) opacity(.35);}
+.empty h3{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:600;
+  letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.empty p{font-size:24px;}
+.footnote{margin-top:16px;font-size:22px;color:rgba(122,150,188,.55);line-height:1.65;
+  padding:11px 12px;border:1px solid rgba(255,255,255,.04);border-radius:var(--rs);}
+.footnote strong{color:rgba(122,150,188,.75);}
+
+/* ── Full-screen course overlay ── */
+.overlay{display:none;position:fixed;inset:0;
+  z-index:200;background:rgba(8,16,32,.97);flex-direction:column;
+  -webkit-tap-highlight-color:transparent;}
+.overlay.open{display:flex;}
+.overlay-header{display:flex;align-items:center;gap:10px;padding:14px 18px;
+  padding-top:max(14px, env(safe-area-inset-top));
+  border-bottom:1px solid var(--border);flex-shrink:0;}
+.overlay-title{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:700;
+  letter-spacing:.04em;text-transform:uppercase;color:#fff;flex:1;}
+.overlay-close{width:36px;height:36px;border-radius:6px;border:1px solid rgba(255,255,255,.15);
+  background:rgba(255,255,255,.06);color:var(--text);font-size:30px;line-height:1;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.overlay-close:hover{background:rgba(255,255,255,.14);}
+/* Body fills all remaining space — no fixed height, flex does the work */
+.overlay-body{flex:1;display:flex;flex-direction:row;overflow:hidden;min-height:0;}
+/* Canvas area stretches to fill */
+.overlay-canvas-wrap{flex:1;position:relative;overflow:hidden;padding:12px;min-width:0;min-height:0;}
+#overlayCanvas{display:block;border-radius:var(--r);background:rgba(0,0,0,.3);width:100%;height:100%;}
+/* Sidebar fixed width */
+.overlay-sidebar{width:140px;flex-shrink:0;display:flex;flex-direction:column;
+  padding:12px 12px 12px 8px;gap:10px;overflow-y:auto;border-left:1px solid var(--border);}
+.ovl-stat{background:rgba(0,0,0,.3);border-radius:var(--rs);padding:8px 10px;border:1px solid rgba(255,255,255,.05);}
+.ovl-stat-lbl{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+.ovl-stat-val{font-family:'Barlow Condensed',sans-serif;font-size:34px;font-weight:700;color:#fff;line-height:1;}
+.ovl-stat-unit{font-size:22px;font-weight:400;color:var(--muted);margin-left:2px;}
+.ovl-marks{font-size:22px;color:var(--muted);line-height:1.8;margin-top:4px;}
+.ovl-marks .mk{font-size:22px;display:inline-block;margin:2px 1px;}
+
+@media(max-width:500px){
+  .overlay-body{flex-direction:column;}
+  .overlay-sidebar{width:100%;flex-direction:row;flex-wrap:wrap;height:auto;flex-shrink:0;
+    border-left:none;border-top:1px solid var(--border);padding:10px;gap:8px;overflow-y:visible;}
+  .overlay-canvas-wrap{flex:1;min-height:0;}
+  .ovl-marks{display:none;}
+}
+
+/* ── Forecast screen ── */
+/* ── App shell: two screens, class on body controls which shows ── */
+.app-shell{position:fixed;inset:0;overflow:hidden;}
+.app-screen{position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden;
+  padding-top:max(35px,env(safe-area-inset-top));
+  transition:opacity .2s, transform .2s;
+  opacity:0;pointer-events:none;transform:translateX(30px);}
+.app-screen.active{opacity:1;pointer-events:auto;transform:translateX(0);}
+/* Forecast screen */
+.fc-body{flex:1;overflow:hidden;padding:8px 10px 4px;display:flex;flex-direction:column;gap:5px;min-height:0;}
+.fc-foot{padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:rgba(10,22,40,.96);border-top:1px solid var(--border);flex-shrink:0;}
+
+.fc-card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--rs);overflow:hidden;}
+.fc-card-hdr{background:rgba(255,255,255,.04);padding:5px 10px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);}
+/* Input row: 3-up grid */
+.fc-inputs-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;padding:5px 10px;border-bottom:1px solid var(--border);}
+.fc-inp-cell{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.11);border-radius:var(--rs);padding:5px 7px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.fc-inp-cell:active{border-color:var(--accent);background:rgba(232,160,32,.07);}
+.fc-inp-lbl{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:3px;}
+.fc-inp-lbl .fc-inp-icon{font-size:18px;}
+.fc-inp-val{font-size:18px;font-weight:600;color:var(--text);margin-top:1px;}
+.fc-inp-val.amber{color:var(--accent);}
+/* Native inputs styled to look like the cell value */
+.fc-native-input{background:none;border:none;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:600;padding:0;margin-top:2px;width:100%;outline:none;cursor:pointer;color-scheme:dark;-webkit-appearance:none;appearance:none;}
+.fc-native-input[type="date"]{color:var(--text);}
+.fc-native-input[type="time"]{color:var(--text);}
+.fc-native-input::-webkit-calendar-picker-indicator{opacity:0;position:absolute;width:100%;height:100%;top:0;left:0;cursor:pointer;}
+.fc-native-select{color:var(--accent);-webkit-appearance:none;appearance:none;}
+.fc-form-row{display:flex;align-items:center;padding:12px 16px;gap:10px;border-bottom:1px solid var(--border);}
+.fc-form-row:last-child{border-bottom:none;}
+.fc-form-label{flex:1;font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:600;color:var(--muted);}
+.fc-form-input{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:var(--rs);color:var(--text);font-family:'Barlow',sans-serif;font-size:18px;padding:9px 12px;width:170px;text-align:right;}
+.fc-form-input:focus{outline:none;border-color:var(--accent);background:rgba(232,160,32,.08);}
+
+/* Forecast table */
+.fc-tbl{width:100%;border-collapse:collapse;table-layout:fixed;}
+.fc-tbl th:nth-child(1),.fc-tbl td:nth-child(1){width:22%;}  /* Time */
+.fc-tbl th:nth-child(2),.fc-tbl td:nth-child(2){width:18%;}  /* Dir */
+.fc-tbl th:nth-child(3),.fc-tbl td:nth-child(3){width:13%;}  /* Kts */
+.fc-tbl th:nth-child(4),.fc-tbl td:nth-child(4){width:13%;}  /* Gust */
+.fc-tbl th:nth-child(5),.fc-tbl td:nth-child(5){width:10%;}  /* Wx */
+.fc-tbl th:nth-child(6),.fc-tbl td:nth-child(6){width:24%;}  /* Tide */
+.fc-tbl th{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:8px 8px;text-align:center;border-bottom:1px solid var(--border);}
+.fc-tbl td{padding:10px 6px;text-align:center;font-family:'Barlow',sans-serif;font-size:18px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle;}
+.fc-tbl tr:last-child td{border-bottom:none;}
+/* ◎ midpoint row — only highlighted row */
+.fc-mid-row td{padding:9px 4px !important;background:#0f2540;border-top:1px solid rgba(232,160,32,.28) !important;border-bottom:1px solid rgba(232,160,32,.28) !important;}
+.fc-mid-row .fc-time-cell{font-size:18px !important;font-weight:700;color:var(--accent) !important;line-height:1.15;}
+.fc-mid-row .fc-wind-spd{font-size:20px !important;font-weight:700;color:#fff !important;}
+.fc-mid-row .gust-cell{font-size:18px !important;font-weight:700;}
+.fc-mid-row .fc-wind-arrow{font-size:18px !important;color:#fff;}
+/* Start row: subtle, not highlighted */
+.fc-start-row td{color:var(--muted);}
+
+.fc-tbl tr.fc-start-row td{background:rgba(232,160,32,.08);}
+.fc-tbl tr.fc-start-row td:first-child{border-left:3px solid var(--accent);}
+.fc-time-cell{font-family:'Barlow Condensed',sans-serif;font-size:18px;color:var(--muted);white-space:nowrap;}
+.fc-wind-arrow{font-size:18px;}
+.fc-wind-card{font-family:'Barlow Condensed',sans-serif;font-size:18px;color:var(--muted);}
+.fc-wind-spd{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:700;color:#fff;}
+.fc-bft{font-family:'Barlow Condensed',sans-serif;font-size:18px;color:var(--muted);}
+
+.tide-badge{display:inline-block;padding:2px 5px;border-radius:var(--rs);font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;letter-spacing:.05em;white-space:nowrap;}
+.tide-flood{background:rgba(42,181,165,.18);color:#4fcfbf;border:1px solid rgba(42,181,165,.35);}
+.tide-ebb{background:rgba(192,57,43,.18);color:#e87070;border:1px solid rgba(192,57,43,.35);}
+.tide-hw{background:rgba(39,174,96,.2);color:#5ecb80;border:1px solid rgba(39,174,96,.38);}
+.tide-lw{background:rgba(150,150,150,.15);color:#8a9fb5;border:1px solid rgba(150,150,150,.25);}
+
+
+/* Gust colour bands */
+.gust-cell{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;}
+.gust-light{color:#7a96bc;}
+.gust-mod{color:#5ecb80;}
+.gust-fresh{color:#e8a020;}
+.gust-strong{color:#e87070;}
+.gust-very-strong{color:#c0392b;background:rgba(192,57,43,.15);border-radius:4px;padding:1px 4px;}
+
+/* Row tint by gust band */
+.fc-tbl tr.gust-row-mod td{background:rgba(39,174,96,.04);}
+.fc-tbl tr.gust-row-fresh td{background:rgba(232,160,32,.06);}
+.fc-tbl tr.gust-row-strong td{background:rgba(232,80,32,.08);}
+.fc-tbl tr.gust-row-very-strong td{background:rgba(192,57,43,.12);}
+/* start row always wins */
+.fc-tbl tr.fc-start-row td{background:rgba(232,160,32,.13) !important;}
+.fc-tbl tr.fc-start-row td:first-child{border-left:3px solid var(--accent);}
+
+.fc-event-row td{font-family:'Barlow Condensed',sans-serif;font-size:18px;color:var(--muted);font-style:italic;background:rgba(255,255,255,.02);padding:5px 8px;}
+.fc-loading{text-align:center;padding:28px 16px;color:var(--muted);}
+.fc-spinner{width:26px;height:26px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:fc-spin .8s linear infinite;margin:0 auto 10px;}
+@keyframes fc-spin{to{transform:rotate(360deg)}}
+.fc-error{background:rgba(192,57,43,.14);border:1px solid rgba(192,57,43,.38);border-radius:var(--rs);padding:14px 16px;font-size:18px;color:#e88;margin:10px 14px;}
+.fc-tide-summary{padding:10px 16px;font-family:'Barlow',sans-serif;font-size:18px;color:var(--muted);line-height:1.9;}
+.fc-tide-summary strong{color:var(--text);}
+.fc-pill-strip{display:flex;gap:8px;padding:10px 16px;flex-wrap:wrap;}
+.fc-pill{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:20px;padding:4px 13px;font-family:'Barlow Condensed',sans-serif;font-size:18px;color:var(--muted);}
+.fc-pill strong{color:var(--text);}
+
+
+
+
+
+/* ── Compact course-screen control grid ── */
+.cs-ctrl-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:5px;padding:0 0 6px;}
+.cs-ctrl-cell{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:var(--rs);padding:8px 9px;display:flex;flex-direction:column;gap:3px;cursor:pointer;}
+.cs-ctrl-lbl{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
+.cs-ctrl-select{background:none;border:none;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:600;padding:0;outline:none;width:100%;cursor:pointer;color-scheme:dark;-webkit-appearance:none;appearance:none;}
+/* Mini pills for course length inside the grid */
+.cs-pill-row{display:flex;gap:4px;margin-top:1px;}
+.cs-mini-pill{display:flex;align-items:center;gap:0;cursor:pointer;}
+.cs-mini-pill input{display:none;}
+.cs-mini-pill span{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;padding:2px 6px;border-radius:3px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:var(--muted);transition:all .15s;}
+.cs-mini-pill input:checked+span{background:rgba(232,160,32,.18);border-color:rgba(232,160,32,.45);color:var(--accent);}
+
+/* ── Course screen layout ─────────────────────────────────────────── */
+.cs-screen{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden;}
+.cs-ctrl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:6px 10px 5px;border-bottom:1px solid rgba(255,255,255,.07);flex-shrink:0;}
+.cs-ctrl-cell{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:6px;padding:4px 7px;display:flex;flex-direction:column;gap:2px;cursor:pointer;}
+.cs-ctrl-lbl{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
+.cs-ctrl-select{background:none;border:none;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:600;padding:0;outline:none;width:100%;cursor:pointer;color-scheme:dark;-webkit-appearance:none;appearance:none;}
+.cs-pill-row{display:flex;gap:4px;margin-top:1px;}
+.cs-mini-pill{cursor:pointer;}
+.cs-mini-pill input{display:none;}
+.cs-mini-pill span{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;padding:3px 6px;border-radius:3px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:var(--muted);display:block;}
+.cs-mini-pill input:checked+span{background:rgba(232,160,32,.18);border-color:rgba(232,160,32,.4);color:var(--accent);}
+
+/* Course results list */
+.cs-results{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;min-height:0;}
+
+/* Each course row: mini-canvas | letter+marks | laps+time */
+.cs-row{display:grid;grid-template-columns:78px 1fr auto;border-bottom:1px solid rgba(255,255,255,.06);min-height:102px;cursor:pointer;}
+.cs-row:active{background:rgba(255,255,255,.02);}
+.cs-row.cs-best{border-left:2px solid var(--accent);}
+.cs-row-canvas{width:78px;background:rgba(0,0,0,.3);border-right:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cs-row-mid{padding:8px 10px;display:flex;flex-direction:column;justify-content:center;gap:5px;min-width:0;overflow:hidden;}
+.cs-row-letter{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:700;color:#fff;line-height:1;display:flex;align-items:baseline;gap:7px;}
+.cs-row-ww{font-size:18px;font-weight:700;color:#5ecb80;}
+.cs-row-marks{display:flex;flex-wrap:wrap;gap:2px;margin-top:2px;}
+.cs-mk{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;padding:2px 6px;border-radius:3px;white-space:nowrap;}
+.cs-mk-p{background:rgba(192,57,43,.16);color:#e87070;}
+.cs-mk-s{background:rgba(39,174,96,.16);color:#5ecb80;}
+.cs-mk-e{background:rgba(255,255,255,.07);color:var(--muted);}
+.cs-mk-once{opacity:.45;}
+.cs-row-right{padding:8px 10px 8px 4px;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:5px;flex-shrink:0;}
+.cs-row-laps{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:700;color:#fff;line-height:1;}
+.cs-row-laps span{font-size:18px;color:var(--muted);font-weight:400;}
+.cs-row-time{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:600;color:var(--accent);}
+.cs-row-map{font-size:18px;color:var(--muted);margin-top:2px;}
+.cs-row-warn{font-size:18px;color:var(--accent);font-weight:600;}
+
+/* Map popup */
+.cs-map-overlay{position:absolute;inset:0;background:#040e1a;display:flex;flex-direction:column;z-index:50;}
+.cs-map-hdr{background:#0b1a30;padding:6px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.07);flex-shrink:0;}
+.cs-map-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;color:var(--accent);}
+.cs-map-sub{font-size:18px;color:var(--muted);margin-top:1px;}
+
+.cs-map-wind{padding:5px 12px;background:rgba(232,160,32,.06);border-bottom:1px solid rgba(232,160,32,.1);display:flex;gap:14px;align-items:center;flex-shrink:0;font-family:'Barlow Condensed',sans-serif;}
+
+
+
+
+.cs-map-canvas-wrap{flex:1;min-height:0;padding:8px 10px;display:flex;align-items:center;justify-content:center;}
+.cs-map-canvas-wrap canvas{width:100%;height:100%;display:block;}
+.cs-map-marks{flex-shrink:0;padding:5px 10px 7px;display:flex;flex-wrap:wrap;align-items:center;gap:3px;border-top:1px solid rgba(255,255,255,.07);background:rgba(0,0,0,.2);}
+.cs-map-mk{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;padding:3px 7px;border-radius:3px;white-space:nowrap;}
+.cs-map-mk-e{background:rgba(255,255,255,.07);color:#e8a020;border:1px solid rgba(232,160,32,.3);}
+.cs-map-mk-p{background:rgba(192,57,43,.16);color:#e87070;border:1px solid rgba(192,57,43,.28);}
+.cs-map-mk-s{background:rgba(39,174,96,.16);color:#5ecb80;border:1px solid rgba(39,174,96,.28);}
+.cs-map-mk-once{opacity:.45;}
+.cs-map-arr{color:rgba(255,255,255,.2);font-size:18px;margin:0 1px;}
+
+/* Compass strip */
+.cs-compass-strip{flex-shrink:0;background:#0b1a30;border-top:1px solid rgba(255,255,255,.1);padding:10px 14px;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:16px;min-height:158px;}
+.cs-compass-dial{position:relative;width:138px;height:138px;cursor:grab;flex-shrink:0;}
+.cs-compass-left{display:flex;flex-direction:column;align-items:flex-end;gap:4px;min-width:80px;}
+.cs-compass-right{display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:80px;}
+.cs-compass-hint{font-family:'Barlow Condensed',sans-serif;font-size:18px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;}
+.cs-compass-deg{font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:700;color:var(--accent);line-height:1;}
+.cs-compass-card{font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:700;color:#fff;line-height:1;}
+
+
+/* Map popup revised stats grid */
+.cs-map-stats{display:grid;grid-template-columns:1fr 1.4fr 1.4fr 1fr;gap:4px;padding:5px 10px;flex-shrink:0;}
+.cs-map-stat{background:rgba(255,255,255,.05);border-radius:6px;padding:7px 8px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.cs-map-stat-lbl{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:2px;}
+.cs-map-stat-n{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:#fff;line-height:1.1;}
+.cs-map-stat-n2{font-size:18px;color:var(--accent);margin-top:1px;}
+/* Laps — big number */
+.cs-map-stat-laps{background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.2);}
+.cs-map-stat-laps-n{font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:700;color:#fff;line-height:1;}
+/* Back button cell */
+.cs-map-back-cell{background:var(--accent);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.cs-map-back-cell:active{opacity:.8;}
+.cs-map-back-arr{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:700;color:var(--navy);line-height:1;}
+.cs-map-back-cell .cs-map-stat-u{color:var(--navy);}
+/* Course type badge above marks */
+.cs-map-type{padding:5px 10px 3px;flex-shrink:0;}
+/* Nav buttons — amber fill, consistent */
+.btn-next-screen,.btn-back-screen{font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border:none;border-radius:var(--rs);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.btn-next-screen{width:100%;padding:14px;background:var(--accent);color:var(--navy);font-size:20px;}
+.btn-next-screen:active{opacity:.85;}
+.btn-back-screen{background:var(--accent);color:var(--navy);padding:8px 18px;font-size:18px;}
+.btn-back-screen:active{opacity:.85;}
+
+/* Back cell in control grid — amber fill matching nav buttons */
+.cs-back-cell{background:var(--accent) !important;border-color:var(--accent) !important;
+  cursor:pointer;-webkit-tap-highlight-color:transparent;
+  align-items:center;justify-content:center;}
+.cs-back-cell:active{opacity:.82;}
+.cs-back-arr{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:700;
+  color:var(--navy);line-height:1;display:block;}
+
+/* ── Wind speed colour classes (forecast + course selector) ── */
+.wind-light{color:#7ec8e3;font-weight:700;}
+.wind-mod{color:#5ecb80;font-weight:700;}
+.wind-fresh{color:#e8a020;font-weight:700;}
+.wind-strong{color:#e07070;font-weight:700;}
+
+/* ── Gust colour classes (reuse existing gustClass) ── */
+.gust-light{color:#7ec8e3;font-weight:700;}
+.gust-mod{color:#5ecb80;font-weight:700;}
+.gust-fresh{color:#e8a020;font-weight:700;}
+.gust-strong{color:#e07070;font-weight:700;}
+.gust-vstrong{color:#d040d0;font-weight:700;}
+
+/* ── Wind speed and gust cells — 2px larger ── */
+.fc-wind-spd{font-size:22px;text-align:center;}
+.gust-cell{font-size:22px;text-align:center;}
+.fc-wx-cell{font-size:22px;text-align:center;}
+
+/* ── Forecast mid (highlighted) row — amber top AND bottom border ── */
+.fc-mid-row td{
+  font-size:22px;
+  font-weight:700;
+  background:rgba(20,42,74,.7);
+  border-top:2px solid var(--accent) !important;
+  border-bottom:2px solid var(--accent);
+}
+
+/* ── cs-map stats: 3 cells (no laps) ── */
+.cs-map-stats{display:grid;grid-template-columns:1.4fr 1.4fr 1fr;gap:4px;padding:5px 10px;flex-shrink:0;}
+
+/* ── Fleet lap boxes below marks ── */
+.cs-map-fleet-laps{padding:5px 10px 3px;flex-shrink:0;}
+.cs-fleet-laps-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;}
+.cs-fleet-lap-cell{background:rgba(255,255,255,.06);border-radius:6px;padding:6px 4px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.cs-fl-fast{border-top:2px solid #7ec8e3;}
+.cs-fl-med{border-top:2px solid #5ecb80;}
+.cs-fl-slow{border-top:2px solid #e8a020;}
+.cs-fl-flag{width:32px;height:20px;border-radius:2px;display:flex;align-items:center;
+  justify-content:center;overflow:hidden;flex-shrink:0;}
+.cs-fl-flag svg{display:block;}
+.cs-fl-lbl{font-family:'Barlow Condensed',sans-serif;font-size:18px;color:var(--muted);}
+.cs-fl-n{font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:700;color:#fff;line-height:1;}
+.cs-fl-u{font-size:18px;color:var(--muted);}
+
+/* ── Course selector: wind band label colour coding ── */
+#windspeed option[value="light"]  {color:#7ec8e3;}
+#windspeed option[value="moderate"]{color:#5ecb80;}
+#windspeed option[value="fresh"]  {color:#e8a020;}
+#windspeed option[value="strong"] {color:#e07070;}
+
+/* ── Wind band colour on the select itself ── */
+#windspeed.band-light   .cs-ctrl-select{color:#7ec8e3;}
+#windspeed.band-moderate .cs-ctrl-select{color:#5ecb80;}
+
+.cs-fl-name{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;}
+.cs-fl-times{font-family:'Barlow Condensed',sans-serif;font-size:18px;color:var(--accent);margin-top:1px;}
+
+.model-ukv{display:block;font-size:11px;font-weight:700;color:rgba(94,203,128,.7);letter-spacing:.04em;line-height:1;margin-top:2px;}
+.model-global{display:block;font-size:11px;font-weight:700;color:rgba(122,150,188,.55);letter-spacing:.04em;line-height:1;margin-top:2px;}
+.fc-wind-cell{display:flex;flex-direction:column;align-items:center;gap:1px;}
+
+.fc-wind-arrow{line-height:1;color:rgba(255,255,255,.85);}
+</style>
+</head>
+<body>
+
+
+<!-- ══════════════ FORECAST SCREEN ══════════════ -->
+<div class="app-shell"><div class="app-screen active" id="fc-screen">
+  <header>
+    <div class="logo-mark" style="background:transparent;border-radius:0;overflow:visible;width:44px;height:32px;"><img src="data:image/png;base64,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" style="width:44px;height:32px;object-fit:contain;" alt="WSC"></div>
+    <div class="header-text">
+      <h1>WSC Forecast</h1>
+      <p id="app-version-tag" style="font-size:18px;color:var(--muted);letter-spacing:.05em;margin-top:1px;"></p>
+    </div>
+  </header>
+
+  <div class="fc-body">
+    <!-- Inputs: Date · Start · Duration — native inputs, no icons -->
+    <div class="fc-inputs-row">
+      <label class="fc-inp-cell">
+        <div class="fc-inp-lbl">Date</div>
+        <input type="date" id="fc-date" class="fc-native-input">
+      </label>
+      <label class="fc-inp-cell">
+        <div class="fc-inp-lbl">Start</div>
+        <input type="time" id="fc-time" class="fc-native-input">
+      </label>
+      <label class="fc-inp-cell">
+        <div class="fc-inp-lbl">Duration</div>
+        <select id="fc-duration" class="fc-native-input fc-native-select">
+          <option value="50">50 min</option>
+          <option value="60">60 min</option>
+          <option value="70" selected>70 min</option>
+          <option value="80">80 min</option>
+          <option value="90">90 min</option>
+        </select>
+      </label>
+    </div>
+
+    <!-- Forecast table — fills remaining space -->
+    <div class="fc-card" id="fc-result-card" style="flex:1;overflow:hidden;display:flex;flex-direction:column;min-height:0;">
+      <div class="fc-card-hdr" style="display:flex;justify-content:space-between;align-items:center;">
+        <span>Wind &amp; Tide · Hamble Pt<span id="fc-model-tag" style="font-size:15px;color:rgba(122,150,188,.6);letter-spacing:.03em;margin-left:8px;font-family:'Barlow Condensed',sans-serif;"></span></span>
+        <span id="app-version-tag" style="font-size:18px;color:var(--muted);letter-spacing:.04em;"></span>
+      </div>
+      <div class="fc-loading" id="fc-loading">
+        <div class="fc-spinner"></div>
+        Loading forecast…
+      </div>
+      <table class="fc-tbl fc-tbl-hdr" style="width:100%;flex-shrink:0;display:none;">
+          <thead>
+            <tr>
+              <th style="text-align:left;">Time</th>
+              <th>Dir</th>
+              <th>Kts</th>
+              <th>Gust</th>
+              <th>Wx</th>
+              <th>Tide</th>
+            </tr>
+          </thead>
+        </table>
+        <div id="fc-table-wrap" style="display:none;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+        <table class="fc-tbl" style="width:100%;">
+          <tbody id="fc-tbody"></tbody>
+        </table>
+      </div>
+      <div class="fc-error" id="fc-error" style="display:none;"></div>
+    </div>
+
+    <div style="font-size:18px;color:rgba(122,150,188,.4);text-align:center;padding:1px 0;flex-shrink:0;">
+      Contains ADMIRALTY® tidal data: © Crown copyright and database right
+    </div>
+  </div>
+  <div class="fc-foot">
+    <button class="btn-next-screen" id="fc-next-btn" disabled>Set Course →</button>
+  </div>
+</div>
+
+<!-- ══════════════ COURSE SELECTOR SCREEN ══════════════ -->
+</div><div class="app-screen" id="course-screen">
+
+<header>
+  <div class="logo-mark" style="background:transparent;border-radius:0;overflow:visible;width:44px;height:32px;"><img src="data:image/png;base64,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" style="width:44px;height:32px;object-fit:contain;" alt="WSC"></div>
+  <button class="btn-back-screen" id="fc-back-btn" style="display:none;"></button>
+  <div class="header-text">
+    <h1>WSC Course Selector</h1>
+    <p id="app-version-tag2" style="font-size:18px;color:var(--muted);letter-spacing:.05em;margin-top:1px;"></p>
+  </div>
+</header>
+
+<!-- Full-screen overlay -->
+<div class="overlay" id="overlay">
+  <div class="overlay-header">
+    <div class="overlay-title" id="ovlTitle">Course A</div>
+    <div class="overlay-meta" id="ovlMeta"></div>
+    <button class="overlay-close" id="overlayClose">✕</button>
+  </div>
+  <div class="overlay-body">
+    <div class="overlay-canvas-wrap">
+      <canvas id="overlayCanvas"></canvas>
+    </div>
+    <div class="overlay-sidebar" id="ovlSidebar"></div>
+  </div>
+</div>
+
+<div class="cs-screen" id="cs-screen" style="position:relative;">
+
+  <!-- 2×3 compact control grid -->
+  <div class="cs-ctrl-grid">
+    <label class="cs-ctrl-cell">
+      <span class="cs-ctrl-lbl">Wind kts</span>
+      <select id="windspeed" class="cs-ctrl-select" onchange="render()">
+        <option value="light" style="color:#7ec8e3;">Light &lt;8</option>
+        <option value="moderate" style="color:#5ecb80;" selected>Mod 8–14</option>
+        <option value="fresh" style="color:#e8a020;">Fresh 15–20</option>
+        <option value="strong" style="color:#e07070;">Strong 20+</option>
+      </select>
+    </label>
+    <label class="cs-ctrl-cell">
+      <span class="cs-ctrl-lbl">Tide</span>
+      <select id="tide" class="cs-ctrl-select" onchange="render()">
+        <option value="mid">Mid tide</option>
+        <option value="hw">High water</option>
+        <option value="lw">Low water</option>
+      </select>
+    </label>
+    <label class="cs-ctrl-cell">
+      <span class="cs-ctrl-lbl">Duration</span>
+      <select id="duration" class="cs-ctrl-select" onchange="render()">
+        <option value="50">50 min</option>
+        <option value="60">60 min</option>
+        <option value="70" selected>70 min</option>
+        <option value="80">80 min</option>
+        <option value="90">90 min</option>
+      </select>
+    </label>
+    <select id="fleet" style="display:none;"><option value="medium" selected>medium</option></select>
+    <select id="boatClass" style="display:none;"></select>
+    <label class="cs-ctrl-cell" id="classWrap" style="display:none;"></label>
+    <label class="cs-ctrl-cell">
+      <span class="cs-ctrl-lbl">Length</span>
+      <div class="cs-pill-row">
+        <label class="cs-mini-pill" id="pill-SC"><input type="checkbox" value="SC" checked onchange="updatePillStyle(this);render()"><span>SC</span></label>
+        <label class="cs-mini-pill" id="pill-MC"><input type="checkbox" value="MC" checked onchange="updatePillStyle(this);render()"><span>MC</span></label>
+        <label class="cs-mini-pill" id="pill-LC"><input type="checkbox" value="LC" checked onchange="updatePillStyle(this);render()"><span>LC</span></label>
+      </div>
+    </label>
+    <div class="cs-ctrl-cell cs-back-cell" id="cs-back-btn">
+      <span class="cs-back-arr">←</span>
+      <span class="cs-ctrl-lbl" style="color:var(--navy);">Back</span>
+    </div>
+  </div>
+
+  <!-- Course list — scrollable, 3 rows visible -->
+  <div id="results" class="cs-results">
+    <div class="empty"><div class="empty-ico">🧭</div><h3>Set a wind direction</h3><p>Drag the compass below to set wind direction</p></div>
+  </div>
+
+  <!-- Map popup overlay (inside course screen) -->
+  <div class="cs-map-overlay" id="cs-map-overlay" style="display:none;">
+    <div class="cs-map-hdr">
+      <div class="cs-map-title" id="cs-map-title">Course F</div>
+    </div>
+    <div class="cs-map-stats" id="cs-map-stats"></div>
+    <div class="cs-map-canvas-wrap">
+      <canvas id="cs-map-canvas"></canvas>
+    </div>
+    <div class="cs-map-type" id="cs-map-type"></div>
+    <div class="cs-map-fleet-laps" id="cs-map-fleet-laps"></div>
+    <div class="cs-map-marks" id="cs-map-marks"></div>
+  </div>
+
+  <!-- Compass strip — permanent, above footer -->
+  <div class="cs-compass-strip">
+    <div class="cs-compass-left">
+      <div class="cs-compass-hint">Wind from</div>
+      <div class="cs-compass-card" id="windDirDisplay">—</div>
+    </div>
+    <div class="cs-compass-dial" id="compassContainer">
+      <canvas id="needleCanvas" style="position:absolute;inset:0;display:block;"></canvas>
+    </div>
+    <div class="cs-compass-right">
+      <div class="cs-compass-hint" style="margin-bottom:4px;">Drag to set</div>
+    </div>
+    <span id="windDirSub" style="display:none;"></span>
+  </div>
+
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────────
+// MARKS — WSC GPS revised March 2026
+// ─────────────────────────────────────────────────────────────────
+const MARKS={
+  "START/FINISH":{lat:50.85151,lon:-1.30851},
+  "BUOY 11":     {lat:50.84878,lon:-1.30796},
+  "PILE 1":      {lat:50.83904,lon:-1.31060},
+  "PILE 2":      {lat:50.83991,lon:-1.31280},
+  "PILE 3":      {lat:50.84081,lon:-1.31075},
+  "PILE 4":      {lat:50.84155,lon:-1.31376},
+  "PILE 5":      {lat:50.84231,lon:-1.31192},
+  "PILE 6":      {lat:50.84378,lon:-1.31383},
+  "PILE 7":      {lat:50.84333,lon:-1.31151},
+  "PILE 8":      {lat:50.84544,lon:-1.31176},
+  "PILE 9":      {lat:50.84635,lon:-1.30927},
+  "PILE 10":     {lat:50.84831,lon:-1.30974},
+  "WARSASH SC":  {lat:50.8435, lon:-1.3207},
+  "HAMBLE PT":   {lat:50.8358, lon:-1.3110},
+  "BALD HEAD":   {lat:50.8300, lon:-1.3012},
+  "WILLIAM":     {lat:50.8277, lon:-1.2932},
+  "CORONATION":  {lat:50.8258, lon:-1.2937},
+  "CHIEFTAIN TR":{lat:50.8242, lon:-1.2818},
+  "FUMESY":      {lat:50.8202, lon:-1.2910},
+  "LAID MK A":   {lat:50.83733,lon:-1.31583},
+  "LAID MK B":   {lat:50.83494,lon:-1.30201},
+  "LAID MK C":   {lat:50.84948,lon:-1.31796},
+  "LAID MK D":   {lat:50.82394,lon:-1.29986},
+};
+
+// ─────────────────────────────────────────────────────────────────
+// COURSES
+// ─────────────────────────────────────────────────────────────────
+const COURSES={
+  A:{type:"SC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["BUOY 11","S"],["PILE 6","S"],["PILE 10","S"],["START/FINISH",null]],
+    initial:[],lap:[["BUOY 11","S"],["PILE 6","S"],["PILE 10","S"]],final:[]},
+  B:{type:"SC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["PILE 2","P"],["PILE 3","P"],["PILE 10","P"],["START/FINISH",null]],
+    initial:[],lap:[["PILE 2","P"],["PILE 3","P"],["PILE 10","P"]],final:[]},
+  C:{type:"SC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["BUOY 11","S"],["PILE 1","S"],["PILE 2","S"],["START/FINISH",null]],
+    initial:[],lap:[["BUOY 11","S"],["PILE 1","S"],["PILE 2","S"]],final:[]},
+  D:{type:"SC",hwOnly:true,avoidLW:false,
+    marks:[["START/FINISH",null],["PILE 2","S"],["WARSASH SC","S"],["PILE 10","S"],["START/FINISH",null]],
+    initial:[],lap:[["PILE 2","S"],["WARSASH SC","S"],["PILE 10","S"]],final:[]},
+  E:{type:"SC",hwOnly:true,avoidLW:false,
+    marks:[["START/FINISH",null],["PILE 10","P"],["WARSASH SC","P"],["PILE 2","P"],["START/FINISH",null]],
+    initial:[],lap:[["PILE 10","P"],["WARSASH SC","P"],["PILE 2","P"]],final:[]},
+  F:{type:"SC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["PILE 2","S"],["LAID MK A","P"],["HAMBLE PT","P"],["PILE 5","P"],["START/FINISH",null]],
+    initial:[],lap:[["PILE 2","S"],["LAID MK A","P"],["HAMBLE PT","P"],["PILE 5","P"]],final:[]},
+  G:{type:"SC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["PILE 5","S"],["HAMBLE PT","S"],["LAID MK A","S"],["PILE 2","P"],["START/FINISH",null]],
+    initial:[],lap:[["PILE 5","S"],["HAMBLE PT","S"],["LAID MK A","S"],["PILE 2","P"]],final:[]},
+  H:{type:"SC",hwOnly:true,avoidLW:false,
+    marks:[["START/FINISH",null],["PILE 10","P"],["WARSASH SC","P"],["HAMBLE PT","P"],["START/FINISH",null]],
+    initial:[],lap:[["PILE 10","P"],["WARSASH SC","P"],["HAMBLE PT","P"]],final:[]},
+  I:{type:"SC",hwOnly:true,avoidLW:false,
+    marks:[["START/FINISH",null],["HAMBLE PT","S"],["WARSASH SC","S"],["PILE 10","S"],["START/FINISH",null]],
+    initial:[],lap:[["HAMBLE PT","S"],["WARSASH SC","S"],["PILE 10","S"]],final:[]},
+  J:{type:"SC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["PILE 3","S"],["BALD HEAD","S"],["HAMBLE PT","S"],["START/FINISH",null]],
+    initial:[],lap:[["PILE 3","S"],["BALD HEAD","S"],["HAMBLE PT","S"]],final:[]},
+  K:{type:"SC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["HAMBLE PT","P"],["BALD HEAD","P"],["PILE 3","P"],["START/FINISH",null]],
+    initial:[],lap:[["HAMBLE PT","P"],["BALD HEAD","P"],["PILE 3","P"]],final:[]},
+  M:{type:"SC",hwOnly:false,avoidLW:true,
+    marks:[["START/FINISH",null],["PILE 3","P"],["LAID MK B","S"],["HAMBLE PT","S"],["LAID MK B","S"],["HAMBLE PT","S"],["PILE 2","S"],["START/FINISH",null]],
+    initial:[["PILE 3","P"]],
+    lap:[["LAID MK B","S"],["HAMBLE PT","S"],["LAID MK B","S"],["HAMBLE PT","S"],["PILE 2","S"]],
+    final:[]},
+  N:{type:"SC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["PILE 5","S"],["HAMBLE PT","S"],["WARSASH SC","S"],["PILE 2","P"],["START/FINISH",null]],
+    initial:[],lap:[["PILE 5","S"],["HAMBLE PT","S"],["WARSASH SC","S"],["PILE 2","P"]],final:[]},
+  P:{type:"SC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["PILE 2","S"],["WARSASH SC","P"],["HAMBLE PT","P"],["PILE 5","P"],["START/FINISH",null]],
+    initial:[],lap:[["PILE 2","S"],["WARSASH SC","P"],["HAMBLE PT","P"],["PILE 5","P"]],final:[]},
+  Q:{type:"SC",hwOnly:true,avoidLW:false,
+    marks:[["START/FINISH",null],["PILE 2","S"],["LAID MK C","P"],["WARSASH SC","P"],["PILE 2","P"],["START/FINISH",null]],
+    initial:[["PILE 2","S"]],lap:[["LAID MK C","P"],["WARSASH SC","P"],["PILE 2","P"]],final:[]},
+  R:{type:"MC",hwOnly:true,avoidLW:false,
+    marks:[["START/FINISH",null],["PILE 2","S"],["WARSASH SC","S"],["PILE 10","S"],["PILE 2","S"],["PILE 10","S"],["START/FINISH",null]],
+    initial:[],lap:[["PILE 2","S"],["WARSASH SC","S"],["PILE 10","S"]],final:[]},
+  S:{type:"MC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["HAMBLE PT","P"],["WILLIAM","S"],["LAID MK D","S"],["START/FINISH",null]],
+    initial:[["HAMBLE PT","P"]],lap:[["WILLIAM","S"],["LAID MK D","S"]],final:[]},
+  T:{type:"MC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["HAMBLE PT","P"],["BALD HEAD","P"],["CORONATION","P"],["WILLIAM","P"],["START/FINISH",null]],
+    initial:[["HAMBLE PT","P"]],lap:[["BALD HEAD","P"],["CORONATION","P"],["WILLIAM","P"]],final:[]},
+  U:{type:"MC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["HAMBLE PT","P"],["WILLIAM","S"],["CORONATION","S"],["HAMBLE PT","S"],["START/FINISH",null]],
+    initial:[["HAMBLE PT","P"]],lap:[["WILLIAM","S"],["CORONATION","S"],["HAMBLE PT","S"]],final:[]},
+  V:{type:"LC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["HAMBLE PT","P"],["CHIEFTAIN TR","S"],["FUMESY","S"],["START/FINISH",null]],
+    initial:[["HAMBLE PT","P"]],lap:[["CHIEFTAIN TR","S"],["FUMESY","S"]],final:[]},
+  W:{type:"LC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["HAMBLE PT","P"],["WILLIAM","S"],["CHIEFTAIN TR","S"],["FUMESY","S"],["START/FINISH",null]],
+    initial:[["HAMBLE PT","P"]],lap:[["WILLIAM","S"],["CHIEFTAIN TR","S"],["FUMESY","S"]],final:[]},
+  X:{type:"LC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["HAMBLE PT","P"],["FUMESY","P"],["CHIEFTAIN TR","P"],["WILLIAM","P"],["START/FINISH",null]],
+    initial:[["HAMBLE PT","P"]],lap:[["FUMESY","P"],["CHIEFTAIN TR","P"],["WILLIAM","P"]],final:[]},
+  Y:{type:"LC",hwOnly:false,avoidLW:false,
+    marks:[["START/FINISH",null],["HAMBLE PT","P"],["WILLIAM","S"],["CORONATION","P"],["CHIEFTAIN TR","S"],["FUMESY","S"],["BALD HEAD","S"],["START/FINISH",null]],
+    initial:[["HAMBLE PT","P"]],lap:[["WILLIAM","S"],["CORONATION","P"],["CHIEFTAIN TR","S"],["FUMESY","S"],["BALD HEAD","S"]],final:[]},
+};
+
+const WIND_MAP={
+  N:  ["B","C","E","F","H"],
+  NNE:["A","B","C","E","H","S"],
+  NE: ["A","D","I","S","V","X"],
+  ENE:["D","I","S","V","X"],
+  E:  ["M","S"],
+  ESE:["E","T","U","W","Y"],
+  SE: ["E","F","H","J","K","P","T","U","W","Y"],
+  SSE:["G","H","J","P","U","W"],
+  S:  ["B","C","D","G","I","K","N","Q","R"],
+  SSW:["A","B","C","D","F","I","M","Q","R","S"],
+  SW: ["A","E","F","H","M","S","V","W"],
+  WSW:["E","F","H","M","S","V","W"],
+  W:  ["F","M","S"],
+  WNW:["D","G","T","U"],
+  NW: ["D","G","I","K","N","T","U","Y"],
+  NNW:["F","I","K","N","Y"],
+};
+
+// ── Speed model (RYA-based, v3) ──────────────────────────────────
+// Source: RYA Target Times Olympic Classes (Dec 2021) & Youth/Junior (Mar 2017)
+// Fleet anchors: Fast=470(PY978, range ≤1033), Medium=ILCA7(PY1104, range 1034–1120), Slow=ILCA4(PY1216, range ≥1121)
+// Harmonic mean weighted by leg distance fractions
+const BAND_LABEL={light:"Light <8 kts",moderate:"Moderate 8–14 kts",fresh:"Fresh 15–20 kts",strong:"Strong 20+"};
+const FLEET_MID_PY={fast:940,medium:1077,slow:1216};
+const FLEET_ANCHOR_PY={fast:978,medium:1104,slow:1216};
+const LEG_SPEEDS={
+  fast:{
+    light:{up:2.7441,dwn:3.2587,rch:4.3449},
+    moderate:{up:3.0670,dwn:4.7399,rch:6.5173},
+    fresh:{up:4.1711,dwn:5.7932,rch:8.6898},
+    strong:{up:4.5338,dwn:6.5173,rch:8.6898},
+  },
+  medium:{
+    light:{up:2.7441,dwn:3.2587,rch:3.5958},
+    moderate:{up:3.0670,dwn:4.3449,rch:5.4883},
+    fresh:{up:3.2587,dwn:5.7932,rch:8.6898},
+    strong:{up:3.1599,dwn:7.4484,rch:9.4797},
+  },
+  slow:{
+    light:{up:2.3173,dwn:2.8966,rch:3.2587},
+    moderate:{up:2.7441,dwn:3.8621,rch:4.7399},
+    fresh:{up:2.8966,dwn:5.2139,rch:8.0213},
+    strong:{up:2.8183,dwn:6.5173,rch:8.6898},
+  },
+};
+function courseSpeed(fleet,windBand,wwFrac,effectivePY){
+  const fleetKey=(fleet==="class"||!LEG_SPEEDS[fleet])?"medium":fleet;
+  const anchorPY=FLEET_ANCHOR_PY[fleetKey]||1104;
+  const legs=LEG_SPEEDS[fleetKey][windBand]||LEG_SPEEDS[fleetKey].moderate;
+  const pyScale=anchorPY/effectivePY;
+  const up=legs.up*pyScale; const dwn=legs.dwn*pyScale; const rch=legs.rch*pyScale;
+  const ww=wwFrac>0?wwFrac:0.38;
+  return 1/(ww/up+(1-ww)*0.5/rch+(1-ww)*0.5/dwn);
+}
+
+// 2025 RYA Portsmouth Yardstick — dinghies & multihulls
+const PY_CLASSES=[
+  ["4000",923],["420",1110],["505",896],["2000",1121],["29er",900],
+  ["Albacore",1037],["Alto",921],["B14",858],["Blaze",1030],
+  ["British Moth",1165],["Byte CII",1129],["Comet",1208],
+  ["Comet Trio Mk1",1088],["Comet Trio Mk2",1053],["Contender",969],
+  ["Devoti D-One",955],["Enterprise",1137],["Europe",1140],["Finn",1049],
+  ["Fireball",959],["Firefly",1174],["Flying Fifteen",1028],["GP14",1141],
+  ["Graduate",1100],["Hadron H2",1045],["Hornet",955],
+  ["ILCA 4 / Laser 4.7",1216],["ILCA 6 / Laser Radial",1154],["ILCA 7 / Laser",1104],
+  ["K1",1065],["K6",910],["Kestrel",1042],["Lark",1060],["Megabyte",1060],
+  ["Merlin Rocket",983],["Mirror D/H",1368],["Mirror S/H",1375],
+  ["Musto Skiff",834],["OK",1095],["Optimist",1631],["Osprey",932],
+  ["Phantom",998],["Rooster 8.1",1021],
+  ["RS Aero 5",1139],["RS Aero 6",1099],["RS Aero 7",1063],["RS Aero 9",1005],
+  ["RS Feva XL",1244],["RS100 8.4",1001],["RS200",1050],["RS300",965],
+  ["RS400",942],["RS500",963],["RS600",921],["RS700",845],["RS800",799],
+  ["Scorpion",1042],["Seafly",1077],["Snipe",1110],["Solo",1139],
+  ["Solution",1108],["Splash",1247],["Streaker",1124],["Supernova",1075],
+  ["Tasar",1019],["Topper",1363],["Topper 4.2",1440],
+  ["Wanderer",1201],["Wayfarer",1109],
+  ["A Class (non-foiling)",695],["Catapult",898],["Dart 15",924],
+  ["Dart 18",810],["Hurricane 5.9SX",691],["Spitfire",740],
+].sort((a,b)=>a[0].localeCompare(b[0]));
+
+// Populate class dropdown once
+(function(){
+  const sel=document.getElementById("boatClass");
+  PY_CLASSES.forEach(([name,py])=>{
+    const o=document.createElement("option");
+    o.value=py; o.textContent=`${name} (${py})`;
+    sel.appendChild(o);
+  });
+  // Hide classWrap initially (fleet starts as 'medium' not 'class')
+  document.getElementById("classWrap").style.display="none";
+})();
+
+function onFleetChange(){
+  const v=document.getElementById("fleet").value;
+  document.getElementById("classWrap").style.display=(v==="class")?"":"none";
+  if(v!=="class")document.getElementById("boatClass").value="";
+  render();
+}
+
+function getWindBand(){
+  const el=document.getElementById("windspeed");
+  const v=el?el.value:"moderate";
+  // Colour the select text to match wind strength
+  if(el){
+    const cols={light:'#7ec8e3',moderate:'#5ecb80',fresh:'#e8a020',strong:'#e07070'};
+    el.style.color=cols[v]||'';
+  }
+  return v;
+}
+
+// Bearing between two lat/lon coords (degrees, 0=N clockwise)
+function bearing(a,b){
+  const φ1=a.lat*Math.PI/180,φ2=b.lat*Math.PI/180;
+  const dλ=(b.lon-a.lon)*Math.PI/180;
+  const y=Math.sin(dλ)*Math.cos(φ2);
+  const x=Math.cos(φ1)*Math.sin(φ2)-Math.sin(φ1)*Math.cos(φ2)*Math.cos(dλ);
+  return((Math.atan2(y,x)*180/Math.PI)+360)%360;
+}
+
+// Angular difference between two bearings (0–180)
+function angleDiff(a,b){return Math.abs(((a-b)+540)%360-180);}
+
+// Laid marks that can be repositioned — wider windward angle
+const LAID_MARKS=new Set(["LAID MK A","LAID MK B","LAID MK C","LAID MK D"]);
+
+// Is a leg windward? A boat sailing upwind points TOWARD the wind source (windFromDeg).
+// So compare leg bearing directly against windFromDeg — not its reciprocal.
+function isWindwardLeg(fromMark,toMark,windFromDeg,isLaid){
+  const a=MARKS[fromMark],b=MARKS[toMark];
+  if(!a||!b)return false;
+  const legBrg=bearing(a,b);
+  const diff=angleDiff(legBrg,windFromDeg);
+  return diff<=(isLaid?45:30);
+}
+
+// Calculate windward leg distances for a course
+function calcWindwardLegs(c,windFromDeg){
+  if(windFromDeg===null||windFromDeg===undefined)return{wwLapNm:0,wwOncNm:0,wwLegsPerLap:0,wwLegsOnce:0};
+  const scoreSegs=(seqPairs)=>seqPairs.map(([fn,tn])=>{
+    const isLaid=LAID_MARKS.has(fn)||LAID_MARKS.has(tn);
+    const ww=isWindwardLeg(fn,tn,windFromDeg,isLaid);
+    const dist=(MARKS[fn]&&MARKS[tn])?hav(MARKS[fn],MARKS[tn]):0;
+    return{dist,ww};
+  });
+  const pairs=(seq)=>{const p=[];for(let i=0;i<seq.length-1;i++)p.push([seq[i][0],seq[i+1][0]]);return p;};
+
+  // Once-only segments: init (SF->...->lap[0]) and final (lap[last]->...->SF)
+  const initSeq=[["START/FINISH",null],...c.initial,c.lap[0]];
+  const finalSeq=[c.lap[c.lap.length-1],...c.final,["START/FINISH",null]];
+  const onceSegs=[...scoreSegs(pairs(initSeq)),...scoreSegs(pairs(finalSeq))];
+
+  // Per-lap segments: lap[0]->...->lap[last] (one way) + return leg lap[last]->lap[0]
+  const lapOneWaySegs=c.lap.length>=2?scoreSegs(pairs(c.lap)):[];
+  const returnSeg=c.lap.length>=2?scoreSegs([[c.lap[c.lap.length-1][0],c.lap[0][0]]]):[];
+  // return leg is sailed (N-1) times but we store per-lap and adjust outside
+  // For scoring purposes, include return in lapSegs (counted ×laps like lap, adjusted by caller)
+  // Actually: return is sailed N-1 times. We'll store separately.
+  const lapSegs=[...lapOneWaySegs,...returnSeg];
+
+  return{
+    wwLapNm:lapSegs.filter(s=>s.ww).reduce((a,s)=>a+s.dist,0),
+    wwOncNm:onceSegs.filter(s=>s.ww).reduce((a,s)=>a+s.dist,0),
+    wwLegsPerLap:lapSegs.filter(s=>s.ww).length,
+    wwLegsOnce:onceSegs.filter(s=>s.ww).length,
+    // Granular for accurate total: oneway WW + return WW separately
+    wwLapOnewayNm:lapOneWaySegs.filter(s=>s.ww).reduce((a,s)=>a+s.dist,0),
+    wwReturnNm:returnSeg.filter(s=>s.ww).reduce((a,s)=>a+s.dist,0),
+  };
+}
+
+
+function hav(a,b){
+  const R=3440.065,φ1=a.lat*Math.PI/180,φ2=b.lat*Math.PI/180;
+  const dφ=(b.lat-a.lat)*Math.PI/180,dλ=(b.lon-a.lon)*Math.PI/180;
+  const s=Math.sin(dφ/2)**2+Math.cos(φ1)*Math.cos(φ2)*Math.sin(dλ/2)**2;
+  return R*2*Math.atan2(Math.sqrt(s),Math.sqrt(1-s));
+}
+function segDist(seq){
+  let d=0;for(let i=1;i<seq.length;i++){const a=MARKS[seq[i-1][0]],b=MARKS[seq[i][0]];if(a&&b)d+=hav(a,b);}return d;
+}
+function calcDists(c){
+  const SF=["START/FINISH",null];
+  const lap=c.lap;
+  // One-way lap distance: lap[0] -> lap[1] -> ... -> lap[last]  (no close)
+  const lapOneway=segDist([...lap]);
+  // Return leg: lap[last] -> lap[0]  (between laps, and once at very end before final)
+  const lastMark=MARKS[lap[lap.length-1][0]],firstMark=MARKS[lap[0][0]];
+  const returnDist=(lastMark&&firstMark)?hav(lastMark,firstMark):0;
+  // Init: SF -> ...initial... -> lap[0]
+  const initDist=segDist([SF,...c.initial,lap[0]]);
+  // Final: lap[last] -> ...final... -> SF
+  const finalDist=segDist([lap[lap.length-1],...c.final,SF]);
+  return{lapOneway,returnDist,initDist,finalDist};
+}
+function calcFromLaps(c,laps,speed){
+  const{lapOneway,returnDist,initDist,finalDist}=calcDists(c);
+  // total = init + N*lapOneway + (N-1)*return + final
+  const totalNm=initDist+laps*lapOneway+(laps-1)*returnDist+finalDist;
+  const timeMins=(totalNm/speed)*60;
+  return{lapOneway,returnDist,initDist,finalDist,totalNm,timeMins};
+}
+
+// ─────────────────────────────────────────────────────────────────
+// COMPASS — static bezel, rotating needle
+// ─────────────────────────────────────────────────────────────────
+const DIRS=["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
+const DIR_DEGS={N:0,NNE:22.5,NE:45,ENE:67.5,E:90,ESE:112.5,SE:135,SSE:157.5,
+  S:180,SSW:202.5,SW:225,WSW:247.5,W:270,WNW:292.5,NW:315,NNW:337.5};
+const DIR_DESC={N:"North",NNE:"North-northeast",NE:"Northeast",ENE:"East-northeast",
+  E:"East",ESE:"East-southeast",SE:"Southeast",SSE:"South-southeast",
+  S:"South",SSW:"South-southwest",SW:"Southwest",WSW:"West-southwest",
+  W:"West",WNW:"West-northwest",NW:"Northwest",NNW:"North-northwest"};
+let selWind=null; // degrees (0-359) or null
+
+// Draw Option-2 compass (minimal ring + cardinals + arc + needle)
+// All drawn on needleCanvas; called once on load and on every wind change.
+function drawCompass(dirDeg){
+  const cv=document.getElementById('needleCanvas');
+  const dpr=window.devicePixelRatio||1;
+  const S=138;
+  cv.width=S*dpr; cv.height=S*dpr;
+  cv.style.width=S+'px'; cv.style.height=S+'px';
+  const ctx=cv.getContext('2d');
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr,dpr);
+  const cx=S/2, cy=S/2, R=S/2-4;
+  ctx.clearRect(0,0,S,S);
+
+  // Thin amber outer ring
+  ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2);
+  ctx.strokeStyle='rgba(232,160,32,.3)'; ctx.lineWidth=2; ctx.stroke();
+
+  // Subtle inner reference circle
+  ctx.beginPath(); ctx.arc(cx,cy,R*0.62,0,Math.PI*2);
+  ctx.strokeStyle='rgba(255,255,255,.06)'; ctx.lineWidth=1; ctx.stroke();
+
+  // Intercardinal tick marks
+  for(let i=0;i<8;i++){
+    if(i%2===0) continue;
+    const a=(i/8)*Math.PI*2-Math.PI/2;
+    ctx.beginPath();
+    ctx.moveTo(cx+(R-1)*Math.cos(a), cy+(R-1)*Math.sin(a));
+    ctx.lineTo(cx+(R-9)*Math.cos(a), cy+(R-9)*Math.sin(a));
+    ctx.strokeStyle='rgba(255,255,255,.35)'; ctx.lineWidth=1.5; ctx.stroke();
+  }
+
+  // Cardinal labels — upright, inside ring
+  ['N','E','S','W'].forEach(function(dir){
+    const deg=DIR_DEGS[dir];
+    const rad=(deg-90)*Math.PI/180;
+    const lr=R-13;
+    const x=cx+lr*Math.cos(rad), y=cy+lr*Math.sin(rad);
+    ctx.save();
+    ctx.translate(x,y); ctx.rotate(deg*Math.PI/180);
+    ctx.font="bold 11px 'Barlow Condensed',sans-serif";
+    ctx.fillStyle=dir==='N'?'#e8a020':'rgba(255,255,255,.72)';
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(dir,0,0);
+    ctx.restore();
+  });
+
+  if(dirDeg===null||dirDeg===undefined){return;}
+
+  // Active direction arc on outer ring
+  const aRad=dirDeg*Math.PI/180-Math.PI/2;
+  ctx.beginPath();
+  ctx.arc(cx,cy,R+1, aRad-0.22, aRad+0.22);
+  ctx.strokeStyle='#e8a020'; ctx.lineWidth=5; ctx.lineCap='round'; ctx.stroke();
+
+  // Needle — FROM dirDeg (tail), arrowhead points downwind
+  const rad=dirDeg*Math.PI/180;
+  const nr=R-14;
+  const tx=cx+nr*Math.sin(rad), ty=cy-nr*Math.cos(rad);
+  const px=cx-nr*Math.sin(rad), py=cy+nr*Math.cos(rad);
+
+  // Glow
+  ctx.beginPath(); ctx.moveTo(tx,ty); ctx.lineTo(px,py);
+  ctx.strokeStyle='rgba(232,160,32,.18)'; ctx.lineWidth=14; ctx.lineCap='round'; ctx.stroke();
+  // Core shaft
+  ctx.beginPath(); ctx.moveTo(tx,ty); ctx.lineTo(px,py);
+  ctx.strokeStyle='rgba(232,160,32,.9)'; ctx.lineWidth=3; ctx.lineCap='round'; ctx.stroke();
+
+  // Arrowhead at point end
+  const dx=px-tx, dy=py-ty, dist=Math.sqrt(dx*dx+dy*dy);
+  const ux=dx/dist, uy=dy/dist, vx=-uy, vy=ux;
+  const hl=13, hw=7, hx=px-ux*hl, hy=py-uy*hl;
+  ctx.beginPath(); ctx.moveTo(px,py);
+  ctx.lineTo(hx+vx*hw,hy+vy*hw); ctx.lineTo(hx-vx*hw,hy-vy*hw);
+  ctx.closePath(); ctx.fillStyle='#e8a020'; ctx.fill();
+
+  // Hub
+  ctx.beginPath(); ctx.arc(cx,cy,6,0,Math.PI*2);
+  ctx.fillStyle='#0b1a30'; ctx.fill();
+  ctx.strokeStyle='#e8a020'; ctx.lineWidth=2; ctx.stroke();
+}
+drawCompass(null);
+
+// drawNeedle — delegates to drawCompass
+function drawNeedle(dirDeg){drawCompass(dirDeg);}
+
+function snapToNearest16(deg){
+  // Snap arbitrary degree to nearest of 16 compass points
+  const dirs=["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
+  const degs={N:0,NNE:22.5,NE:45,ENE:67.5,E:90,ESE:112.5,SE:135,SSE:157.5,S:180,SSW:202.5,SW:225,WSW:247.5,W:270,WNW:292.5,NW:315,NNW:337.5};
+  deg=((deg%360)+360)%360;
+  let best=dirs[0],bestDiff=360;
+  for(const d of dirs){let diff=Math.abs(degs[d]-deg);if(diff>180)diff=360-diff;if(diff<bestDiff){bestDiff=diff;best=d;}}
+  return best;
+}
+function degToCard(deg){
+  // Returns nearest 16-point cardinal string for a degree bearing
+  deg=((deg%360)+360)%360;
+  let best=DIRS[0],bestDiff=360;
+  for(const d of DIRS){let diff=Math.abs(DIR_DEGS[d]-deg);if(diff>180)diff=360-diff;if(diff<bestDiff){bestDiff=diff;best=d;}}
+  return best;
+}
+function snapToNearest(deg){
+  deg=((deg%360)+360)%360;
+  let best=DIRS[0],bestDiff=360;
+  for(const d of DIRS){let diff=Math.abs(DIR_DEGS[d]-deg);if(diff>180)diff=360-diff;if(diff<bestDiff){bestDiff=diff;best=d;}}
+  return best;
+}
+
+function setWindDir(deg){
+  // deg = degrees 0-359 (precise), or a cardinal string for backward compat
+  if(typeof deg==="string") deg=DIR_DEGS[deg]||0;
+  deg=((deg%360)+360)%360;
+  selWind=deg;
+  drawCompass(deg);
+  // Cardinal label for display
+  const card=degToCard(deg);
+  document.getElementById("windDirDisplay").textContent=card+" "+Math.round(deg)+"°";
+  document.getElementById("windDirSub").textContent=Math.round(deg)+"°";
+  render();
+}
+
+// Compass interaction
+(function(){
+  const el=document.getElementById("compassContainer");let dragging=false;
+  function getAngle(e){
+    const r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+    const pt=e.touches?e.touches[0]:e;
+    return((Math.atan2(pt.clientX-cx,-(pt.clientY-cy))*180/Math.PI)+360)%360;
+  }
+  function handle(e){if(!dragging)return;e.preventDefault();const deg=Math.round(getAngle(e)/5)*5;if(deg!==selWind)setWindDir(deg);}
+  el.addEventListener("mousedown",e=>{dragging=true;setWindDir(Math.round(getAngle(e)/5)*5);});
+  el.addEventListener("touchstart",e=>{dragging=true;e.preventDefault();setWindDir(Math.round(getAngle(e)/5)*5);},{passive:false});
+  window.addEventListener("mousemove",handle);window.addEventListener("touchmove",handle,{passive:false});
+  window.addEventListener("mouseup",()=>dragging=false);window.addEventListener("touchend",()=>dragging=false);
+})();
+
+// ─────────────────────────────────────────────────────────────────
+// COURSE MAP DRAWING — shared by mini and overlay
+// ─────────────────────────────────────────────────────────────────
+function drawCourseMap(canvas, course, windDir, large, windBandLabel, windKts, windGust){
+  const ctx=canvas.getContext("2d");
+  const dpr=window.devicePixelRatio||1;
+  const W=canvas.width/dpr, H=canvas.height/dpr;
+  ctx.clearRect(0,0,W,H);
+  const all=course.marks;
+  const coords=all.map(m=>MARKS[m[0]]).filter(Boolean);
+  if(coords.length<2)return;
+  const lats=coords.map(c=>c.lat),lons=coords.map(c=>c.lon);
+  const minLat=Math.min(...lats),maxLat=Math.max(...lats);
+  const minLon=Math.min(...lons),maxLon=Math.max(...lons);
+  const cosLat=Math.cos((minLat+maxLat)/2*Math.PI/180);
+  const ranLat=(maxLat-minLat)||0.0005,ranLon=(maxLon-minLon)||0.0005;
+  const windBoxW=large?110:0;
+  const padL=large?28:11, padR=(large?28:11)+windBoxW;
+  const padT=large?28:11, padB=large?28:11;
+  const sc=Math.min((W-padL-padR)/(ranLon/cosLat),(H-padT-padB)/ranLat);
+  const ox=padL+(W-padL-padR-(ranLon/cosLat)*sc)/2;
+  const oy=padT+(H-padT-padB-ranLat*sc)/2;
+  function xy(c){return[ox+(c.lon-minLon)/cosLat*sc,oy+(maxLat-c.lat)*sc];}
+  const pts=all.map(m=>MARKS[m[0]]?xy(MARKS[m[0]]):null);
+
+  // Pre-compute windward status per leg
+  const windFromDeg=windDir!==null&&windDir!==undefined?DIR_DEGS[windDir]:null;
+  const legWW=[];
+  for(let i=0;i<all.length-1;i++){
+    const fn=all[i][0],tn=all[i+1][0];
+    const isLaid=LAID_MARKS.has(fn)||LAID_MARKS.has(tn);
+    legWW.push(windFromDeg!==null?isWindwardLeg(fn,tn,windFromDeg,isLaid):false);
+  }
+
+  // Build the return leg (lap[last] -> lap[0]) for display
+  // Only show if lap has ≥2 marks and last≠first mark position
+  const lapFirst=course.lap[0][0], lapLast=course.lap[course.lap.length-1][0];
+  const showReturnLeg=course.lap.length>=2&&lapFirst!==lapLast&&MARKS[lapFirst]&&MARKS[lapLast];
+  const returnPtA=showReturnLeg?xy(MARKS[lapLast]):null;
+  const returnPtB=showReturnLeg?xy(MARKS[lapFirst]):null;
+  const returnIsWW=showReturnLeg&&windFromDeg!==null?
+    isWindwardLeg(lapLast,lapFirst,windFromDeg,LAID_MARKS.has(lapLast)||LAID_MARKS.has(lapFirst)):false;
+
+  // N indicator
+  ctx.fillStyle="rgba(255,255,255,.35)";
+  ctx.font=`bold ${large?22:7}px sans-serif`;
+  ctx.textAlign="left";
+  ctx.fillText("N↑",8,large?18:10);
+
+  // Draw each leg individually so windward legs can be styled differently
+  const lw=large?2.5:1.5;
+  for(let i=0;i<pts.length-1;i++){
+    if(!pts[i]||!pts[i+1])continue;
+    const ww=legWW[i];
+    ctx.beginPath();
+    ctx.moveTo(pts[i][0],pts[i][1]);
+    ctx.lineTo(pts[i+1][0],pts[i+1][1]);
+    if(ww){
+      // Windward leg — bright amber/gold with glow effect via double stroke
+      ctx.strokeStyle=large?"rgba(255,200,60,.25)":"rgba(255,200,60,.2)";
+      ctx.lineWidth=large?8:5;
+      ctx.lineJoin="round";ctx.lineCap="round";
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(pts[i][0],pts[i][1]);
+      ctx.lineTo(pts[i+1][0],pts[i+1][1]);
+      ctx.strokeStyle=large?"rgba(255,185,30,.95)":"rgba(255,185,30,.85)";
+      ctx.lineWidth=large?2.5:1.8;
+      ctx.stroke();
+    } else {
+      ctx.strokeStyle="rgba(91,181,232,.7)";
+      ctx.lineWidth=lw;
+      ctx.lineJoin="round";ctx.lineCap="round";
+      ctx.stroke();
+    }
+  }
+
+  // Draw return leg (lap[last]→lap[0]) as dashed line
+  if(showReturnLeg&&returnPtA&&returnPtB){
+    ctx.save();
+    ctx.setLineDash(large?[6,4]:[3,3]);
+    ctx.lineCap="round";
+    if(returnIsWW){
+      // Windward return — amber glow + solid amber dashed
+      ctx.strokeStyle="rgba(255,200,60,.15)";ctx.lineWidth=large?7:4;
+      ctx.beginPath();ctx.moveTo(returnPtA[0],returnPtA[1]);ctx.lineTo(returnPtB[0],returnPtB[1]);ctx.stroke();
+      ctx.strokeStyle="rgba(255,185,30,.8)";ctx.lineWidth=large?2:1.5;
+      ctx.beginPath();ctx.moveTo(returnPtA[0],returnPtA[1]);ctx.lineTo(returnPtB[0],returnPtB[1]);ctx.stroke();
+    } else {
+      ctx.strokeStyle="rgba(91,181,232,.45)";ctx.lineWidth=large?2:1.2;
+      ctx.beginPath();ctx.moveTo(returnPtA[0],returnPtA[1]);ctx.lineTo(returnPtB[0],returnPtB[1]);ctx.stroke();
+    }
+    ctx.setLineDash([]);
+    // Direction tick on return leg midpoint
+    const mx=(returnPtA[0]+returnPtB[0])/2,my=(returnPtA[1]+returnPtB[1])/2;
+    const ang=Math.atan2(returnPtB[1]-returnPtA[1],returnPtB[0]-returnPtA[0]),tl=large?7:3.5;
+    ctx.strokeStyle=returnIsWW?"rgba(255,185,30,.55)":"rgba(91,181,232,.35)";
+    ctx.lineWidth=large?2:1;
+    ctx.translate(mx,my);ctx.rotate(ang);
+    ctx.beginPath();ctx.moveTo(-tl,-tl/1.6);ctx.lineTo(0,0);ctx.lineTo(-tl,tl/1.6);ctx.stroke();
+    ctx.restore();
+
+    // Distance label on windward return leg — large view only
+    if(large&&returnIsWW){
+      const ma=MARKS[lapLast],mb=MARKS[lapFirst];
+      if(ma&&mb){
+        const distNm=hav(ma,mb),lbl=distNm.toFixed(2)+" nm";
+        const ax=returnPtA[0],ay=returnPtA[1],bx=returnPtB[0],by=returnPtB[1];
+        const dx=bx-ax,dy=by-ay,len=Math.sqrt(dx*dx+dy*dy);
+        const nx=-dy/len,ny=dx/len,off=14;
+        const lx=(ax+bx)/2+nx*off,ly=(ay+by)/2+ny*off;
+        ctx.save();
+        ctx.font="bold 18px 'Barlow Condensed',sans-serif";
+        ctx.textAlign="center";ctx.textBaseline="middle";
+        const tw=ctx.measureText(lbl).width,ph=22,pw=tw+10;
+        ctx.fillStyle="rgba(8,16,32,.78)";
+        roundRect(ctx,lx-pw/2,ly-ph/2,pw,ph,4);ctx.fill();
+        ctx.strokeStyle="rgba(255,185,30,.55)";ctx.lineWidth=0.8;
+        roundRect(ctx,lx-pw/2,ly-ph/2,pw,ph,4);ctx.stroke();
+        ctx.fillStyle="#ffca3a";ctx.fillText(lbl,lx,ly+0.5);
+        ctx.restore();
+      }
+    }
+  }
+  for(let i=0;i<pts.length-1;i++){
+    if(!pts[i]||!pts[i+1])continue;
+    const ax=pts[i][0],ay=pts[i][1],bx=pts[i+1][0],by=pts[i+1][1];
+    const mx=(ax+bx)/2,my=(ay+by)/2,ang=Math.atan2(by-ay,bx-ax),tl=large?7:3.5;
+    const ww=legWW[i];
+    ctx.save();
+    ctx.strokeStyle=ww?"rgba(255,185,30,.6)":"rgba(91,181,232,.4)";
+    ctx.lineWidth=large?2:1;
+    ctx.translate(mx,my);ctx.rotate(ang);
+    ctx.beginPath();ctx.moveTo(-tl,-tl/1.6);ctx.lineTo(0,0);ctx.lineTo(-tl,tl/1.6);ctx.stroke();
+    ctx.restore();
+
+    // Distance label on windward legs — large view only
+    if(large&&ww){
+      const fn=all[i][0],tn=all[i+1][0];
+      const ma=MARKS[fn],mb=MARKS[tn];
+      if(ma&&mb){
+        const distNm=hav(ma,mb);
+        const lbl=distNm.toFixed(2)+" nm";
+        const dx=bx-ax,dy=by-ay,len=Math.sqrt(dx*dx+dy*dy);
+        // Perpendicular offset — push label to the left of travel direction
+        const nx=-dy/len,ny=dx/len;
+        const off=14;
+        const lx=mx+nx*off, ly=my+ny*off;
+        ctx.save();
+        ctx.font="bold 18px 'Barlow Condensed',sans-serif";
+        ctx.textAlign="center";ctx.textBaseline="middle";
+        const tw=ctx.measureText(lbl).width;
+        // Pill background
+        ctx.fillStyle="rgba(8,16,32,.78)";
+        const ph=24,pw=tw+12;
+        roundRect(ctx,lx-pw/2,ly-ph/2,pw,ph,4);
+        ctx.fill();
+        // Amber border
+        ctx.strokeStyle="rgba(255,185,30,.55)";ctx.lineWidth=0.8;
+        roundRect(ctx,lx-pw/2,ly-ph/2,pw,ph,4);
+        ctx.stroke();
+        // Text
+        ctx.fillStyle="#ffca3a";
+        ctx.fillText(lbl,lx,ly+0.5);
+        ctx.restore();
+      }
+    }
+  }
+
+  // Mark dots — NO labels except S/F for orientation
+  const dotR=large?7:3,endR=large?9:4.5;
+  all.forEach((m,i)=>{
+    const coord=MARKS[m[0]];if(!coord)return;
+    const[x,y]=xy(coord),side=m[1],isEnd=i===0||i===all.length-1;
+    ctx.beginPath();ctx.arc(x,y,isEnd?endR:dotR,0,Math.PI*2);
+    ctx.fillStyle=isEnd?"#e8a020":side==="P"?"#e87070":"#5ecb80";ctx.fill();
+    // Only S/F label (start mark only, i===0) — no other mark labels
+    if(isEnd&&i===0){
+      ctx.save();
+      if(large){
+        const lbl="S/F";
+        const lx=x+endR+5,ly=y+4;
+        ctx.font="bold 20px 'Barlow Condensed',sans-serif";
+        ctx.textAlign="left";ctx.textBaseline="middle";
+        const tw=ctx.measureText(lbl).width;
+        ctx.fillStyle="rgba(8,16,32,.72)";
+        ctx.fillRect(lx-2,ly-9,tw+4,16);
+        ctx.fillStyle="#e8a020";
+        ctx.fillText(lbl,lx,ly);
+      } else {
+        ctx.fillStyle="rgba(232,160,32,.65)";ctx.font="bold 6px sans-serif";
+        ctx.fillText("S/F",x+5,y+2.5);
+      }
+      ctx.restore();
+    }
+  });
+
+  // Wind arrow — top-right corner
+  if(large&&windDir!==null){
+    const bx=W-windBoxW+8, by=14;
+    const bw=windBoxW-10, bh=80;
+    const cx2=bx+bw/2, cy2=by+bh/2;
+    const arrowLen=28;
+    const rad=(DIR_DEGS[windDir])*Math.PI/180;
+    const tx2=cx2+arrowLen*Math.sin(rad), ty2=cy2-arrowLen*Math.cos(rad);
+    const ex2=cx2-arrowLen*Math.sin(rad), ey2=cy2+arrowLen*Math.cos(rad);
+    ctx.strokeStyle="rgba(232,160,32,.9)";ctx.lineWidth=3;ctx.lineCap="round";
+    ctx.beginPath();ctx.moveTo(tx2,ty2);ctx.lineTo(ex2,ey2);ctx.stroke();
+    const ddx=ex2-tx2,ddy=ey2-ty2,dist=Math.sqrt(ddx*ddx+ddy*ddy);
+    const ux=ddx/dist,uy=ddy/dist,vx=-uy,vy=ux,hl=11,hw=6;
+    const hx2=ex2-ux*hl,hy2=ey2-uy*hl;
+    ctx.beginPath();ctx.moveTo(ex2,ey2);
+    ctx.lineTo(hx2+vx*hw,hy2+vy*hw);ctx.lineTo(hx2-vx*hw,hy2-vy*hw);
+    ctx.closePath();ctx.fillStyle="#e8a020";ctx.fill();
+    ctx.beginPath();ctx.arc(tx2,ty2,4,0,Math.PI*2);
+    ctx.fillStyle="rgba(232,160,32,.35)";ctx.fill();
+    ctx.strokeStyle="#e8a020";ctx.lineWidth=1.5;ctx.stroke();
+    // "WIND" label above direction
+    ctx.font="bold 18px 'Barlow Condensed',sans-serif";
+    ctx.fillStyle="rgba(232,160,32,.55)";ctx.textAlign="center";
+    ctx.fillText("WIND",cx2,by-2);
+    // Direction
+    ctx.font="bold 32px 'Barlow Condensed',sans-serif";
+    ctx.fillStyle="#e8a020";
+    ctx.fillText(windDir,cx2,by+bh+20);
+    // Wind speed (mean kts)
+    if(windKts!==null&&windKts!==undefined){
+      ctx.font="bold 28px 'Barlow Condensed',sans-serif";
+      ctx.fillStyle="#ffffff";
+      ctx.fillText(windKts+"kt",cx2,by+bh+50);
+    }
+    // Gust
+    if(windGust!==null&&windGust!==undefined){
+      ctx.font="bold 20px 'Barlow Condensed',sans-serif";
+      ctx.fillStyle="#e07070";
+      ctx.fillText("Gust "+windGust,cx2,by+bh+74);
+    }
+  }
+}
+
+// Rounded rect helper (no Path2D for compatibility)
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);
+  ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+  ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);
+  ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);
+  ctx.closePath();
+}
+
+// ─────────────────────────────────────────────────────────────────
+// FULL-SCREEN OVERLAY
+// ─────────────────────────────────────────────────────────────────
+function openOverlay(courseData){
+  const{letter,c,laps,totalNm,timeMins,lapDist,lapTimeMins,wwPct,totalWWnm}=courseData;
+  const tLabel={SC:"Short Course",MC:"Medium Course",LC:"Long Course"};
+  document.getElementById("ovlTitle").textContent=`${letter}  ·  ${tLabel[c.type]}`;
+
+  // Sidebar stats — all data, once only
+  const warns=[];
+  if(c.hwOnly)warns.push("HW only");if(c.avoidLW)warns.push("Avoid LW");
+  document.getElementById("ovlSidebar").innerHTML=`
+    <div class="ovl-stat"><div class="ovl-stat-lbl">Laps</div>
+      <div class="ovl-stat-val">${laps}</div></div>
+    <div class="ovl-stat"><div class="ovl-stat-lbl">Total dist.</div>
+      <div class="ovl-stat-val">${totalNm.toFixed(2)}<span class="ovl-stat-unit">nm</span></div></div>
+    <div class="ovl-stat"><div class="ovl-stat-lbl">Lap dist.</div>
+      <div class="ovl-stat-val">${lapDist.toFixed(2)}<span class="ovl-stat-unit">nm</span></div></div>
+    <div class="ovl-stat"><div class="ovl-stat-lbl">Est. time</div>
+      <div class="ovl-stat-val">${Math.round(timeMins)}<span class="ovl-stat-unit">min</span></div>
+      <div style="font-size:22px;color:var(--muted);margin-top:4px;">Lap ${lapTimeMins.toFixed(1)}min</div></div>
+    ${totalWWnm>0?`<div class="ovl-stat"><div class="ovl-stat-lbl">⬆ Windward</div>
+      <div class="ovl-stat-val">${wwPct}<span class="ovl-stat-unit">%</span></div>
+      <div style="font-size:22px;color:#5ecb80;margin-top:4px;">${totalWWnm.toFixed(2)} nm</div></div>`:""}
+    <div class="ovl-stat"><div class="ovl-stat-lbl">Avg speed</div>
+      <div class="ovl-stat-val" style="font-size:28px;">${courseData.speed?courseData.speed.toFixed(2):"—"}<span class="ovl-stat-unit">kts</span></div>
+      <div style="font-size:22px;color:var(--muted);margin-top:4px;">${wwPct}% WW</div></div>
+    ${warns.map(w=>`<div class="ovl-stat"><div class="ovl-stat-val" style="font-size:22px;color:var(--accent2)">${w}</div></div>`).join("")}
+    <div class="ovl-marks" id="ovlMarksDetail"></div>`;
+
+  // Marks detail
+  const lapSet=new Set(c.lap.map(m=>m[0]));
+  const finalSet=new Set(c.final.map(m=>m[0]));
+  const initialSet=new Set(c.initial.map(m=>m[0]));
+  const marksHtml=c.marks.map((m,i)=>{
+    const[name,side]=m;
+    const isEnd=i===0||i===c.marks.length-1;
+    const isInitial=initialSet.has(name)&&!lapSet.has(name)&&!finalSet.has(name);
+    let cls="mk ";
+    if(isEnd)cls+="mk-end";else if(side==="P")cls+="mk-P";else cls+="mk-S";
+    if(!isEnd&&isInitial)cls+=" mk-once";
+    const label=(isEnd?"S/F":name)+(side&&!isEnd?` (${side})`:"");
+    const arrow=i<c.marks.length-1?'<span class="mk-arr">›</span>':"";
+    return`<span class="${cls}">${label}</span>${arrow}`;
+  }).join("");
+  const marksEl=document.getElementById("ovlMarksDetail");
+  if(marksEl)marksEl.innerHTML=marksHtml;
+
+  document.getElementById("overlay").classList.add("open");
+
+  // Double rAF ensures layout is fully settled before reading dimensions
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    const wrap=document.querySelector(".overlay-canvas-wrap");
+    const dpr=window.devicePixelRatio||1;
+    const W=Math.max(1, wrap.offsetWidth-24);
+    const H=Math.max(1, wrap.offsetHeight-24);
+    const cv=document.getElementById("overlayCanvas");
+    cv.width=W*dpr; cv.height=H*dpr;
+    cv.style.width=W+"px"; cv.style.height=H+"px";
+    const ctx=cv.getContext("2d");
+    ctx.setTransform(1,0,0,1,0,0); // reset any previous transform
+    ctx.scale(dpr,dpr);
+    drawCourseMap(cv,c,selWind,true,BAND_LABEL[getWindBand()],fcStartData?fcStartData.kts:null,fcStartData?fcStartData.gust:null);
+  }));
+}
+
+document.getElementById("overlayClose").addEventListener("click",()=>{
+  document.getElementById("overlay").classList.remove("open");
+});
+document.getElementById("overlay").addEventListener("click",e=>{
+  if(e.target===document.getElementById("overlay"))
+    document.getElementById("overlay").classList.remove("open");
+});
+// Close on Escape
+document.addEventListener("keydown",e=>{if(e.key==="Escape")document.getElementById("overlay").classList.remove("open");});
+
+// ─────────────────────────────────────────────────────────────────
+// CHECKBOX PILLS
+// ─────────────────────────────────────────────────────────────────
+function updatePillStyle(cb){
+  // cs-mini-pill styling is handled via CSS input:checked+span, no JS class needed
+}
+function getSelectedLengths(){
+  return[...document.querySelectorAll("input[type=checkbox][value='SC'],input[type=checkbox][value='MC'],input[type=checkbox][value='LC']")].filter(function(cb){return cb.checked;}).map(function(cb){return cb.value;});
+}
+
+// ─────────────────────────────────────────────────────────────────
+// MAIN RENDER
+// ─────────────────────────────────────────────────────────────────
+function render(){
+  const tide=document.getElementById("tide").value;
+  const duration=parseInt(document.getElementById("duration").value);
+  const selectedLens=getSelectedLengths();
+  const windBand=getWindBand();
+  const fleet=document.getElementById("fleet").value;
+  const classEl=document.getElementById("boatClass");
+  const classPY=classEl&&classEl.value?parseInt(classEl.value):NaN;
+  const fleetKey=(fleet==="class"||!FLEET_MID_PY[fleet])?"medium":fleet;
+  const effectivePY=!isNaN(classPY)?classPY:FLEET_MID_PY[fleetKey];
+  const className=!isNaN(classPY)&&classEl.selectedOptions[0]?classEl.selectedOptions[0].text:"";
+
+  const windFromDeg=selWind!==null?selWind:null;
+
+  const el=document.getElementById("results");
+  if(!selWind){
+    el.innerHTML=`<div class="empty"><div class="empty-ico">🧭</div><h3>Select a wind direction</h3><p>Drag the compass dial below to set wind direction</p></div>`;
+    return;
+  }
+  if(!selectedLens.length){
+    el.innerHTML=`<div class="empty"><div class="empty-ico">⚓</div><h3>No course types selected</h3><p>Tick at least one course length above.</p></div>`;
+    return;
+  }
+
+  const slow=fleet==="slow";
+  // Get courses for the wind direction, including boundary blending
+  function getWindCandidates(deg){
+    if(deg===null||deg===undefined) return [];
+    const BOUNDARY=5; // degrees — if within this of a zone boundary, include both zones
+    const zoneDeg=22.5; // each of 16 zones spans 22.5°
+    // Find primary zone
+    const card=degToCard(deg);
+    let courses=[...(WIND_MAP[card]||[])];
+    // Check distance to zone boundary
+    const cardDeg=DIR_DEGS[card];
+    let diff=((deg-cardDeg)+360)%360;
+    if(diff>180) diff=360-diff;
+    // diff is degrees from zone centre (0=centre, 11.25=boundary)
+    const distToBoundary=11.25-diff; // negative means past boundary
+    if(Math.abs(diff-11.25)<=BOUNDARY){
+      // Near a boundary — find which neighbour and add their courses
+      const idx2=DIRS.indexOf(card);
+      const neighbour=diff>11.25?DIRS[(idx2+1)%16]:DIRS[(idx2+15)%16];
+      const extra=WIND_MAP[neighbour]||[];
+      extra.forEach(function(c){if(!courses.includes(c))courses.push(c);});
+    }
+    return courses;
+  }
+  const candidates=(getWindCandidates(selWind)||[]).filter(l=>{
+    const c=COURSES[l];if(!c)return false;
+    if(slow&&(c.type==="MC"||c.type==="LC"))return false;
+    if(!selectedLens.includes(c.type))return false;
+    if(c.hwOnly&&tide!=="hw")return false;
+    if(c.avoidLW&&tide==="lw")return false;
+    return true;
+  });
+
+  if(!candidates.length){
+    el.innerHTML=`<div class="empty"><div class="empty-ico">⚓</div><h3>No courses available</h3><p>No courses match the selected conditions.</p></div>`;
+    return;
+  }
+
+  const scored=candidates.map(l=>{
+    const c=COURSES[l];
+    const{lapOneway,returnDist,initDist,finalDist}=calcDists(c);
+    const lapDist=lapOneway+returnDist;
+    const{wwLapNm,wwOncNm,wwLegsPerLap,wwLegsOnce,wwLapOnewayNm,wwReturnNm}=calcWindwardLegs(c,windFromDeg);
+    function bestLaps(spd){
+      const targetNm=spd*(duration/60);
+      const raw=(targetNm-initDist-finalDist)/(lapOneway+returnDist);
+      const lo=Math.max(1,Math.floor(raw)); const hi=Math.min(6,Math.ceil(raw));
+      if(lo===hi)return lo;
+      const tLo=((initDist+lo*lapOneway+(lo-1)*returnDist+finalDist)/spd)*60;
+      const tHi=((initDist+hi*lapOneway+(hi-1)*returnDist+finalDist)/spd)*60;
+      return Math.abs(tLo-duration)<=Math.abs(tHi-duration)?lo:hi;
+    }
+    const spd1=courseSpeed(fleet,windBand,0,effectivePY);
+    const laps1=bestLaps(spd1);
+    const totalNm1=initDist+laps1*lapOneway+(laps1-1)*returnDist+finalDist;
+    const totalWWnm1=wwOncNm+laps1*wwLapOnewayNm+(laps1-1)*wwReturnNm;
+    const wwFrac1=totalNm1>0?totalWWnm1/totalNm1:0.38;
+    const spd2=courseSpeed(fleet,windBand,wwFrac1,effectivePY);
+    const laps=bestLaps(spd2); const speed=spd2;
+    const totalNm=initDist+laps*lapOneway+(laps-1)*returnDist+finalDist;
+    const timeMins=(totalNm/speed)*60;
+    const racingNm=totalNm-initDist-finalDist;
+    const lapTimeMins=laps>0?(racingNm/laps/speed)*60:0;
+    const totalWWnm=wwOncNm+laps*wwLapOnewayNm+(laps-1)*wwReturnNm;
+    const wwPct=totalNm>0?Math.round((totalWWnm/totalNm)*100):0;
+    // Per-fleet laps + times for course list rows
+    function _rowFL(fk){
+      var _py=FLEET_MID_PY[fk]||1104;
+      var _sp=courseSpeed(fk,windBand,wwFrac1>0?wwFrac1:0.38,_py);
+      var _tg=_sp*(duration/60);
+      var _rw=(_tg-initDist-finalDist)/(lapOneway+returnDist);
+      var _lo=Math.max(1,Math.floor(_rw)),_hi=Math.min(6,Math.ceil(_rw));
+      var _l=_lo===_hi?_lo:(
+        Math.abs((initDist+_lo*lapOneway+(_lo-1)*returnDist+finalDist)/_sp*60-duration)
+        <=Math.abs((initDist+_hi*lapOneway+(_hi-1)*returnDist+finalDist)/_sp*60-duration)?_lo:_hi);
+      var _tot=initDist+_l*lapOneway+(_l-1)*returnDist+finalDist;
+      return{laps:_l,mins:Math.round(_tot/_sp*60)};
+    }
+    var rowFast=_rowFL('fast'),rowMed=_rowFL('medium'),rowSlow=_rowFL('slow');
+    return{l,c,lapDist,lapOneway,returnDist,initDist,finalDist,laps,totalNm,timeMins,lapTimeMins,
+      diff:Math.abs(timeMins-duration),totalWWnm,wwPct,wwLegsPerLap,wwLegsOnce,speed,
+      rowFast,rowMed,rowSlow};
+  });
+
+  // Sort by windward % descending
+  scored.sort((a,b)=>b.wwPct-a.wwPct||b.totalWWnm-a.totalWWnm);
+
+  // Build compact rows: mini-canvas | letter+%WW+marks | laps+time only
+  let html='';
+  scored.forEach(function(s,idx){
+    const lapSet=new Set(s.c.lap.map(function(m){return m[0];}));
+    const finalSet=new Set(s.c.final.map(function(m){return m[0];}));
+    const initialSet=new Set(s.c.initial.map(function(m){return m[0];}));
+    const warns=[];
+    if(s.c.hwOnly)warns.push('HW only');
+    if(s.c.avoidLW)warns.push('Avoid LW');
+    const marksHtml=s.c.marks.map(function(m,i){
+      const name=m[0],side=m[1];
+      const isEnd=i===0||i===s.c.marks.length-1;
+      const isOnce=initialSet.has(name)&&!lapSet.has(name)&&!finalSet.has(name)&&!isEnd;
+      let cls='cs-mk '+(isEnd?'cs-mk-e':side==='P'?'cs-mk-p':'cs-mk-s')+(isOnce?' cs-mk-once':'');
+      const lbl=isEnd?'S/F':name;
+      const arr=i<s.c.marks.length-1?'<span style="color:rgba(255,255,255,.18);font-size:18px;margin:0 1px;">›</span>':'';
+      return '<span class="'+cls+'">'+lbl+'</span>'+arr;
+    }).join('');
+    const isBest=idx===0;
+    html+='<div class="cs-row'+(isBest?' cs-best':'')+'" id="csrow_'+s.l+'"'
+        +' data-letter="'+s.l+'" onclick="openCsMap(this.dataset.letter)">'
+      +'<div class="cs-row-canvas"><canvas id="cv_'+s.l+'" width="74" height="97"></canvas></div>'
+      +'<div class="cs-row-mid">'
+        +'<div class="cs-row-letter">'+s.l+'<span class="cs-row-ww">⬆'+s.wwPct+'%</span></div>'
+        +'<div class="cs-row-marks">'+marksHtml+'</div>'
+      +'</div>'
+      +'<div class="cs-row-right">'
+        +'<div class="cs-row-laps">'+s.rowFast.laps+', '+s.rowMed.laps+', '+s.rowSlow.laps+' laps</div>'
+        +'<div class="cs-row-time">'+s.rowFast.mins+', '+s.rowMed.mins+', '+s.rowSlow.mins+' min</div>'
+        +(warns.length?'<div class="cs-row-warn">'+warns.join(' ')+'</div>':'')
+      +'</div>'
+    +'</div>';
+  });
+
+  // Cache scored for map popup access
+  window.scored_cache=scored;
+
+  el.innerHTML=html;
+
+  // Draw mini canvases after DOM insert
+  scored.forEach(function(s){
+    const cv=document.getElementById('cv_'+s.l);
+    if(!cv)return;
+    const dpr=window.devicePixelRatio||1;
+    cv.width=74*dpr; cv.height=97*dpr;
+    cv.style.width='74px'; cv.style.height='97px';
+    cv.style.cursor='pointer';
+    const ctx=cv.getContext('2d');
+    ctx.scale(dpr,dpr);
+    drawMiniCourse(ctx,52,68,s.c,selWind);
+  });
+
+}
+
+// Draw a mini course map on a small canvas
+function drawMiniCourse(ctx,W,H,course,windDir){
+  const SF=["START/FINISH",null];
+  const fullSeq=[SF,...course.initial,...course.lap,...course.final,SF];
+  const coords=fullSeq.map(function(m){return MARKS[m[0]];}).filter(Boolean);
+  if(coords.length<2)return;
+  const lats=coords.map(function(c){return c.lat;});
+  const lons=coords.map(function(c){return c.lon;});
+  const minLat=Math.min.apply(null,lats),maxLat=Math.max.apply(null,lats);
+  const minLon=Math.min.apply(null,lons),maxLon=Math.max.apply(null,lons);
+  const pad=5;
+  const rangeX=maxLon-minLon, rangeY=maxLat-minLat;
+  const scaleX=rangeX<1e-6?1:(W-pad*2)/rangeX;
+  const scaleY=rangeY<1e-6?1:(H-pad*2)/rangeY;
+  const sc=Math.min(scaleX,scaleY);
+  const offX=(W-rangeX*sc)/2;
+  const offY=(H-rangeY*sc)/2;
+  function xy(m){
+    var mk=MARKS[m[0]];if(!mk)return null;
+    return[(mk.lon-minLon)*sc+offX, H-(mk.lat-minLat)*sc-offY];
+  }
+  // Determine windward legs by calling isWindwardLeg directly on each pair
+  const windFromDeg=(windDir!==null&&windDir!==undefined&&DIR_DEGS[windDir]!==undefined)?DIR_DEGS[windDir]:null;
+  // Draw all legs dashed first
+  ctx.beginPath();
+  var started=false;
+  fullSeq.forEach(function(m){
+    var p=xy(m);if(!p)return;
+    if(!started){ctx.moveTo(p[0],p[1]);started=true;}else{ctx.lineTo(p[0],p[1]);}
+  });
+  ctx.strokeStyle='rgba(91,181,232,.38)';ctx.lineWidth=1;ctx.setLineDash([3,2]);ctx.stroke();
+  ctx.setLineDash([]);
+  // Overdraw windward legs solid gold using isWindwardLeg()
+  for(var i=0;i<fullSeq.length-1;i++){
+    var fn=fullSeq[i][0], tn=fullSeq[i+1][0];
+    var pa=xy(fullSeq[i]), pb=xy(fullSeq[i+1]);
+    if(!pa||!pb)continue;
+    var isLaid=LAID_MARKS.has(fn)||LAID_MARKS.has(tn);
+    if(windFromDeg!==null && isWindwardLeg(fn,tn,windFromDeg,isLaid)){
+      ctx.beginPath();ctx.moveTo(pa[0],pa[1]);ctx.lineTo(pb[0],pb[1]);
+      ctx.strokeStyle='rgba(255,185,30,.92)';ctx.lineWidth=2;ctx.stroke();
+    }
+  }
+  // Dots — S/F amber, port red, stbd green
+  fullSeq.forEach(function(m,i){
+    var p=xy(m);if(!p)return;
+    var isEnd=m[0]==='START/FINISH';
+    var side=m[1];
+    ctx.beginPath();ctx.arc(p[0],p[1],isEnd?3.5:2,0,Math.PI*2);
+    ctx.fillStyle=isEnd?'#e8a020':side==='P'?'#e87070':'#5ecb80';
+    ctx.fill();
+  });
+}
+
+// Open map popup for a course
+function openCsMap(letter){
+  const scored=window.scored_cache||[]; const entry=scored.find(function(s){return s.l===letter;});
+  if(!entry)return;
+  const s=entry;
+  const overlay=document.getElementById('cs-map-overlay');
+  // Header: just course letter + type, no wind/sub text
+  // Banner shows course letter only — type goes in coloured badge above marks
+  document.getElementById('cs-map-title').textContent='Course '+letter;
+  // Stats: laps · total nm · per-lap nm · est time
+  const kts=fcStartData?fcStartData.kts:null;
+  const gust=fcStartData?fcStartData.gust:null;
+  // Compute laps for all three fleets for item 8
+  var _dur=parseInt(document.getElementById('duration').value)||70;
+  var _wb=getWindBand();
+  function _fleetLaps(fleetKey){
+    var _epy=FLEET_MID_PY[fleetKey]||1104;
+    // Use actual wwFrac from scored entry (same as course list rows use)
+    var _wwf=s.wwPct>0?s.wwPct/100:0.38;
+    var _spd=courseSpeed(fleetKey,_wb,_wwf,_epy);
+    var _tgt=_spd*(_dur/60);
+    var _raw=(_tgt-s.initDist-s.finalDist)/(s.lapOneway+s.returnDist);
+    var _lo=Math.max(1,Math.floor(_raw)),_hi=Math.min(6,Math.ceil(_raw));
+    var _l=_lo===_hi?_lo:(
+      Math.abs((s.initDist+_lo*s.lapOneway+(_lo-1)*s.returnDist+s.finalDist)/_spd*60-_dur)
+      <=Math.abs((s.initDist+_hi*s.lapOneway+(_hi-1)*s.returnDist+s.finalDist)/_spd*60-_dur)?_lo:_hi);
+    var _tot=s.initDist+_l*s.lapOneway+(_l-1)*s.returnDist+s.finalDist;
+    var _racingNm=_tot-s.initDist-s.finalDist;
+    return{laps:_l,totalMins:Math.round(_tot/_spd*60),lapMins:_l>0?Math.round(_racingNm/_l/_spd*60):0};
+  }
+  var fD=_fleetLaps('fast'),mD=_fleetLaps('medium'),sD=_fleetLaps('slow');
+  var fLaps=fD.laps,mLaps=mD.laps,sLaps=sD.laps;
+  document.getElementById('cs-map-stats').innerHTML=
+    '<div class="cs-map-stat"><div class="cs-map-stat-lbl">Total course</div><div class="cs-map-stat-n">'+s.totalNm.toFixed(2)+'nm</div></div>'
+    +'<div class="cs-map-stat"><div class="cs-map-stat-lbl">Per lap</div><div class="cs-map-stat-n">'+s.lapDist.toFixed(2)+'nm</div></div>'
+    +'<div class="cs-map-stat cs-map-back-cell" id="cs-map-back-btn"><div class="cs-map-back-arr">←</div><div class="cs-map-stat-u">back</div></div>';
+  var _lS=new Set(s.c.lap.map(function(m){return m[0];}));
+  var _fS=new Set(s.c.final.map(function(m){return m[0];}));
+  var _iS=new Set(s.c.initial.map(function(m){return m[0];}));
+  var marksHtml=s.c.marks.map(function(m,i){
+    var name=m[0],side=m[1],isEnd=i===0||i===s.c.marks.length-1;
+    var isOnce=_iS.has(name)&&!_lS.has(name)&&!_fS.has(name)&&!isEnd;
+    var cls='cs-map-mk '+(isEnd?'cs-map-mk-e':side==='P'?'cs-map-mk-p':'cs-map-mk-s')+(isOnce?' cs-map-mk-once':'');
+    var lbl=isEnd?'S/F':name+(side&&!isEnd?' ('+side+')':'');
+    var arr=i<s.c.marks.length-1?'<span class="cs-map-arr">›</span>':'';
+    return '<span class="'+cls+'">'+lbl+'</span>'+arr;
+  }).join('');
+  document.getElementById('cs-map-marks').innerHTML=marksHtml;
+  overlay.style.display='flex';
+  // Back button listener (re-attach each open to avoid duplicate handlers)
+  document.getElementById('cs-map-fleet-laps').innerHTML=
+    '<div class="cs-fleet-laps-row">'
+    +'<div class="cs-fleet-lap-cell cs-fl-fast"><div class="cs-fl-flag"><svg width=\"28\" height=\"20\" viewBox=\"0 0 28 20\" xmlns=\"http://www.w3.org/2000/svg\"><rect width=\"28\" height=\"10\" fill=\"#F5C800\"/><rect y=\"10\" width=\"28\" height=\"10\" fill=\"#003F9A\"/></svg></div><div class="cs-fl-name">Fast</div><div class="cs-fl-n">'+fLaps+'</div><div class="cs-fl-times">'+fD.totalMins+'min · '+fD.lapMins+'/lap</div></div>'
+    +'<div class="cs-fleet-lap-cell cs-fl-med"><div class="cs-fl-flag"><svg width=\"28\" height=\"20\" viewBox=\"0 0 28 20\" xmlns=\"http://www.w3.org/2000/svg\"><rect width=\"28\" height=\"10\" fill=\"#003F9A\"/><rect y=\"10\" width=\"28\" height=\"10\" fill=\"#C8102E\"/></svg></div><div class="cs-fl-name">Medium</div><div class="cs-fl-n">'+mLaps+'</div><div class="cs-fl-times">'+mD.totalMins+'min · '+mD.lapMins+'/lap</div></div>'
+    +'<div class="cs-fleet-lap-cell cs-fl-slow"><div class="cs-fl-flag"><svg width=\"32\" height=\"20\" viewBox=\"0 0 32 20\" xmlns=\"http://www.w3.org/2000/svg\"><polygon points=\"0,0 32,0 24,10 32,20 0,20\" fill=\"#C8102E\"/></svg></div><div class="cs-fl-name">Slow</div><div class="cs-fl-n">'+sLaps+'</div><div class="cs-fl-times">'+sD.totalMins+'min · '+sD.lapMins+'/lap</div></div>'
+    +'</div>';
+    var backBtn=document.getElementById('cs-map-back-btn');
+  if(backBtn){backBtn.onclick=function(){overlay.style.display='none';};}
+  // Draw large canvas
+  requestAnimationFrame(function(){
+    const wrap=document.querySelector('.cs-map-canvas-wrap');
+    const cv=document.getElementById('cs-map-canvas');
+    const dpr=window.devicePixelRatio||1;
+    const W=wrap.offsetWidth-16, H=wrap.offsetHeight-16;
+    cv.width=W*dpr; cv.height=H*dpr;
+    cv.style.width=W+'px'; cv.style.height=H+'px';
+    const ctx=cv.getContext('2d');
+    ctx.scale(dpr,dpr);
+    drawCourseMap(cv,s.c,selWind,true,BAND_LABEL[getWindBand()],kts,gust);
+  });
+}
+
+["tide","duration","windspeed"].forEach(id=>{
+  const el=document.getElementById(id);
+  if(el){el.addEventListener("change",render);el.addEventListener("input",render);}
+});
+
+// ═══════════════════════════════════════════════════════
+// FORECAST SCREEN — API calls & logic
+// ═══════════════════════════════════════════════════════
+const APP_VERSION = 'v3.25 · 27 Mar 2026';
+const ADMIRALTY_KEY  = '2ee4d4218fd040678f0cf6886bacc624';
+const ADMIRALTY_STATION = '0062'; // Southampton
+const FC_LAT  = 50.855;  // Hamble Point buoy
+const FC_LON  = -1.307;
+
+(function initFC(){
+  const now = new Date();
+  const dateStr = now.toISOString().slice(0,10);
+  document.getElementById('fc-date').value = dateStr;
+  const dow = now.getDay();
+  const timeStr = (dow===0||dow===6) ? '10:30' : '18:30';
+  document.getElementById('fc-time').value = timeStr;
+  runForecast();
+  document.getElementById('app-version-tag2').textContent=APP_VERSION;
+})();
+
+document.getElementById('fc-date').addEventListener('change', runForecast);
+document.getElementById('fc-date').addEventListener('change', function(){
+  // Update model label immediately on date change
+  var mtag=document.getElementById('fc-model-tag');
+  if(mtag&&mtag.textContent){
+    var selDate=new Date(this.value+'T12:00:00');
+    var hoursAhead=(selDate-new Date())/3600000;
+    var modelName=hoursAhead<=54?'UKV 2km':'Global 10km';
+    // Keep the "Updated HH:00" part, just swap model name
+    mtag.textContent=mtag.textContent.replace(/UKV 2km|Global 10km/,modelName);
+  }
+});
+document.getElementById('fc-time').addEventListener('change', runForecast);
+document.getElementById('fc-duration').addEventListener('change', runForecast);
+
+function mpsToKnots(v){return Math.round(v*1.94384);}
+function knotsToBft(k){
+  if(k<1) return 0; if(k<4) return 1; if(k<7) return 2;
+  if(k<11)return 3; if(k<17)return 4; if(k<22)return 5;
+  if(k<28)return 6; if(k<34)return 7; if(k<41)return 8;
+  if(k<48)return 9; if(k<56)return 10;if(k<64)return 11; return 12;
+}
+function degToArrow(d){
+  // Returns an inline SVG arrow rotated to show wind direction
+  // Arrow points in direction wind is COMING FROM (tail=destination, head=source)
+  // Rotation: 0=N arrow points up (wind from N blowing south)
+  var rot=Math.round(d);
+  return '<svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"'
+    +' style="transform:rotate('+rot+'deg);display:inline-block;vertical-align:middle;">'
+    +'<line x1="11" y1="18" x2="11" y2="5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>'
+    +'<polyline points="6,10 11,4 16,10" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>'
+    +'</svg>';
+}
+function degToCardFC(d){
+  const c=['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+  return c[Math.round(d/22.5)%16];
+}
+
+function fcTidalState(t, events){
+  const sorted=[...events].sort((a,b)=>a.time-b.time);
+  const ms=t.getTime();
+  for(const ev of sorted){
+    if(Math.abs(ev.time.getTime()-ms)<1800000){
+      return ev.type==='HighWater'
+        ?{state:'hw',label:'High Water',cls:'tide-hw'}
+        :{state:'lw',label:'Low Water',cls:'tide-lw'};
+    }
+  }
+  let prev=null,next=null;
+  for(const ev of sorted){
+    if(ev.time.getTime()<=ms) prev=ev;
+    if(ev.time.getTime()>ms && !next) next=ev;
+  }
+  if(!prev&&next) return next.type==='HighWater'?{state:'flood',label:'Flooding',cls:'tide-flood'}:{state:'ebb',label:'Ebbing',cls:'tide-ebb'};
+  if(prev&&!next) return prev.type==='HighWater'?{state:'ebb',label:'Ebbing',cls:'tide-ebb'}:{state:'flood',label:'Flooding',cls:'tide-flood'};
+  if(prev&&next){
+    if(prev.type==='LowWater' &&next.type==='HighWater')return{state:'flood',label:'Flooding',cls:'tide-flood'};
+    if(prev.type==='HighWater'&&next.type==='LowWater') return{state:'ebb',label:'Ebbing',cls:'tide-ebb'};
+    if(prev.type==='HighWater'&&next.type==='HighWater')return{state:'hw',label:'HW Stand',cls:'tide-hw'};
+    if(prev.type==='LowWater' &&next.type==='LowWater') return{state:'lw',label:'LW Stand',cls:'tide-lw'};
+  }
+  return{state:'unknown',label:'?',cls:''};
+}
+
+function fcEstStream(t, events){
+  const sorted=[...events].sort((a,b)=>a.time-b.time);
+  const ms=t.getTime();
+  let prev=null,next=null;
+  for(const ev of sorted){if(ev.time.getTime()<=ms)prev=ev;if(ev.time.getTime()>ms&&!next)next=ev;}
+  if(!prev||!next)return 0.5;
+  const total=(next.time-prev.time)/60000;
+  const elapsed=(ms-prev.time.getTime())/60000;
+  const rates=[1,2,3,3,2,1];
+  const idx=Math.min(5,Math.floor((elapsed/total)*6));
+  return+((rates[idx]/6)*2.0).toFixed(1);
+}
+
+async function fetchAdmiraltyTides(){
+  // Calls our own Cloudflare Worker which:
+  //   - Holds the Admiralty API key server-side (not exposed in browser)
+  //   - Caches responses for 6 hours (saves API quota, faster on repeat loads)
+  //   - Works on mobile data (no carrier header-stripping)
+  // IMPORTANT: replace TIDAL_WORKER_URL below with your Worker URL after deploying.
+  // It will look like: https://wsc-tidal-proxy.YOUR-NAME.workers.dev
+  const WORKER_URL = 'https://wsc-tidal-proxy.kieronholt.workers.dev';
+
+  // Warsash secondary port corrections (Reeds Almanac / UKHO):
+  //   Southampton (Dock Head) station 0062 is the standard port.
+  //   Warsash is ~4nm south: HW +13 min, LW +3 min
+  const HW_CORR=13*60000, LW_CORR=3*60000;
+
+  const url=WORKER_URL+'?station='+ADMIRALTY_STATION+'&duration=3';
+  const r=await fetch(url);
+  if(!r.ok){
+    const txt=await r.text().catch(function(){return '';});
+    throw new Error('Tidal Worker '+r.status+': '+txt.slice(0,120));
+  }
+  const data=await r.json();
+  if(!Array.isArray(data)){throw new Error('Unexpected tidal response format');}
+  return data.map(function(e){
+    const corr=e.EventType==='HighWater'?HW_CORR:LW_CORR;
+    return{time:new Date(new Date(e.DateTime).getTime()+corr),type:e.EventType,height:e.Height};
+  });
+}
+
+async function fetchOpenMeteoWind(){
+  // ukmo_seamless = UKV 2km (days 1-2) blended with UKMO Global 10km (days 3+).
+  // This is the correct model= parameter for /v1/forecast.
+  // wind_speed_unit=kn returns knots directly — no conversion needed.
+  const url='https://api.open-meteo.com/v1/forecast?latitude='+FC_LAT+'&longitude='+FC_LON
+    +'&hourly=wind_speed_10m,wind_direction_10m,wind_gusts_10m,weather_code'
+    +'&wind_speed_unit=kn&timezone=Europe%2FLondon&forecast_days=7&models=ukmo_seamless';
+  const r=await fetch(url);
+  if(!r.ok){
+    const txt=await r.text().catch(function(){return '';});
+    throw new Error('Wind API '+r.status+': '+txt.slice(0,120));
+  }
+  const data=await r.json();
+  if(data.error){throw new Error('Wind API: '+data.reason);}
+  const lkp={};
+  data.hourly.time.forEach(function(t,i){
+    lkp[t]={
+      spd:data.hourly.wind_speed_10m[i],
+      dir:data.hourly.wind_direction_10m[i],
+      gust:data.hourly.wind_gusts_10m[i],
+      wx:data.hourly.weather_code?data.hourly.weather_code[i]:null
+    };
+  });
+  return lkp;
+}
+
+function gustClass(gKts){
+  if(gKts===null) return '';
+  if(gKts<8) return 'gust-light';
+  if(gKts<16) return 'gust-mod';
+  if(gKts<22) return 'gust-fresh';
+  if(gKts<30) return 'gust-strong';
+  return 'gust-very-strong';
+}
+function gustRowClass(gKts){
+  if(gKts===null||gKts<8) return '';
+  if(gKts<16) return 'gust-row-mod';
+  if(gKts<22) return 'gust-row-fresh';
+  if(gKts<30) return 'gust-row-strong';
+  return 'gust-row-very-strong';
+}
+
+var fcTideEvents=[];
+var fcStartData=null;
+
+function scrollMidRowToCenter(){
+  var wrap=document.getElementById('fc-table-wrap');
+  var row=document.getElementById('fc-mid-row');
+  if(!wrap||!row)return;
+  var wrapH=wrap.clientHeight;
+  var rowTop=row.offsetTop;
+  var rowH=row.offsetHeight;
+  // Scroll so the row is centred in the visible area
+  wrap.scrollTop=rowTop-(wrapH/2)+(rowH/2);
+}
+
+// Snap back to highlighted row centre when scroll stops
+(function(){
+  var wrap=document.getElementById('fc-table-wrap');
+  if(!wrap)return;
+  var snapTimer=null;
+  var userScrolled=false;
+
+  function onScrollEnd(){
+    snapTimer=null;
+    if(!userScrolled)return;
+    userScrolled=false;
+    scrollMidRowToCenter();
+  }
+
+  wrap.addEventListener('touchstart',function(){
+    userScrolled=false;
+    if(snapTimer){clearTimeout(snapTimer);snapTimer=null;}
+  },{passive:true});
+
+  wrap.addEventListener('touchmove',function(){
+    userScrolled=true;
+    if(snapTimer){clearTimeout(snapTimer);snapTimer=null;}
+  },{passive:true});
+
+  wrap.addEventListener('touchend',function(){
+    if(!userScrolled)return;
+    // Wait for momentum scroll to settle, then snap
+    snapTimer=setTimeout(onScrollEnd,600);
+  },{passive:true});
+
+  // Mouse scroll fallback
+  wrap.addEventListener('scroll',function(){
+    userScrolled=true;
+    if(snapTimer)clearTimeout(snapTimer);
+    snapTimer=setTimeout(function(){
+      userScrolled=false;
+      scrollMidRowToCenter();
+    },700);
+  },{passive:true});
+})();
+
+async function fetchModelMeta(){
+  const utcH=new Date().getUTCHours();
+  const runH=Math.floor(Math.max(0,utcH-4)/6)*6;
+  return{runLabel:String(runH).padStart(2,'0')+':00 UTC'};
+}
+const WIND_ARROWS={
+  'N':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="14.00" y1="3.00" x2="14.00" y2="25.00" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="14.00,25.00 10.00,18.00 18.00,18.00" fill="#e8a020"/><circle cx="14.00" cy="3.00" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
+  'NNE':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="18.21" y1="3.84" x2="9.79" y2="24.16" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="9.79,24.16 8.77,16.16 16.16,19.23" fill="#e8a020"/><circle cx="18.21" cy="3.84" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
+  'NE':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="21.78" y1="6.22" x2="6.22" y2="21.78" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="6.22,21.78 8.34,14.00 14.00,19.66" fill="#e8a020"/><circle cx="21.78" cy="6.22" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
+  'ENE':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="24.16" y1="9.79" x2="3.84" y2="18.21" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="3.84,18.21 8.77,11.84 11.84,19.23" fill="#e8a020"/><circle cx="24.16" cy="9.79" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
+  'E':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="25.00" y1="14.00" x2="3.00" y2="14.00" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="3.00,14.00 10.00,10.00 10.00,18.00" fill="#e8a020"/><circle cx="25.00" cy="14.00" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
+  'ESE':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="24.16" y1="18.21" x2="3.84" y2="9.79" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="3.84,9.79 11.84,8.77 8.77,16.16" fill="#e8a020"/><circle cx="24.16" cy="18.21" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
+  'SE':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="21.78" y1="21.78" x2="6.22" y2="6.22" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="6.22,6.22 14.00,8.34 8.34,14.00" fill="#e8a020"/><circle cx="21.78" cy="21.78" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
+  'SSE':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="18.21" y1="24.16" x2="9.79" y2="3.84" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="9.79,3.84 16.16,8.77 8.77,11.84" fill="#e8a020"/><circle cx="18.21" cy="24.16" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
+  'S':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="14.00" y1="25.00" x2="14.00" y2="3.00" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="14.00,3.00 18.00,10.00 10.00,10.00" fill="#e8a020"/><circle cx="14.00" cy="25.00" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
+  'SSW':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="9.79" y1="24.16" x2="18.21" y2="3.84" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="18.21,3.84 19.23,11.84 11.84,8.77" fill="#e8a020"/><circle cx="9.79" cy="24.16" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
+  'SW':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="6.22" y1="21.78" x2="21.78" y2="6.22" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="21.78,6.22 19.66,14.00 14.00,8.34" fill="#e8a020"/><circle cx="6.22" cy="21.78" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
+  'WSW':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="3.84" y1="18.21" x2="24.16" y2="9.79" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="24.16,9.79 19.23,16.16 16.16,8.77" fill="#e8a020"/><circle cx="3.84" cy="18.21" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
+  'W':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="3.00" y1="14.00" x2="25.00" y2="14.00" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="25.00,14.00 18.00,18.00 18.00,10.00" fill="#e8a020"/><circle cx="3.00" cy="14.00" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
+  'WNW':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="3.84" y1="9.79" x2="24.16" y2="18.21" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="24.16,18.21 16.16,19.23 19.23,11.84" fill="#e8a020"/><circle cx="3.84" cy="9.79" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
+  'NW':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="6.22" y1="6.22" x2="21.78" y2="21.78" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="21.78,21.78 14.00,19.66 19.66,14.00" fill="#e8a020"/><circle cx="6.22" cy="6.22" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
+  'NNW':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="9.79" y1="3.84" x2="18.21" y2="24.16" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="18.21,24.16 11.84,19.23 19.23,16.16" fill="#e8a020"/><circle cx="9.79" cy="3.84" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
+};
+
+function wmoSymbol(code){
+  if(code===null||code===undefined) return '—';
+  if(code===0)  return '☀';   // Clear sun
+  if(code<=2)   return '⛅';  // Partly cloudy
+  if(code===3)  return '☁';  // Overcast
+  if(code<=48)  return '♨';  // Fog (hot springs = mist)
+  if(code<=55)  return '☂';  // Drizzle
+  if(code<=67)  return '☔';  // Rain
+  if(code<=77)  return '❅';  // Snow
+  if(code<=82)  return '☔';  // Showers
+  if(code<=86)  return '☆';  // Snow showers
+  return '⚡';                 // Thunder
+}
+async function runForecast(){
+  const dateVal=document.getElementById('fc-date').value;
+  const timeVal=document.getElementById('fc-time').value;
+  const durationVal=parseInt(document.getElementById('fc-duration').value)||70;
+  if(!dateVal||!timeVal)return;
+  document.getElementById('fc-loading').style.display='block';
+  document.getElementById('fc-table-wrap').style.display='none';
+    var hdr2=document.querySelector('.fc-tbl-hdr');if(hdr2)hdr2.style.display='none';
+  document.getElementById('fc-error').style.display='none';
+  document.getElementById('fc-next-btn').disabled=true;
+  fcStartData=null;
+  try{
+    const startTime=new Date(dateVal+'T'+timeVal+':00');
+    // Midpoint = start + duration/2, snapped to nearest hour
+    const midMs=startTime.getTime()+durationVal*30000; // +duration/2 minutes in ms
+    const midHour=new Date(midMs); midHour.setMinutes(0,0,0);
+    // Show 5 rows centred around midHour: midHour-2h to midHour+2h
+    const startHour=new Date(startTime); startHour.setMinutes(0,0,0);
+    // Row after start: HH:00 start → highlight HH:00, HH:30 start → highlight HH+1:00
+    const startMins=startTime.getMinutes();
+    const highlightOffset=startMins>=30?1:0;
+    const rowTimes=[];
+    for(let i=-6;i<=6;i++) rowTimes.push(new Date(startHour.getTime()+i*3600000));
+    // midRowIndex = the hour AFTER start (index 6 = startHour, +offset)
+    const midRowIndex=6+highlightOffset;
+    const results=await Promise.all([
+      fetchAdmiraltyTides().catch(function(e){console.warn(e);return null;}),
+      fetchOpenMeteoWind().catch(function(e){console.warn('Wind error:',e.message);return null;})
+,
+      fetchModelMeta().catch(function(e){return null;})
+    ]);
+    const eventsRaw=results[0]; const windLkp=results[1]; const modelMeta=results[2];
+    fcTideEvents=eventsRaw||[];
+    const winStart=new Date(startTime.getTime()-4*3600000);
+    const winEnd=new Date(startTime.getTime()+8*3600000);
+    const windowEvs=fcTideEvents.filter(function(e){return e.time>=winStart&&e.time<=winEnd;});
+    const tbody=document.getElementById('fc-tbody');
+    tbody.innerHTML='';
+    rowTimes.forEach(function(t,idx){
+      const isMid=idx===midRowIndex;
+      const isStart=Math.abs(t-startHour)<1800000;
+      const h=t.getHours();
+      const oKey=dateVal+'T'+String(h).padStart(2,'0')+':00';
+      const wind=windLkp?windLkp[oKey]:null;
+      const kts=wind?Math.round(wind.spd):null;
+      const dir=wind?Math.round(wind.dir):null;
+      const bft=kts!==null?knotsToBft(kts):null;
+      const ts=fcTidalState(t,fcTideEvents);
+      const strm=fcEstStream(t,fcTideEvents);
+      const gust=wind?Math.round(wind.gust):null;
+      // Store midpoint data for course screen pre-population
+      if(isMid) fcStartData={dir:dir,kts:kts,bft:bft,tideState:ts,tideKts:strm,gust:gust};
+      // Insert HW/LW events that fall in this hour's window
+      const ph=new Date(t.getTime()-3600000);
+      windowEvs.filter(function(ev){return ev.time>ph&&ev.time<=t;}).forEach(function(ev){
+        const evTr=document.createElement('tr');
+        evTr.className='fc-event-row';
+        const isHW=ev.type==='HighWater';
+        const typ=isHW?'\u2B06 HW':'\u2B07 LW';
+        const ht=ev.height!==null?' '+ev.height.toFixed(1)+'m':'';
+        const etm=ev.time.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+        evTr.innerHTML='<td colspan="5" style="color:'+(isHW?'#4ec87a':'#8a9fb5')+';text-align:left;padding:3px 8px;">'+typ+' '+etm+ht+'</td>';
+        tbody.appendChild(evTr);
+      });
+      const tr=document.createElement('tr');
+      // ONLY highlight the midpoint row — no other row gets special background
+      if(isMid){tr.className='fc-mid-row';tr.id='fc-mid-row';}
+      // Mid row: just the time, styled bigger via CSS — no extra label
+      const tLabel=t.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+
+      // Snap direction to nearest 16-point compass for arrow lookup
+      const snapDir=dir!==null?snapToNearest16(dir):null;
+      const wArr=snapDir!==null?'<div class="fc-wind-cell">'+WIND_ARROWS[snapDir]+'<div class="fc-wind-card">'+snapDir+'</div></div>':'\u2014';
+      const kCls=kts===null?'':kts<8?'wind-light':kts<15?'wind-mod':kts<21?'wind-fresh':'wind-strong';
+      const ktsStr=kts!==null?'<span class="'+kCls+'">'+kts+'</span>':'\u2014';
+      const gCls=gustClass(gust);
+      const gStr=gust!==null?'<span class="'+gCls+'">'+gust+'</span>':'\u2014';
+      const wxSym=wind?wmoSymbol(wind.wx):'\u2014';
+      tr.innerHTML='<td class="fc-time-cell">'+tLabel+'</td><td>'+wArr+'</td>'
+        +'<td class="fc-wind-spd">'+ktsStr+'</td>'
+        +'<td class="gust-cell">'+gStr+'</td>'
+        +'<td class="fc-wx-cell">'+wxSym+'</td>'
+        +'<td><span class="tide-badge '+ts.cls+'">'+ts.label+'</span></td>';
+      tbody.appendChild(tr);
+    });
+    document.getElementById('fc-loading').style.display='none';
+    document.getElementById('fc-table-wrap').style.display='';
+    var hdr=document.querySelector('.fc-tbl-hdr');if(hdr)hdr.style.display='';
+    document.getElementById('fc-next-btn').disabled=false;
+
+    if(modelMeta){
+      var mtag=document.getElementById('fc-model-tag');
+      if(mtag){
+        // Determine which model covers the selected date
+        var selDate=new Date(document.getElementById('fc-date').value+'T12:00:00');
+        var hoursAhead=(selDate-new Date())/3600000;
+        var modelName=hoursAhead<=54?'UKV 2km':'Global 10km';
+        mtag.textContent='· '+modelName+' – Updated '+modelMeta.runLabel;
+      }
+    }
+    // Scroll highlighted row to vertical centre of table wrap
+    setTimeout(function(){scrollMidRowToCenter();},50);
+  } catch(err){
+    document.getElementById('fc-loading').style.display='none';
+    const el=document.getElementById('fc-error');
+    el.textContent='Error: '+err.message;
+    el.style.display='block';
+    document.getElementById('fc-next-btn').disabled=false;
+  }
+}
+
+document.getElementById('fc-next-btn').addEventListener('click',function(){
+  // Pre-populate course screen with MIDPOINT conditions
+  if(fcStartData){
+    if(fcStartData.dir!==null){setWindDir(fcStartData.dir);}
+    if(fcStartData.kts!==null){
+      const ws=document.getElementById('windspeed');
+      if(ws){
+        if(fcStartData.kts<8) ws.value='light';
+        else if(fcStartData.kts<=14) ws.value='moderate';
+        else if(fcStartData.kts<=20) ws.value='fresh';
+        else ws.value='strong';
+      }
+    }
+    if(fcStartData.tideState){
+      const ts=document.getElementById('tide');
+      if(ts){
+        const s=fcStartData.tideState.state;
+        if(s==='hw') ts.value='hw';
+        else if(s==='lw') ts.value='lw';
+        else ts.value='mid';
+      }
+    }
+    // Sync duration from forecast screen
+    const dur=document.getElementById('fc-duration').value;
+    const durSel=document.getElementById('duration');
+    if(durSel&&dur){
+      // Find closest option
+      let closest=null; let minDiff=9999;
+      Array.from(durSel.options).forEach(function(o){
+        const diff=Math.abs(parseInt(o.value)-parseInt(dur));
+        if(diff<minDiff){minDiff=diff;closest=o.value;}
+      });
+      if(closest) durSel.value=closest;
+    }
+    render();
+  }
+  document.getElementById('fc-screen').classList.remove('active');
+  document.getElementById('course-screen').classList.add('active');
+});
+
+document.getElementById('fc-back-btn').addEventListener('click',function(){
+  document.getElementById('course-screen').classList.remove('active');
+  document.getElementById('fc-screen').classList.add('active');
+});
+document.getElementById('cs-back-btn').addEventListener('click',function(){
+  document.getElementById('course-screen').classList.remove('active');
+  document.getElementById('fc-screen').classList.add('active');
+});
+
+</script>
+
+</div></div><!-- /app-shell -->
+</body>
+</html>
