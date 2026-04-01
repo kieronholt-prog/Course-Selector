@@ -986,7 +986,7 @@ const DIR_DESC={N:"North",NNE:"North-northeast",NE:"Northeast",ENE:"East-northea
   E:"East",ESE:"East-southeast",SE:"Southeast",SSE:"South-southeast",
   S:"South",SSW:"South-southwest",SW:"Southwest",WSW:"West-southwest",
   W:"West",WNW:"West-northwest",NW:"Northwest",NNW:"North-northwest"};
-let selWind=null;
+let selWind=null; // degrees (0-359) or null
 
 // Draw Option-2 compass (minimal ring + cardinals + arc + needle)
 // All drawn on needleCanvas; called once on load and on every wind change.
@@ -1083,6 +1083,13 @@ function snapToNearest16(deg){
   for(const d of dirs){let diff=Math.abs(degs[d]-deg);if(diff>180)diff=360-diff;if(diff<bestDiff){bestDiff=diff;best=d;}}
   return best;
 }
+function degToCard(deg){
+  // Returns nearest 16-point cardinal string for a degree bearing
+  deg=((deg%360)+360)%360;
+  let best=DIRS[0],bestDiff=360;
+  for(const d of DIRS){let diff=Math.abs(DIR_DEGS[d]-deg);if(diff>180)diff=360-diff;if(diff<bestDiff){bestDiff=diff;best=d;}}
+  return best;
+}
 function snapToNearest(deg){
   deg=((deg%360)+360)%360;
   let best=DIRS[0],bestDiff=360;
@@ -1090,11 +1097,16 @@ function snapToNearest(deg){
   return best;
 }
 
-function setWindDir(dir){
-  selWind=dir;
-  drawCompass(DIR_DEGS[dir]);
-  document.getElementById("windDirDisplay").textContent=dir+' '+Math.round(DIR_DEGS[dir])+"°";
-  document.getElementById("windDirSub").textContent=Math.round(DIR_DEGS[dir])+"°";
+function setWindDir(deg){
+  // deg = degrees 0-359 (precise), or a cardinal string for backward compat
+  if(typeof deg==="string") deg=DIR_DEGS[deg]||0;
+  deg=((deg%360)+360)%360;
+  selWind=deg;
+  drawCompass(deg);
+  // Cardinal label for display
+  const card=degToCard(deg);
+  document.getElementById("windDirDisplay").textContent=card+" "+Math.round(deg)+"°";
+  document.getElementById("windDirSub").textContent=Math.round(deg)+"°";
   render();
 }
 
@@ -1106,9 +1118,9 @@ function setWindDir(dir){
     const pt=e.touches?e.touches[0]:e;
     return((Math.atan2(pt.clientX-cx,-(pt.clientY-cy))*180/Math.PI)+360)%360;
   }
-  function handle(e){if(!dragging)return;e.preventDefault();const dir=snapToNearest(getAngle(e));if(dir!==selWind)setWindDir(dir);}
-  el.addEventListener("mousedown",e=>{dragging=true;setWindDir(snapToNearest(getAngle(e)));});
-  el.addEventListener("touchstart",e=>{dragging=true;e.preventDefault();setWindDir(snapToNearest(getAngle(e)));},{passive:false});
+  function handle(e){if(!dragging)return;e.preventDefault();const deg=Math.round(getAngle(e)/5)*5;if(deg!==selWind)setWindDir(deg);}
+  el.addEventListener("mousedown",e=>{dragging=true;setWindDir(Math.round(getAngle(e)/5)*5);});
+  el.addEventListener("touchstart",e=>{dragging=true;e.preventDefault();setWindDir(Math.round(getAngle(e)/5)*5);},{passive:false});
   window.addEventListener("mousemove",handle);window.addEventListener("touchmove",handle,{passive:false});
   window.addEventListener("mouseup",()=>dragging=false);window.addEventListener("touchend",()=>dragging=false);
 })();
@@ -1139,7 +1151,7 @@ function drawCourseMap(canvas, course, windDir, large, windBandLabel, windKts, w
   const pts=all.map(m=>MARKS[m[0]]?xy(MARKS[m[0]]):null);
 
   // Pre-compute windward status per leg
-  const windFromDeg=windDir!==null&&windDir!==undefined?DIR_DEGS[windDir]:null;
+  const windFromDeg=windDir!==null&&windDir!==undefined?windDir:null;
   const legWW=[];
   for(let i=0;i<all.length-1;i++){
     const fn=all[i][0],tn=all[i+1][0];
@@ -1316,7 +1328,7 @@ function drawCourseMap(canvas, course, windDir, large, windBandLabel, windKts, w
     const bw=windBoxW-10, bh=80;
     const cx2=bx+bw/2, cy2=by+bh/2;
     const arrowLen=28;
-    const rad=(DIR_DEGS[windDir])*Math.PI/180;
+    const rad=windDir*Math.PI/180;
     const tx2=cx2+arrowLen*Math.sin(rad), ty2=cy2-arrowLen*Math.cos(rad);
     const ex2=cx2-arrowLen*Math.sin(rad), ey2=cy2+arrowLen*Math.cos(rad);
     ctx.strokeStyle="rgba(232,160,32,.9)";ctx.lineWidth=3;ctx.lineCap="round";
@@ -1334,21 +1346,24 @@ function drawCourseMap(canvas, course, windDir, large, windBandLabel, windKts, w
     ctx.font="bold 18px 'Barlow Condensed',sans-serif";
     ctx.fillStyle="rgba(232,160,32,.55)";ctx.textAlign="center";
     ctx.fillText("WIND",cx2,by-2);
-    // Direction
-    ctx.font="bold 32px 'Barlow Condensed',sans-serif";
+    // Direction — cardinal on first line, degrees on second line
+    ctx.font="bold 28px 'Barlow Condensed',sans-serif";
     ctx.fillStyle="#e8a020";
-    ctx.fillText(windDir,cx2,by+bh+20);
+    ctx.fillText(degToCard(windDir),cx2,by+bh+18);
+    ctx.font="bold 22px 'Barlow Condensed',sans-serif";
+    ctx.fillStyle="rgba(232,160,32,.75)";
+    ctx.fillText(Math.round(windDir)+"°",cx2,by+bh+40);
     // Wind speed (mean kts)
     if(windKts!==null&&windKts!==undefined){
       ctx.font="bold 28px 'Barlow Condensed',sans-serif";
       ctx.fillStyle="#ffffff";
-      ctx.fillText(windKts+"kt",cx2,by+bh+50);
+      ctx.fillText(windKts+"kt",cx2,by+bh+62);
     }
     // Gust
     if(windGust!==null&&windGust!==undefined){
       ctx.font="bold 20px 'Barlow Condensed',sans-serif";
       ctx.fillStyle="#e07070";
-      ctx.fillText("Gust "+windGust,cx2,by+bh+74);
+      ctx.fillText("Gust "+windGust,cx2,by+bh+86);
     }
   }
 }
@@ -1395,13 +1410,14 @@ function openOverlay(courseData){
     <div class="ovl-marks" id="ovlMarksDetail"></div>`;
 
   // Marks detail
-  const lapSet=new Set(c.lap.map(m=>m[0]));
-  const finalSet=new Set(c.final.map(m=>m[0]));
-  const initialSet=new Set(c.initial.map(m=>m[0]));
+  const lapSet=new Set(c.lap.map(m=>m[0]+'|'+m[1]));
+  const finalSet=new Set(c.final.map(m=>m[0]+'|'+m[1]));
+  const initialSet=new Set(c.initial.map(m=>m[0]+'|'+m[1]));
   const marksHtml=c.marks.map((m,i)=>{
     const[name,side]=m;
     const isEnd=i===0||i===c.marks.length-1;
-    const isInitial=initialSet.has(name)&&!lapSet.has(name)&&!finalSet.has(name);
+    const key=name+'|'+side;
+    const isInitial=initialSet.has(key)&&!lapSet.has(key)&&!finalSet.has(key);
     let cls="mk ";
     if(isEnd)cls+="mk-end";else if(side==="P")cls+="mk-P";else cls+="mk-S";
     if(!isEnd&&isInitial)cls+=" mk-once";
@@ -1465,7 +1481,7 @@ function render(){
   const effectivePY=!isNaN(classPY)?classPY:FLEET_MID_PY[fleetKey];
   const className=!isNaN(classPY)&&classEl.selectedOptions[0]?classEl.selectedOptions[0].text:"";
 
-  const windFromDeg=selWind!==null?DIR_DEGS[selWind]:null;
+  const windFromDeg=selWind!==null?selWind:null;
 
   const el=document.getElementById("results");
   if(!selWind){
@@ -1478,7 +1494,30 @@ function render(){
   }
 
   const slow=fleet==="slow";
-  const candidates=(WIND_MAP[selWind]||[]).filter(l=>{
+  // Get courses for the wind direction, including boundary blending
+  function getWindCandidates(deg){
+    if(deg===null||deg===undefined) return [];
+    const BOUNDARY=5; // degrees — if within this of a zone boundary, include both zones
+    const zoneDeg=22.5; // each of 16 zones spans 22.5°
+    // Find primary zone
+    const card=degToCard(deg);
+    let courses=[...(WIND_MAP[card]||[])];
+    // Check distance to zone boundary
+    const cardDeg=DIR_DEGS[card];
+    let diff=((deg-cardDeg)+360)%360;
+    if(diff>180) diff=360-diff;
+    // diff is degrees from zone centre (0=centre, 11.25=boundary)
+    const distToBoundary=11.25-diff; // negative means past boundary
+    if(Math.abs(diff-11.25)<=BOUNDARY){
+      // Near a boundary — find which neighbour and add their courses
+      const idx2=DIRS.indexOf(card);
+      const neighbour=diff>11.25?DIRS[(idx2+1)%16]:DIRS[(idx2+15)%16];
+      const extra=WIND_MAP[neighbour]||[];
+      extra.forEach(function(c){if(!courses.includes(c))courses.push(c);});
+    }
+    return courses;
+  }
+  const candidates=(getWindCandidates(selWind)||[]).filter(l=>{
     const c=COURSES[l];if(!c)return false;
     if(slow&&(c.type==="MC"||c.type==="LC"))return false;
     if(!selectedLens.includes(c.type))return false;
@@ -1527,14 +1566,13 @@ function render(){
       var _rw=(_tg-initDist-finalDist)/(lapOneway+returnDist);
       var _lo=Math.max(1,Math.floor(_rw)),_hi=Math.min(6,Math.ceil(_rw));
       var _l=_lo===_hi?_lo:(
-        Math.abs((initDist+_lo*lapOneway+(_lo-1)*returnDist+finalDist)/_sp*60-duration)
-        <=Math.abs((initDist+_hi*lapOneway+(_hi-1)*returnDist+finalDist)/_sp*60-duration)?_lo:_hi);
+        ((initDist+_lo*lapOneway+(_lo-1)*returnDist+finalDist)/_sp*60>=duration)?_lo:_hi);
       var _tot=initDist+_l*lapOneway+(_l-1)*returnDist+finalDist;
       return{laps:_l,mins:Math.round(_tot/_sp*60)};
     }
     var rowFast=_rowFL('fast'),rowMed=_rowFL('medium'),rowSlow=_rowFL('slow');
     return{l,c,lapDist,lapOneway,returnDist,initDist,finalDist,laps,totalNm,timeMins,lapTimeMins,
-      diff:Math.abs(timeMins-duration),totalWWnm,wwPct,wwLegsPerLap,wwLegsOnce,speed,
+      diff:Math.abs(timeMins-duration),totalWWnm,wwPct,wwFrac:wwFrac1,wwLegsPerLap,wwLegsOnce,speed,
       rowFast,rowMed,rowSlow};
   });
 
@@ -1544,16 +1582,17 @@ function render(){
   // Build compact rows: mini-canvas | letter+%WW+marks | laps+time only
   let html='';
   scored.forEach(function(s,idx){
-    const lapSet=new Set(s.c.lap.map(function(m){return m[0];}));
-    const finalSet=new Set(s.c.final.map(function(m){return m[0];}));
-    const initialSet=new Set(s.c.initial.map(function(m){return m[0];}));
+    const lapSet=new Set(s.c.lap.map(function(m){return m[0]+'|'+m[1];}));
+    const finalSet=new Set(s.c.final.map(function(m){return m[0]+'|'+m[1];}));
+    const initialSet=new Set(s.c.initial.map(function(m){return m[0]+'|'+m[1];}));
     const warns=[];
     if(s.c.hwOnly)warns.push('HW only');
     if(s.c.avoidLW)warns.push('Avoid LW');
     const marksHtml=s.c.marks.map(function(m,i){
       const name=m[0],side=m[1];
       const isEnd=i===0||i===s.c.marks.length-1;
-      const isOnce=initialSet.has(name)&&!lapSet.has(name)&&!finalSet.has(name)&&!isEnd;
+      const key=name+'|'+side;
+      const isOnce=initialSet.has(key)&&!lapSet.has(key)&&!finalSet.has(key)&&!isEnd;
       let cls='cs-mk '+(isEnd?'cs-mk-e':side==='P'?'cs-mk-p':'cs-mk-s')+(isOnce?' cs-mk-once':'');
       const lbl=isEnd?'S/F':name;
       const arr=i<s.c.marks.length-1?'<span style="color:rgba(255,255,255,.18);font-size:18px;margin:0 1px;">›</span>':'';
@@ -1617,7 +1656,7 @@ function drawMiniCourse(ctx,W,H,course,windDir){
     return[(mk.lon-minLon)*sc+offX, H-(mk.lat-minLat)*sc-offY];
   }
   // Determine windward legs by calling isWindwardLeg directly on each pair
-  const windFromDeg=(windDir!==null&&windDir!==undefined&&DIR_DEGS[windDir]!==undefined)?DIR_DEGS[windDir]:null;
+  const windFromDeg=(windDir!==null&&windDir!==undefined)?windDir:null;
   // Draw all legs dashed first
   ctx.beginPath();
   var started=false;
@@ -1666,18 +1705,18 @@ function openCsMap(letter){
   var _wb=getWindBand();
   function _fleetLaps(fleetKey){
     var _epy=FLEET_MID_PY[fleetKey]||1104;
-    // Use actual wwFrac from scored entry (same as course list rows use)
-    var _wwf=s.wwPct>0?s.wwPct/100:0.38;
+    // Use exact wwFrac stored at scoring time (same source as course list rows)
+    var _wwf=s.wwFrac>0?s.wwFrac:0.38;
     var _spd=courseSpeed(fleetKey,_wb,_wwf,_epy);
     var _tgt=_spd*(_dur/60);
     var _raw=(_tgt-s.initDist-s.finalDist)/(s.lapOneway+s.returnDist);
     var _lo=Math.max(1,Math.floor(_raw)),_hi=Math.min(6,Math.ceil(_raw));
     var _l=_lo===_hi?_lo:(
-      Math.abs((s.initDist+_lo*s.lapOneway+(_lo-1)*s.returnDist+s.finalDist)/_spd*60-_dur)
-      <=Math.abs((s.initDist+_hi*s.lapOneway+(_hi-1)*s.returnDist+s.finalDist)/_spd*60-_dur)?_lo:_hi);
+      ((s.initDist+_lo*s.lapOneway+(_lo-1)*s.returnDist+s.finalDist)/_spd*60>=_dur)?_lo:_hi);
     var _tot=s.initDist+_l*s.lapOneway+(_l-1)*s.returnDist+s.finalDist;
-    var _racingNm=_tot-s.initDist-s.finalDist;
-    return{laps:_l,totalMins:Math.round(_tot/_spd*60),lapMins:_l>0?Math.round(_racingNm/_l/_spd*60):0};
+    // Per-lap time = one full lap circuit (lapOneway + returnDist) at fleet speed
+    var _lapMins=_spd>0?Math.round(s.lapDist/_spd*60):0;
+    return{laps:_l,totalMins:Math.round(_tot/_spd*60),lapMins:_lapMins};
   }
   var fD=_fleetLaps('fast'),mD=_fleetLaps('medium'),sD=_fleetLaps('slow');
   var fLaps=fD.laps,mLaps=mD.laps,sLaps=sD.laps;
@@ -1685,12 +1724,13 @@ function openCsMap(letter){
     '<div class="cs-map-stat"><div class="cs-map-stat-lbl">Total course</div><div class="cs-map-stat-n">'+s.totalNm.toFixed(2)+'nm</div></div>'
     +'<div class="cs-map-stat"><div class="cs-map-stat-lbl">Per lap</div><div class="cs-map-stat-n">'+s.lapDist.toFixed(2)+'nm</div></div>'
     +'<div class="cs-map-stat cs-map-back-cell" id="cs-map-back-btn"><div class="cs-map-back-arr">←</div><div class="cs-map-stat-u">back</div></div>';
-  var _lS=new Set(s.c.lap.map(function(m){return m[0];}));
-  var _fS=new Set(s.c.final.map(function(m){return m[0];}));
-  var _iS=new Set(s.c.initial.map(function(m){return m[0];}));
+  var _lS=new Set(s.c.lap.map(function(m){return m[0]+'|'+m[1];}));
+  var _fS=new Set(s.c.final.map(function(m){return m[0]+'|'+m[1];}));
+  var _iS=new Set(s.c.initial.map(function(m){return m[0]+'|'+m[1];}));
   var marksHtml=s.c.marks.map(function(m,i){
     var name=m[0],side=m[1],isEnd=i===0||i===s.c.marks.length-1;
-    var isOnce=_iS.has(name)&&!_lS.has(name)&&!_fS.has(name)&&!isEnd;
+    var key=name+'|'+side;
+    var isOnce=_iS.has(key)&&!_lS.has(key)&&!_fS.has(key)&&!isEnd;
     var cls='cs-map-mk '+(isEnd?'cs-map-mk-e':side==='P'?'cs-map-mk-p':'cs-map-mk-s')+(isOnce?' cs-map-mk-once':'');
     var lbl=isEnd?'S/F':name+(side&&!isEnd?' ('+side+')':'');
     var arr=i<s.c.marks.length-1?'<span class="cs-map-arr">›</span>':'';
@@ -1729,7 +1769,7 @@ function openCsMap(letter){
 // ═══════════════════════════════════════════════════════
 // FORECAST SCREEN — API calls & logic
 // ═══════════════════════════════════════════════════════
-const APP_VERSION = 'v3.25 · 27 Mar 2026';
+const APP_VERSION = 'v3.29 · 01 Apr 2026';
 const ADMIRALTY_KEY  = '2ee4d4218fd040678f0cf6886bacc624';
 const ADMIRALTY_STATION = '0062'; // Southampton
 const FC_LAT  = 50.855;  // Hamble Point buoy
@@ -1953,24 +1993,28 @@ async function fetchModelMeta(){
   const runH=Math.floor(Math.max(0,utcH-4)/6)*6;
   return{runLabel:String(runH).padStart(2,'0')+':00 UTC'};
 }
-const WIND_ARROWS={
-  'N':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="14.00" y1="3.00" x2="14.00" y2="25.00" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="14.00,25.00 10.00,18.00 18.00,18.00" fill="#e8a020"/><circle cx="14.00" cy="3.00" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'NNE':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="18.21" y1="3.84" x2="9.79" y2="24.16" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="9.79,24.16 8.77,16.16 16.16,19.23" fill="#e8a020"/><circle cx="18.21" cy="3.84" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'NE':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="21.78" y1="6.22" x2="6.22" y2="21.78" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="6.22,21.78 8.34,14.00 14.00,19.66" fill="#e8a020"/><circle cx="21.78" cy="6.22" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'ENE':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="24.16" y1="9.79" x2="3.84" y2="18.21" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="3.84,18.21 8.77,11.84 11.84,19.23" fill="#e8a020"/><circle cx="24.16" cy="9.79" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'E':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="25.00" y1="14.00" x2="3.00" y2="14.00" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="3.00,14.00 10.00,10.00 10.00,18.00" fill="#e8a020"/><circle cx="25.00" cy="14.00" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'ESE':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="24.16" y1="18.21" x2="3.84" y2="9.79" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="3.84,9.79 11.84,8.77 8.77,16.16" fill="#e8a020"/><circle cx="24.16" cy="18.21" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'SE':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="21.78" y1="21.78" x2="6.22" y2="6.22" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="6.22,6.22 14.00,8.34 8.34,14.00" fill="#e8a020"/><circle cx="21.78" cy="21.78" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'SSE':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="18.21" y1="24.16" x2="9.79" y2="3.84" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="9.79,3.84 16.16,8.77 8.77,11.84" fill="#e8a020"/><circle cx="18.21" cy="24.16" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'S':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="14.00" y1="25.00" x2="14.00" y2="3.00" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="14.00,3.00 18.00,10.00 10.00,10.00" fill="#e8a020"/><circle cx="14.00" cy="25.00" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'SSW':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="9.79" y1="24.16" x2="18.21" y2="3.84" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="18.21,3.84 19.23,11.84 11.84,8.77" fill="#e8a020"/><circle cx="9.79" cy="24.16" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'SW':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="6.22" y1="21.78" x2="21.78" y2="6.22" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="21.78,6.22 19.66,14.00 14.00,8.34" fill="#e8a020"/><circle cx="6.22" cy="21.78" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'WSW':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="3.84" y1="18.21" x2="24.16" y2="9.79" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="24.16,9.79 19.23,16.16 16.16,8.77" fill="#e8a020"/><circle cx="3.84" cy="18.21" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'W':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="3.00" y1="14.00" x2="25.00" y2="14.00" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="25.00,14.00 18.00,18.00 18.00,10.00" fill="#e8a020"/><circle cx="3.00" cy="14.00" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'WNW':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="3.84" y1="9.79" x2="24.16" y2="18.21" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="24.16,18.21 16.16,19.23 19.23,11.84" fill="#e8a020"/><circle cx="3.84" cy="9.79" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'NW':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="6.22" y1="6.22" x2="21.78" y2="21.78" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="21.78,21.78 14.00,19.66 19.66,14.00" fill="#e8a020"/><circle cx="6.22" cy="6.22" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'NNW':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="9.79" y1="3.84" x2="18.21" y2="24.16" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="18.21,24.16 11.84,19.23 19.23,16.16" fill="#e8a020"/><circle cx="9.79" cy="3.84" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-};
+// Dynamic wind arrow SVG generator — supports any degree, colour-coded by trend
+function makeWindArrow(deg, color){
+  color=color||'#e8a020';
+  const cx=14,cy=14,r=11;
+  const rad=deg*Math.PI/180;
+  // Tail at "from" direction, head at "to" direction
+  const tx=+(cx+r*Math.sin(rad)).toFixed(2), ty=+(cy-r*Math.cos(rad)).toFixed(2);
+  const ex=+(cx-r*Math.sin(rad)).toFixed(2), ey=+(cy+r*Math.cos(rad)).toFixed(2);
+  // Arrowhead geometry (length 7, half-width 4)
+  const ddx=ex-tx,ddy=ey-ty,dist=Math.sqrt(ddx*ddx+ddy*ddy);
+  const ux=ddx/dist,uy=ddy/dist,vx=-uy,vy=ux,hl=7,hw=4;
+  const hx=+(ex-ux*hl).toFixed(2),hy=+(ey-uy*hl).toFixed(2);
+  const p1x=+(hx+vx*hw).toFixed(2),p1y=+(hy+vy*hw).toFixed(2);
+  const p2x=+(hx-vx*hw).toFixed(2),p2y=+(hy-vy*hw).toFixed(2);
+  // Semi-transparent fill for tail circle matches arrow colour
+  const alpha=color==='#4ec87a'?'rgba(78,200,122,0.35)':color==='#e05050'?'rgba(224,80,80,0.35)':'rgba(232,160,32,0.35)';
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">`+
+    `<line x1="${tx}" y1="${ty}" x2="${ex}" y2="${ey}" stroke="${color}" stroke-width="2.2" stroke-linecap="round"/>`+
+    `<polygon points="${ex},${ey} ${p1x},${p1y} ${p2x},${p2y}" fill="${color}"/>`+
+    `<circle cx="${tx}" cy="${ty}" r="2.2" fill="${alpha}" stroke="${color}" stroke-width="1"/>`+
+    `</svg>`;
+}
 
 function wmoSymbol(code){
   if(code===null||code===undefined) return '—';
@@ -2023,6 +2067,7 @@ async function runForecast(){
     const windowEvs=fcTideEvents.filter(function(e){return e.time>=winStart&&e.time<=winEnd;});
     const tbody=document.getElementById('fc-tbody');
     tbody.innerHTML='';
+    let fcPrevDir=null;
     rowTimes.forEach(function(t,idx){
       const isMid=idx===midRowIndex;
       const isStart=Math.abs(t-startHour)<1800000;
@@ -2055,9 +2100,19 @@ async function runForecast(){
       // Mid row: just the time, styled bigger via CSS — no extra label
       const tLabel=t.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
 
-      // Snap direction to nearest 16-point compass for arrow lookup
-      const snapDir=dir!==null?snapToNearest16(dir):null;
-      const wArr=snapDir!==null?'<div class="fc-wind-cell">'+WIND_ARROWS[snapDir]+'<div class="fc-wind-card">'+snapDir+'</div></div>':'\u2014';
+      // Snap direction to nearest 5° increment for precise arrow
+      const snapDeg=dir!==null?(Math.round(dir/5)*5)%360:null;
+      // Colour-code arrow by trend vs previous period
+      let arrowCol='#e8a020'; // default amber
+      if(snapDeg!==null&&fcPrevDir!==null){
+        let diff=snapDeg-fcPrevDir;
+        while(diff>180)diff-=360;
+        while(diff<-180)diff+=360;
+        if(diff>2)arrowCol='#4ec87a';       // veering (increasing) — green
+        else if(diff<-2)arrowCol='#e05050'; // backing (decreasing) — red
+      }
+      if(snapDeg!==null)fcPrevDir=snapDeg;
+      const wArr=snapDeg!==null?'<div class="fc-wind-cell">'+makeWindArrow(snapDeg,arrowCol)+'<div class="fc-wind-card" style="color:'+arrowCol+'">'+degToCard(snapDeg)+' '+snapDeg+'°</div></div>':'\u2014';
       const kCls=kts===null?'':kts<8?'wind-light':kts<15?'wind-mod':kts<21?'wind-fresh':'wind-strong';
       const ktsStr=kts!==null?'<span class="'+kCls+'">'+kts+'</span>':'\u2014';
       const gCls=gustClass(gust);
@@ -2099,7 +2154,7 @@ async function runForecast(){
 document.getElementById('fc-next-btn').addEventListener('click',function(){
   // Pre-populate course screen with MIDPOINT conditions
   if(fcStartData){
-    if(fcStartData.dir!==null){setWindDir(snapToNearest(fcStartData.dir));}
+    if(fcStartData.dir!==null){setWindDir(fcStartData.dir);}
     if(fcStartData.kts!==null){
       const ws=document.getElementById('windspeed');
       if(ws){
