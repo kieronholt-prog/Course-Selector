@@ -1151,7 +1151,7 @@ function drawCourseMap(canvas, course, windDir, large, windBandLabel, windKts, w
   const pts=all.map(m=>MARKS[m[0]]?xy(MARKS[m[0]]):null);
 
   // Pre-compute windward status per leg
-  const windFromDeg=windDir!==null&&windDir!==undefined?DIR_DEGS[windDir]:null;
+  const windFromDeg=windDir!==null&&windDir!==undefined?windDir:null;
   const legWW=[];
   for(let i=0;i<all.length-1;i++){
     const fn=all[i][0],tn=all[i+1][0];
@@ -1349,7 +1349,7 @@ function drawCourseMap(canvas, course, windDir, large, windBandLabel, windKts, w
     // Direction
     ctx.font="bold 32px 'Barlow Condensed',sans-serif";
     ctx.fillStyle="#e8a020";
-    ctx.fillText(windDir,cx2,by+bh+20);
+    ctx.fillText(degToCard(windDir)+" "+Math.round(windDir)+"°",cx2,by+bh+20);
     // Wind speed (mean kts)
     if(windKts!==null&&windKts!==undefined){
       ctx.font="bold 28px 'Barlow Condensed',sans-serif";
@@ -2092,7 +2092,7 @@ async function runForecast(){
 
       // Snap direction to nearest 16-point compass for arrow lookup
       const snapDir=dir!==null?snapToNearest16(dir):null;
-      const wArr=snapDir!==null?'<div class="fc-wind-cell">'+WIND_ARROWS[snapDir]+'<div class="fc-wind-card">'+snapDir+'</div></div>':'\u2014';
+      const wArr=snapDir!==null?'<div class="fc-wind-cell">'+WIND_ARROWS[snapDir]+'<div class="fc-wind-card">'+snapDir+' '+Math.round(dir)+'°</div></div>':'\u2014';
       const kCls=kts===null?'':kts<8?'wind-light':kts<15?'wind-mod':kts<21?'wind-fresh':'wind-strong';
       const ktsStr=kts!==null?'<span class="'+kCls+'">'+kts+'</span>':'\u2014';
       const gCls=gustClass(gust);
