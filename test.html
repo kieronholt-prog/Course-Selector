@@ -1328,7 +1328,7 @@ function drawCourseMap(canvas, course, windDir, large, windBandLabel, windKts, w
     const bw=windBoxW-10, bh=80;
     const cx2=bx+bw/2, cy2=by+bh/2;
     const arrowLen=28;
-    const rad=(DIR_DEGS[windDir])*Math.PI/180;
+    const rad=windDir*Math.PI/180;
     const tx2=cx2+arrowLen*Math.sin(rad), ty2=cy2-arrowLen*Math.cos(rad);
     const ex2=cx2-arrowLen*Math.sin(rad), ey2=cy2+arrowLen*Math.cos(rad);
     ctx.strokeStyle="rgba(232,160,32,.9)";ctx.lineWidth=3;ctx.lineCap="round";
@@ -1988,24 +1988,28 @@ async function fetchModelMeta(){
   const runH=Math.floor(Math.max(0,utcH-4)/6)*6;
   return{runLabel:String(runH).padStart(2,'0')+':00 UTC'};
 }
-const WIND_ARROWS={
-  'N':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="14.00" y1="3.00" x2="14.00" y2="25.00" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="14.00,25.00 10.00,18.00 18.00,18.00" fill="#e8a020"/><circle cx="14.00" cy="3.00" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'NNE':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="18.21" y1="3.84" x2="9.79" y2="24.16" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="9.79,24.16 8.77,16.16 16.16,19.23" fill="#e8a020"/><circle cx="18.21" cy="3.84" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'NE':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="21.78" y1="6.22" x2="6.22" y2="21.78" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="6.22,21.78 8.34,14.00 14.00,19.66" fill="#e8a020"/><circle cx="21.78" cy="6.22" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'ENE':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="24.16" y1="9.79" x2="3.84" y2="18.21" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="3.84,18.21 8.77,11.84 11.84,19.23" fill="#e8a020"/><circle cx="24.16" cy="9.79" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'E':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="25.00" y1="14.00" x2="3.00" y2="14.00" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="3.00,14.00 10.00,10.00 10.00,18.00" fill="#e8a020"/><circle cx="25.00" cy="14.00" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'ESE':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="24.16" y1="18.21" x2="3.84" y2="9.79" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="3.84,9.79 11.84,8.77 8.77,16.16" fill="#e8a020"/><circle cx="24.16" cy="18.21" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'SE':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="21.78" y1="21.78" x2="6.22" y2="6.22" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="6.22,6.22 14.00,8.34 8.34,14.00" fill="#e8a020"/><circle cx="21.78" cy="21.78" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'SSE':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="18.21" y1="24.16" x2="9.79" y2="3.84" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="9.79,3.84 16.16,8.77 8.77,11.84" fill="#e8a020"/><circle cx="18.21" cy="24.16" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'S':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="14.00" y1="25.00" x2="14.00" y2="3.00" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="14.00,3.00 18.00,10.00 10.00,10.00" fill="#e8a020"/><circle cx="14.00" cy="25.00" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'SSW':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="9.79" y1="24.16" x2="18.21" y2="3.84" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="18.21,3.84 19.23,11.84 11.84,8.77" fill="#e8a020"/><circle cx="9.79" cy="24.16" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'SW':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="6.22" y1="21.78" x2="21.78" y2="6.22" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="21.78,6.22 19.66,14.00 14.00,8.34" fill="#e8a020"/><circle cx="6.22" cy="21.78" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'WSW':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="3.84" y1="18.21" x2="24.16" y2="9.79" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="24.16,9.79 19.23,16.16 16.16,8.77" fill="#e8a020"/><circle cx="3.84" cy="18.21" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'W':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="3.00" y1="14.00" x2="25.00" y2="14.00" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="25.00,14.00 18.00,18.00 18.00,10.00" fill="#e8a020"/><circle cx="3.00" cy="14.00" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'WNW':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="3.84" y1="9.79" x2="24.16" y2="18.21" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="24.16,18.21 16.16,19.23 19.23,11.84" fill="#e8a020"/><circle cx="3.84" cy="9.79" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'NW':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="6.22" y1="6.22" x2="21.78" y2="21.78" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="21.78,21.78 14.00,19.66 19.66,14.00" fill="#e8a020"/><circle cx="6.22" cy="6.22" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-  'NNW':'<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><line x1="9.79" y1="3.84" x2="18.21" y2="24.16" stroke="#e8a020" stroke-width="2.2" stroke-linecap="round"/><polygon points="18.21,24.16 11.84,19.23 19.23,16.16" fill="#e8a020"/><circle cx="9.79" cy="3.84" r="2.2" fill="rgba(232,160,32,0.35)" stroke="#e8a020" stroke-width="1"/></svg>',
-};
+// Dynamic wind arrow SVG generator — supports any degree, colour-coded by trend
+function makeWindArrow(deg, color){
+  color=color||'#e8a020';
+  const cx=14,cy=14,r=11;
+  const rad=deg*Math.PI/180;
+  // Tail at "from" direction, head at "to" direction
+  const tx=+(cx+r*Math.sin(rad)).toFixed(2), ty=+(cy-r*Math.cos(rad)).toFixed(2);
+  const ex=+(cx-r*Math.sin(rad)).toFixed(2), ey=+(cy+r*Math.cos(rad)).toFixed(2);
+  // Arrowhead geometry (length 7, half-width 4)
+  const ddx=ex-tx,ddy=ey-ty,dist=Math.sqrt(ddx*ddx+ddy*ddy);
+  const ux=ddx/dist,uy=ddy/dist,vx=-uy,vy=ux,hl=7,hw=4;
+  const hx=+(ex-ux*hl).toFixed(2),hy=+(ey-uy*hl).toFixed(2);
+  const p1x=+(hx+vx*hw).toFixed(2),p1y=+(hy+vy*hw).toFixed(2);
+  const p2x=+(hx-vx*hw).toFixed(2),p2y=+(hy-vy*hw).toFixed(2);
+  // Semi-transparent fill for tail circle matches arrow colour
+  const alpha=color==='#4ec87a'?'rgba(78,200,122,0.35)':color==='#e05050'?'rgba(224,80,80,0.35)':'rgba(232,160,32,0.35)';
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">`+
+    `<line x1="${tx}" y1="${ty}" x2="${ex}" y2="${ey}" stroke="${color}" stroke-width="2.2" stroke-linecap="round"/>`+
+    `<polygon points="${ex},${ey} ${p1x},${p1y} ${p2x},${p2y}" fill="${color}"/>`+
+    `<circle cx="${tx}" cy="${ty}" r="2.2" fill="${alpha}" stroke="${color}" stroke-width="1"/>`+
+    `</svg>`;
+}
 
 function wmoSymbol(code){
   if(code===null||code===undefined) return '—';
@@ -2058,6 +2062,7 @@ async function runForecast(){
     const windowEvs=fcTideEvents.filter(function(e){return e.time>=winStart&&e.time<=winEnd;});
     const tbody=document.getElementById('fc-tbody');
     tbody.innerHTML='';
+    let fcPrevDir=null;
     rowTimes.forEach(function(t,idx){
       const isMid=idx===midRowIndex;
       const isStart=Math.abs(t-startHour)<1800000;
@@ -2090,9 +2095,19 @@ async function runForecast(){
       // Mid row: just the time, styled bigger via CSS — no extra label
       const tLabel=t.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
 
-      // Snap direction to nearest 16-point compass for arrow lookup
-      const snapDir=dir!==null?snapToNearest16(dir):null;
-      const wArr=snapDir!==null?'<div class="fc-wind-cell">'+WIND_ARROWS[snapDir]+'<div class="fc-wind-card">'+snapDir+' '+Math.round(dir)+'°</div></div>':'\u2014';
+      // Snap direction to nearest 5° increment for precise arrow
+      const snapDeg=dir!==null?(Math.round(dir/5)*5)%360:null;
+      // Colour-code arrow by trend vs previous period
+      let arrowCol='#e8a020'; // default amber
+      if(snapDeg!==null&&fcPrevDir!==null){
+        let diff=snapDeg-fcPrevDir;
+        while(diff>180)diff-=360;
+        while(diff<-180)diff+=360;
+        if(diff>2)arrowCol='#4ec87a';       // veering (increasing) — green
+        else if(diff<-2)arrowCol='#e05050'; // backing (decreasing) — red
+      }
+      if(snapDeg!==null)fcPrevDir=snapDeg;
+      const wArr=snapDeg!==null?'<div class="fc-wind-cell">'+makeWindArrow(snapDeg,arrowCol)+'<div class="fc-wind-card" style="color:'+arrowCol+'">'+degToCard(snapDeg)+' '+snapDeg+'°</div></div>':'\u2014';
       const kCls=kts===null?'':kts<8?'wind-light':kts<15?'wind-mod':kts<21?'wind-fresh':'wind-strong';
       const ktsStr=kts!==null?'<span class="'+kCls+'">'+kts+'</span>':'\u2014';
       const gCls=gustClass(gust);
