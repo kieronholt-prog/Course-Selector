@@ -1775,9 +1775,22 @@ const ADMIRALTY_STATION = '0062'; // Southampton
 const FC_LAT  = 50.855;  // Hamble Point buoy
 const FC_LON  = -1.307;
 
+// UK timezone helpers — BST = UTC+1 last Sun Mar → last Sun Oct
+function getUKOffset(d){
+  const y=d.getUTCFullYear();
+  const bstStart=new Date(Date.UTC(y,2,31-(new Date(Date.UTC(y,2,31)).getUTCDay()),1,0,0));
+  const bstEnd  =new Date(Date.UTC(y,9,31-(new Date(Date.UTC(y,9,31)).getUTCDay()),1,0,0));
+  return d>=bstStart&&d<bstEnd?1:0;
+}
+function toUKLocalTime(d){return new Date(d.getTime()+getUKOffset(d)*3600000);}
+function formatUKTime(d){
+  const u=toUKLocalTime(d);
+  return String(u.getUTCHours()).padStart(2,'0')+':'+String(u.getUTCMinutes()).padStart(2,'0');
+}
+
 (function initFC(){
   const now = new Date();
-  const dateStr = now.toLocaleDateString('en-CA'); // local date (YYYY-MM-DD), not UTC
+  const dateStr = now.toISOString().slice(0,10);
   document.getElementById('fc-date').value = dateStr;
   const dow = now.getDay();
   const timeStr = (dow===0||dow===6) ? '10:30' : '18:30';
@@ -1828,10 +1841,8 @@ function fcTidalState(t, events){
   const sorted=[...events].sort((a,b)=>a.time-b.time);
   const ms=t.getTime();
   for(const ev of sorted){
-    // HW: ±30 min window. LW: ±2 hour window (4-hour low-tide period for course selection)
-    const hwWindow=1800000, lwWindow=7200000;
-    const window=ev.type==='HighWater'?hwWindow:lwWindow;
-    if(Math.abs(ev.time.getTime()-ms)<window){
+    const win=ev.type==='HighWater'?1800000:7200000; // HW ±30 min, LW ±2 hours
+    if(Math.abs(ev.time.getTime()-ms)<win){
       return ev.type==='HighWater'
         ?{state:'hw',label:'High Water',cls:'tide-hw'}
         :{state:'lw',label:'Low Water',cls:'tide-lw'};
@@ -1890,9 +1901,7 @@ async function fetchAdmiraltyTides(){
   if(!Array.isArray(data)){throw new Error('Unexpected tidal response format');}
   return data.map(function(e){
     const corr=e.EventType==='HighWater'?HW_CORR:LW_CORR;
-    // Admiralty API returns UTC times without 'Z' suffix — append it to force UTC parsing
-    const dt=e.DateTime.endsWith('Z')||e.DateTime.includes('+')?e.DateTime:e.DateTime+'Z';
-    return{time:new Date(new Date(dt).getTime()+corr),type:e.EventType,height:e.Height};
+    return{time:new Date(new Date(e.DateTime).getTime()+corr),type:e.EventType,height:e.Height};
   });
 }
 
@@ -1995,13 +2004,9 @@ function scrollMidRowToCenter(){
 
 async function fetchModelMeta(){
   const now=new Date();
-  const utcH=now.getUTCHours();
-  const runH=Math.floor(Math.max(0,utcH-4)/6)*6;
-  // Display run time in UK local time (BST or GMT) rather than UTC
-  const utcOffsetH=-now.getTimezoneOffset()/60; // +1 in BST, 0 in GMT
-  const localRunH=(runH+utcOffsetH+24)%24;
-  const tzLabel=utcOffsetH>0?'BST':'UTC';
-  return{runLabel:String(localRunH).padStart(2,'0')+':00 '+tzLabel};
+  const ukH=(now.getUTCHours()+getUKOffset(now))%24;
+  const runH=Math.floor(Math.max(0,ukH-4)/6)*6;
+  return{runLabel:String(runH).padStart(2,'0')+':00 UTC'};
 }
 // Dynamic wind arrow SVG generator — supports any degree, colour-coded by trend
 function makeWindArrow(deg, color){
@@ -2081,9 +2086,9 @@ async function runForecast(){
     rowTimes.forEach(function(t,idx){
       const isMid=idx===midRowIndex;
       const isStart=Math.abs(t-startHour)<1800000;
-      const h=t.getHours();
-      // Use the row's own local date (not a global UTC date) so cross-midnight rows get the correct key
-      const oKey=t.toLocaleDateString('en-CA')+'T'+String(h).padStart(2,'0')+':00';
+      const ukT=toUKLocalTime(t);
+      const h=ukT.getUTCHours();
+      const oKey=ukT.toISOString().slice(0,10)+'T'+String(h).padStart(2,'0')+':00';
       const wind=windLkp?windLkp[oKey]:null;
       const kts=wind?Math.round(wind.spd):null;
       const dir=wind?Math.round(wind.dir):null;
@@ -2101,7 +2106,7 @@ async function runForecast(){
         const isHW=ev.type==='HighWater';
         const typ=isHW?'\u2B06 HW':'\u2B07 LW';
         const ht=ev.height!==null?' '+ev.height.toFixed(1)+'m':'';
-        const etm=ev.time.toLocaleTimeString('en-GB',{timeZone:'Europe/London',hour:'2-digit',minute:'2-digit'});
+        const etm=formatUKTime(ev.time);
         evTr.innerHTML='<td colspan="5" style="color:'+(isHW?'#4ec87a':'#8a9fb5')+';text-align:left;padding:3px 8px;">'+typ+' '+etm+ht+'</td>';
         tbody.appendChild(evTr);
       });
@@ -2109,7 +2114,7 @@ async function runForecast(){
       // ONLY highlight the midpoint row — no other row gets special background
       if(isMid){tr.className='fc-mid-row';tr.id='fc-mid-row';}
       // Mid row: just the time, styled bigger via CSS — no extra label
-      const tLabel=t.toLocaleTimeString('en-GB',{timeZone:'Europe/London',hour:'2-digit',minute:'2-digit'});
+      const tLabel=formatUKTime(t);
 
       // Snap direction to nearest 5° increment for precise arrow
       const snapDeg=dir!==null?(Math.round(dir/5)*5)%360:null;
