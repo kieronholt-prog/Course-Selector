@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="WSC Courses">
@@ -20,8 +20,10 @@
   --r:10px;--rs:6px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
 body{font-family:'Barlow',sans-serif;background:var(--navy);color:var(--text);min-height:100vh;
   padding-bottom:env(safe-area-inset-bottom);position:relative;
+  -webkit-text-size-adjust:100%;text-size-adjust:100%;
   background-image:radial-gradient(ellipse 90% 40% at 50% 0%,rgba(30,58,110,.55) 0%,transparent 70%),
   repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,.013) 39px,rgba(255,255,255,.013) 40px),
   repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,255,255,.013) 39px,rgba(255,255,255,.013) 40px);}
@@ -488,16 +490,19 @@ canvas.mini:hover{border-color:rgba(232,160,32,.5);}
 /* ── Landscape device clock ── */
 #landscape-clock{display:none;position:fixed;inset:0;z-index:9999;background:var(--navy);
   align-items:center;justify-content:center;flex-direction:column;
-  padding:max(12px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right))
-           max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));
-  background-image:radial-gradient(ellipse 80% 50% at 50% 45%,rgba(30,58,110,.6) 0%,transparent 70%);}
+  padding:max(8px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right))
+           max(8px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left));
+  background-image:radial-gradient(ellipse 80% 50% at 50% 45%,rgba(30,58,110,.6) 0%,transparent 70%);
+  overflow:hidden;}
 #landscape-clock.active{display:flex;}
 body.lc-mode .app-shell{visibility:hidden;pointer-events:none;}
-.lc-time{font-family:'Barlow Condensed',sans-serif;font-size:clamp(64px,min(28vw,22vh),240px);
-  font-weight:700;color:#fff;letter-spacing:.04em;line-height:1;font-variant-numeric:tabular-nums;}
-.lc-sep{opacity:.45;margin:0 .02em;}
-.lc-date{font-family:'Barlow Condensed',sans-serif;font-size:clamp(18px,min(5vw,4vh),36px);
-  color:var(--muted);margin-top:16px;letter-spacing:.06em;text-transform:uppercase;}
+.lc-time{font-family:'Barlow Condensed',sans-serif;font-size:12px; /* sized by JS to fill screen */
+  font-weight:700;color:#fff;letter-spacing:.02em;line-height:1;font-variant-numeric:tabular-nums;
+  white-space:nowrap;flex-shrink:0;}
+.lc-sep{opacity:.45;margin:0 .015em;}
+.lc-date{font-family:'Barlow Condensed',sans-serif;font-size:18px;
+  color:var(--muted);margin-top:2vh;letter-spacing:.06em;text-transform:uppercase;
+  white-space:nowrap;flex-shrink:0;}
 </style>
 </head>
 <body>
@@ -1798,8 +1803,8 @@ function openCsMap(letter){
 // ═══════════════════════════════════════════════════════
 // FORECAST SCREEN — API calls & logic
 // ═══════════════════════════════════════════════════════
-const APP_VERSION = 'v3.52 · 28 Jul 2026';
-const FC_DATA_CACHE = 'wsc-data-v3.52';
+const APP_VERSION = 'v3.53 · 28 Jul 2026';
+const FC_DATA_CACHE = 'wsc-data-v3.53';
 const FC_SNAPSHOT_URL = '/__wsc_forecast_snapshot';
 const FC_SNAPSHOT_LS = 'wsc_forecast_snapshot_v1';
 const ADMIRALTY_KEY  = '2ee4d4218fd040678f0cf6886bacc624';
@@ -2442,6 +2447,7 @@ setInterval(function(){
 (function initLandscapeClock(){
   var overlay=document.getElementById('landscape-clock');
   if(!overlay) return;
+  var timeEl=document.getElementById('lc-time');
   var hEl=document.getElementById('lc-h');
   var mEl=document.getElementById('lc-m');
   var sEl=document.getElementById('lc-s');
@@ -2449,6 +2455,26 @@ setInterval(function(){
   var tickTimer=null;
 
   function pad(n){return String(n).padStart(2,'0');}
+
+  function fitClock(){
+    if(!overlay.classList.contains('active')) return;
+    var padX=16, padY=16;
+    var availW=Math.max(40, overlay.clientWidth-padX);
+    var availH=Math.max(40, overlay.clientHeight-padY);
+    // Reserve ~12% of height for the date line
+    var dateH=Math.max(16, Math.floor(availH*0.12));
+    dateEl.style.fontSize=dateH+'px';
+    dateEl.style.marginTop=Math.max(6, Math.floor(availH*0.03))+'px';
+    var timeH=availH-dateH-Math.max(6, Math.floor(availH*0.03));
+    var lo=12, hi=Math.max(13, Math.min(availW*1.2, timeH*1.8));
+    while(lo<hi-1){
+      var mid=(lo+hi)/2;
+      timeEl.style.fontSize=mid+'px';
+      if(timeEl.scrollWidth<=availW && timeEl.scrollHeight<=timeH) lo=mid;
+      else hi=mid;
+    }
+    timeEl.style.fontSize=lo+'px';
+  }
 
   function tick(){
     var now=new Date();
@@ -2461,10 +2487,9 @@ setInterval(function(){
   }
 
   function isLandscape(){
-    // iOS home-screen web apps can be unreliable with orientation media queries alone
-    if(window.screen && screen.orientation && typeof screen.orientation.type==='string'){
-      if(screen.orientation.type.indexOf('landscape')===0) return true;
-      if(screen.orientation.type.indexOf('portrait')===0) return false;
+    // Prefer physical width/height — most reliable after iOS home-screen rotation
+    if(window.innerWidth>0 && window.innerHeight>0){
+      return window.innerWidth>window.innerHeight;
     }
     if(typeof window.orientation==='number'){
       var o=Math.abs(window.orientation);
@@ -2475,7 +2500,7 @@ setInterval(function(){
       if(window.matchMedia('(orientation: landscape)').matches) return true;
       if(window.matchMedia('(orientation: portrait)').matches) return false;
     }catch(e){}
-    return window.innerWidth>window.innerHeight;
+    return false;
   }
 
   function updateClockMode(){
@@ -2484,7 +2509,11 @@ setInterval(function(){
       document.body.classList.add('lc-mode');
       overlay.setAttribute('aria-hidden','false');
       tick();
-      if(!tickTimer) tickTimer=setInterval(tick,250);
+      // Double-rAF so layout has settled before measuring
+      requestAnimationFrame(function(){
+        requestAnimationFrame(fitClock);
+      });
+      if(!tickTimer) tickTimer=setInterval(function(){tick();},250);
     }else{
       overlay.classList.remove('active');
       document.body.classList.remove('lc-mode');
@@ -2494,13 +2523,20 @@ setInterval(function(){
   }
 
   window.addEventListener('orientationchange',function(){
-    // iOS often reports old dimensions until the next frame
+    // iOS often reports old dimensions until the next frame(s)
     setTimeout(updateClockMode,50);
-    setTimeout(updateClockMode,300);
+    setTimeout(updateClockMode,250);
+    setTimeout(function(){updateClockMode();fitClock();},450);
   });
-  window.addEventListener('resize',updateClockMode);
+  window.addEventListener('resize',function(){
+    updateClockMode();
+    fitClock();
+  });
   if(screen.orientation && screen.orientation.addEventListener){
-    screen.orientation.addEventListener('change',updateClockMode);
+    screen.orientation.addEventListener('change',function(){
+      setTimeout(updateClockMode,50);
+      setTimeout(fitClock,100);
+    });
   }
   updateClockMode();
 })();
