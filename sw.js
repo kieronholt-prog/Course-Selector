@@ -1,6 +1,6 @@
 /* WSC Course Selector — service worker (shell + forecast/tide API cache) */
-const SHELL_CACHE = 'wsc-shell-v3.51';
-const DATA_CACHE = 'wsc-data-v3.51';
+const SHELL_CACHE = 'wsc-shell-v3.52';
+const DATA_CACHE = 'wsc-data-v3.52';
 const SHELL_ASSETS = ['./', './index.html', './sw.js'];
 
 const API_HOSTS = ['api.open-meteo.com', 'workers.dev'];
@@ -68,6 +68,7 @@ function networkFirstShell(req){
 }
 
 function networkFirstData(req){
+  var reqUrl=new URL(req.url);
   return caches.open(DATA_CACHE).then(function(cache){
     return fetch(req).then(function(res){
       if(res.ok) cache.put(req, res.clone());
@@ -75,7 +76,18 @@ function networkFirstData(req){
     }).catch(function(){
       return cache.match(req).then(function(cached){
         if(cached) return cached;
-        throw new Error('offline');
+        // Ignore query-string variations: match by origin + pathname
+        return cache.keys().then(function(keys){
+          for(var i=0;i<keys.length;i++){
+            try{
+              var k=new URL(keys[i].url);
+              if(k.origin===reqUrl.origin && k.pathname===reqUrl.pathname){
+                return cache.match(keys[i]);
+              }
+            }catch(e){}
+          }
+          throw new Error('offline');
+        });
       });
     });
   });

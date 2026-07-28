@@ -502,6 +502,10 @@ body.lc-mode .app-shell{visibility:hidden;pointer-events:none;}
 </head>
 <body>
 
+<div id="landscape-clock" aria-hidden="true">
+  <div class="lc-time" id="lc-time"><span id="lc-h">00</span><span class="lc-sep">:</span><span id="lc-m">00</span><span class="lc-sep">:</span><span id="lc-s">00</span></div>
+  <div class="lc-date" id="lc-date"></div>
+</div>
 
 <!-- ══════════════ FORECAST SCREEN ══════════════ -->
 <div class="app-shell"><div class="app-screen active" id="fc-screen">
@@ -1794,9 +1798,10 @@ function openCsMap(letter){
 // ═══════════════════════════════════════════════════════
 // FORECAST SCREEN — API calls & logic
 // ═══════════════════════════════════════════════════════
-const APP_VERSION = 'v3.51 · 28 Jul 2026';
-const FC_DATA_CACHE = 'wsc-data-v3.51';
+const APP_VERSION = 'v3.52 · 28 Jul 2026';
+const FC_DATA_CACHE = 'wsc-data-v3.52';
 const FC_SNAPSHOT_URL = '/__wsc_forecast_snapshot';
+const FC_SNAPSHOT_LS = 'wsc_forecast_snapshot_v1';
 const ADMIRALTY_KEY  = '2ee4d4218fd040678f0cf6886bacc624';
 const ADMIRALTY_STATION = '0062'; // Southampton
 const FC_LAT  = 50.855;  // Hamble Point buoy
@@ -2129,6 +2134,10 @@ function deserializeTideEvents(arr){
 }
 
 async function saveForecastSnapshot(snapshot){
+  // Prefer localStorage — reliable on iOS home-screen apps even when Cache API is flaky
+  try{
+    localStorage.setItem(FC_SNAPSHOT_LS, JSON.stringify(snapshot));
+  }catch(e){console.warn('Forecast localStorage save failed',e);}
   if(!('caches' in window)) return;
   try{
     const cache=await caches.open(FC_DATA_CACHE);
@@ -2139,6 +2148,10 @@ async function saveForecastSnapshot(snapshot){
 }
 
 async function loadForecastSnapshot(){
+  try{
+    const raw=localStorage.getItem(FC_SNAPSHOT_LS);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
   if(!('caches' in window)) return null;
   try{
     const cache=await caches.open(FC_DATA_CACHE);
@@ -2290,7 +2303,7 @@ async function runForecast(){
   document.getElementById('fc-next-btn').disabled=true;
   fcStartData=null;
   const startTime=new Date(dateVal+'T'+timeVal+':00');
-  let eventsRaw=null, windLkp=null, modelMeta=null, fromCache=false;
+  let eventsRaw=null, windLkp=null, modelMeta=null, usedCache=false;
 
   try{
     const results=await Promise.all([
@@ -2305,13 +2318,22 @@ async function runForecast(){
     console.warn('Forecast fetch failed',e);
   }
 
-  if(!eventsRaw&&!windLkp){
+  // Fill any missing pieces from the last good snapshot (tides often succeed
+  // offline via SW while Open-Meteo wind does not — still restore wind).
+  if(!eventsRaw || !windLkp || !modelMeta){
     const snap=await loadForecastSnapshot();
     if(snap){
-      eventsRaw=deserializeTideEvents(snap.tides);
-      windLkp=snap.windLkp;
-      modelMeta=snap.modelMeta||modelMeta;
-      fromCache=true;
+      if(!eventsRaw && snap.tides){
+        eventsRaw=deserializeTideEvents(snap.tides);
+        usedCache=true;
+      }
+      if(!windLkp && snap.windLkp){
+        windLkp=snap.windLkp;
+        usedCache=true;
+      }
+      if(!modelMeta && snap.modelMeta){
+        modelMeta=snap.modelMeta;
+      }
     }
   }
 
@@ -2326,19 +2348,22 @@ async function runForecast(){
 
   try{
     paintForecastTable(startTime,durationVal,eventsRaw,windLkp,modelMeta);
-    if(fromCache){
+    if(usedCache){
       const el=document.getElementById('fc-error');
       el.textContent='Offline — showing cached forecast & tide data';
       el.style.display='block';
-    }else{
+    }
+    // Only persist when we have wind — never overwrite a good wind cache with null
+    if(windLkp){
+      const existing=await loadForecastSnapshot();
       await saveForecastSnapshot({
         savedAt:new Date().toISOString(),
         dateVal:dateVal,
         timeVal:timeVal,
         durationVal:durationVal,
-        tides:serializeTideEvents(eventsRaw),
+        tides:serializeTideEvents(eventsRaw || (existing?deserializeTideEvents(existing.tides):[])),
         windLkp:windLkp,
-        modelMeta:modelMeta
+        modelMeta:modelMeta || (existing?existing.modelMeta:null)
       });
     }
   }catch(err){
@@ -2416,6 +2441,7 @@ setInterval(function(){
 // ── Landscape device clock (local time, no network) ──
 (function initLandscapeClock(){
   var overlay=document.getElementById('landscape-clock');
+  if(!overlay) return;
   var hEl=document.getElementById('lc-h');
   var mEl=document.getElementById('lc-m');
   var sEl=document.getElementById('lc-s');
@@ -2435,7 +2461,21 @@ setInterval(function(){
   }
 
   function isLandscape(){
-    return window.matchMedia('(orientation: landscape)').matches;
+    // iOS home-screen web apps can be unreliable with orientation media queries alone
+    if(window.screen && screen.orientation && typeof screen.orientation.type==='string'){
+      if(screen.orientation.type.indexOf('landscape')===0) return true;
+      if(screen.orientation.type.indexOf('portrait')===0) return false;
+    }
+    if(typeof window.orientation==='number'){
+      var o=Math.abs(window.orientation);
+      if(o===90||o===270) return true;
+      if(o===0||o===180) return false;
+    }
+    try{
+      if(window.matchMedia('(orientation: landscape)').matches) return true;
+      if(window.matchMedia('(orientation: portrait)').matches) return false;
+    }catch(e){}
+    return window.innerWidth>window.innerHeight;
   }
 
   function updateClockMode(){
@@ -2444,7 +2484,7 @@ setInterval(function(){
       document.body.classList.add('lc-mode');
       overlay.setAttribute('aria-hidden','false');
       tick();
-      if(!tickTimer) tickTimer=setInterval(tick,1000);
+      if(!tickTimer) tickTimer=setInterval(tick,250);
     }else{
       overlay.classList.remove('active');
       document.body.classList.remove('lc-mode');
@@ -2453,8 +2493,15 @@ setInterval(function(){
     }
   }
 
-  window.addEventListener('orientationchange',updateClockMode);
+  window.addEventListener('orientationchange',function(){
+    // iOS often reports old dimensions until the next frame
+    setTimeout(updateClockMode,50);
+    setTimeout(updateClockMode,300);
+  });
   window.addEventListener('resize',updateClockMode);
+  if(screen.orientation && screen.orientation.addEventListener){
+    screen.orientation.addEventListener('change',updateClockMode);
+  }
   updateClockMode();
 })();
 
@@ -2467,11 +2514,5 @@ if('serviceWorker' in navigator){
 </script>
 
 </div></div><!-- /app-shell -->
-
-<div id="landscape-clock" aria-hidden="true">
-  <div class="lc-time" id="lc-time"><span id="lc-h">00</span><span class="lc-sep">:</span><span id="lc-m">00</span><span class="lc-sep">:</span><span id="lc-s">00</span></div>
-  <div class="lc-date" id="lc-date"></div>
-</div>
-
 </body>
 </html>
