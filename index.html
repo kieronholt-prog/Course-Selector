@@ -480,6 +480,24 @@ canvas.mini:hover{border-color:rgba(232,160,32,.5);}
 .fc-wind-cell{display:flex;flex-direction:row;align-items:center;gap:2px;justify-content:center;overflow:hidden;}
 
 .fc-wind-arrow{line-height:1;color:rgba(255,255,255,.85);}
+
+/* ── Last update freshness ── */
+#fc-model-tag.fc-update-fresh{color:#5ecb80 !important;}
+#fc-model-tag.fc-update-stale{color:#e05050 !important;}
+
+/* ── Landscape device clock ── */
+#landscape-clock{display:none;position:fixed;inset:0;z-index:9999;background:var(--navy);
+  align-items:center;justify-content:center;flex-direction:column;
+  padding:max(12px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right))
+           max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));
+  background-image:radial-gradient(ellipse 80% 50% at 50% 45%,rgba(30,58,110,.6) 0%,transparent 70%);}
+#landscape-clock.active{display:flex;}
+body.lc-mode .app-shell{visibility:hidden;pointer-events:none;}
+.lc-time{font-family:'Barlow Condensed',sans-serif;font-size:clamp(64px,min(28vw,22vh),240px);
+  font-weight:700;color:#fff;letter-spacing:.04em;line-height:1;font-variant-numeric:tabular-nums;}
+.lc-sep{opacity:.45;margin:0 .02em;}
+.lc-date{font-family:'Barlow Condensed',sans-serif;font-size:clamp(18px,min(5vw,4vh),36px);
+  color:var(--muted);margin-top:16px;letter-spacing:.06em;text-transform:uppercase;}
 </style>
 </head>
 <body>
@@ -1776,7 +1794,9 @@ function openCsMap(letter){
 // ═══════════════════════════════════════════════════════
 // FORECAST SCREEN — API calls & logic
 // ═══════════════════════════════════════════════════════
-const APP_VERSION = 'v3.50 · 06 Apr 2026';
+const APP_VERSION = 'v3.51 · 28 Jul 2026';
+const FC_DATA_CACHE = 'wsc-data-v3.51';
+const FC_SNAPSHOT_URL = '/__wsc_forecast_snapshot';
 const ADMIRALTY_KEY  = '2ee4d4218fd040678f0cf6886bacc624';
 const ADMIRALTY_STATION = '0062'; // Southampton
 const FC_LAT  = 50.855;  // Hamble Point buoy
@@ -2078,7 +2098,7 @@ async function fetchModelMeta(){
         const local=new Date(availDate.getTime()+offset*3600000);
         const hh=String(local.getUTCHours()).padStart(2,'0');
         const mm=String(local.getUTCMinutes()).padStart(2,'0');
-        return{runLabel:hh+':'+mm};
+        return{runLabel:hh+':'+mm,runTime:availDate.toISOString()};
       }
     }
   }catch(e){}
@@ -2087,8 +2107,140 @@ async function fetchModelMeta(){
   const offset=getUKOffset(now);
   const ukH=(now.getUTCHours()+offset)%24;
   const runH=Math.floor(Math.max(0,ukH-4)/6)*6;
-  const localRunH=(runH+offset)%24;
-  return{runLabel:String(localRunH).padStart(2,'0')+':00'};
+  const fallbackRun=new Date(now);
+  fallbackRun.setUTCHours((runH-offset+24)%24,0,0,0);
+  return{runLabel:String(runH).padStart(2,'0')+':00',runTime:fallbackRun.toISOString()};
+}
+
+function serializeTideEvents(events){
+  return(events||[]).map(function(e){
+    return{
+      time:e.time instanceof Date?e.time.toISOString():e.time,
+      type:e.type,
+      height:e.height
+    };
+  });
+}
+
+function deserializeTideEvents(arr){
+  return(arr||[]).map(function(e){
+    return{time:new Date(e.time),type:e.type,height:e.height};
+  });
+}
+
+async function saveForecastSnapshot(snapshot){
+  if(!('caches' in window)) return;
+  try{
+    const cache=await caches.open(FC_DATA_CACHE);
+    await cache.put(FC_SNAPSHOT_URL,new Response(JSON.stringify(snapshot),{
+      headers:{'Content-Type':'application/json'}
+    }));
+  }catch(e){console.warn('Forecast cache save failed',e);}
+}
+
+async function loadForecastSnapshot(){
+  if(!('caches' in window)) return null;
+  try{
+    const cache=await caches.open(FC_DATA_CACHE);
+    const res=await cache.match(FC_SNAPSHOT_URL);
+    if(!res) return null;
+    return res.json();
+  }catch(e){return null;}
+}
+
+var _lastModelMeta=null;
+
+function updateLastUpdateTag(modelMeta){
+  var mtag=document.getElementById('fc-model-tag');
+  if(!mtag||!modelMeta) return;
+  _lastModelMeta=modelMeta;
+  mtag.textContent='Last update '+modelMeta.runLabel;
+  mtag.classList.remove('fc-update-fresh','fc-update-stale');
+  if(!modelMeta.runTime) return;
+  var ageH=(Date.now()-new Date(modelMeta.runTime).getTime())/3600000;
+  if(ageH<=9) mtag.classList.add('fc-update-fresh');
+  else if(ageH>=10) mtag.classList.add('fc-update-stale');
+}
+
+function paintForecastTable(startTime,durationVal,eventsRaw,windLkp,modelMeta){
+  fcTideEvents=eventsRaw||[];
+  const startHour=new Date(startTime); startHour.setMinutes(0,0,0);
+  const startMins=startTime.getMinutes();
+  const highlightOffset=startMins>=30?1:0;
+  const rowTimes=[];
+  for(let i=-6;i<=6;i++) rowTimes.push(new Date(startHour.getTime()+i*3600000));
+  const midRowIndex=6+highlightOffset;
+  const winStart=new Date(startTime.getTime()-7*3600000);
+  const winEnd=new Date(startTime.getTime()+9*3600000);
+  const windowEvs=fcTideEvents.filter(function(e){return e.time>=winStart&&e.time<=winEnd;});
+  const tbody=document.getElementById('fc-tbody');
+  tbody.innerHTML='';
+  let fcPrevDir=null;
+  fcStartData=null;
+  rowTimes.forEach(function(t,idx){
+    const isMid=idx===midRowIndex;
+    const ukT=toUKLocalTime(t);
+    const h=ukT.getUTCHours();
+    const oKey=ukT.toISOString().slice(0,10)+'T'+String(h).padStart(2,'0')+':00';
+    const wind=windLkp?windLkp[oKey]:null;
+    const kts=wind?Math.round(wind.spd):null;
+    const dir=wind?Math.round(wind.dir):null;
+    const bft=kts!==null?knotsToBft(kts):null;
+    const ts=fcTidalState(t,fcTideEvents);
+    const strm=fcEstStream(t,fcTideEvents);
+    const gust=wind?Math.round(wind.gust):null;
+    if(isMid){
+      var nearLW=fcTideEvents.some(function(ev){
+        return ev.type==='LowWater'&&Math.abs(ev.time.getTime()-t.getTime())<=7200000;
+      });
+      fcStartData={dir:dir,kts:kts,bft:bft,tideState:ts,tideKts:strm,gust:gust,isNearLW:nearLW};
+    }
+    const ph=new Date(t.getTime()-3600000);
+    windowEvs.filter(function(ev){return ev.time>ph&&ev.time<=t;}).forEach(function(ev){
+      const evTr=document.createElement('tr');
+      evTr.className='fc-event-row';
+      const isHW=ev.type==='HighWater';
+      const ht=ev.height!==null?' '+ev.height.toFixed(1)+'m':'';
+      const etm=formatUKTime(ev.time);
+      const evLabel=isHW?'High Water':'Low Water';
+      const evCls=isHW?'tide-hw':'tide-lw';
+      var cellStyle='padding:2px 4px;background:var(--navy);border-bottom:1px solid rgba(255,255,255,.04);';
+      var badge='<span class="tide-badge '+evCls+'" style="white-space:nowrap;font-size:16px;">'+etm+' · '+evLabel+ht+'</span>';
+      evTr.innerHTML='<td colspan="6" style="'+cellStyle+'">'+badge+'</td>';
+      tbody.appendChild(evTr);
+    });
+    const tr=document.createElement('tr');
+    if(isMid){tr.className='fc-mid-row';tr.id='fc-mid-row';}
+    const tLabel=formatUKTime(t);
+    const snapDeg=dir!==null?(Math.round(dir/5)*5)%360:null;
+    let arrowCol='#e8a020';
+    if(snapDeg!==null&&fcPrevDir!==null){
+      let diff=snapDeg-fcPrevDir;
+      while(diff>180)diff-=360;
+      while(diff<-180)diff+=360;
+      if(diff>2)arrowCol='#4ec87a';
+      else if(diff<-2)arrowCol='#e05050';
+    }
+    if(snapDeg!==null)fcPrevDir=snapDeg;
+    const wArr=snapDeg!==null?'<div class="fc-wind-cell">'+makeWindArrow(snapDeg,arrowCol)+'<div class="fc-wind-card" style="color:'+arrowCol+'">'+degToCard(snapDeg)+' '+snapDeg+'°</div></div>':'\u2014';
+    const kCls=kts===null?'':kts<8?'wind-light':kts<15?'wind-mod':kts<21?'wind-fresh':'wind-strong';
+    const ktsStr=kts!==null?'<span class="'+kCls+'">'+kts+'</span>':'\u2014';
+    const gCls=gustClass(gust);
+    const gStr=gust!==null?'<span class="'+gCls+'">'+gust+'</span>':'\u2014';
+    const wxSym=wind?wmoSymbol(wind.wx):'\u2014';
+    tr.innerHTML='<td class="fc-time-cell">'+tLabel+'</td><td>'+wArr+'</td>'
+      +'<td class="fc-wind-spd">'+ktsStr+'</td>'
+      +'<td class="gust-cell">'+gStr+'</td>'
+      +'<td class="fc-wx-cell">'+wxSym+'</td>'
+      +'<td>'+tideBadgeHTML(ts,t)+'</td>';
+    tbody.appendChild(tr);
+  });
+  document.getElementById('fc-loading').style.display='none';
+  document.getElementById('fc-table-wrap').style.display='';
+  var hdr=document.querySelector('.fc-tbl-hdr');if(hdr)hdr.style.display='';
+  document.getElementById('fc-next-btn').disabled=false;
+  if(modelMeta) updateLastUpdateTag(modelMeta);
+  setTimeout(function(){scrollMidRowToCenter();},50);
 }
 // Dynamic wind arrow SVG generator — supports any degree, colour-coded by trend
 function makeWindArrow(deg, color){
@@ -2133,126 +2285,63 @@ async function runForecast(){
   if(!dateVal||!timeVal)return;
   document.getElementById('fc-loading').style.display='block';
   document.getElementById('fc-table-wrap').style.display='none';
-    var hdr2=document.querySelector('.fc-tbl-hdr');if(hdr2)hdr2.style.display='none';
+  var hdr2=document.querySelector('.fc-tbl-hdr');if(hdr2)hdr2.style.display='none';
   document.getElementById('fc-error').style.display='none';
   document.getElementById('fc-next-btn').disabled=true;
   fcStartData=null;
+  const startTime=new Date(dateVal+'T'+timeVal+':00');
+  let eventsRaw=null, windLkp=null, modelMeta=null, fromCache=false;
+
   try{
-    const startTime=new Date(dateVal+'T'+timeVal+':00');
-    // Midpoint = start + duration/2, snapped to nearest hour
-    const midMs=startTime.getTime()+durationVal*30000; // +duration/2 minutes in ms
-    const midHour=new Date(midMs); midHour.setMinutes(0,0,0);
-    // Show 5 rows centred around midHour: midHour-2h to midHour+2h
-    const startHour=new Date(startTime); startHour.setMinutes(0,0,0);
-    // Row after start: HH:00 start → highlight HH:00, HH:30 start → highlight HH+1:00
-    const startMins=startTime.getMinutes();
-    const highlightOffset=startMins>=30?1:0;
-    const rowTimes=[];
-    for(let i=-6;i<=6;i++) rowTimes.push(new Date(startHour.getTime()+i*3600000));
-    // midRowIndex = the hour AFTER start (index 6 = startHour, +offset)
-    const midRowIndex=6+highlightOffset;
     const results=await Promise.all([
       fetchAdmiraltyTides().catch(function(e){console.warn(e);return null;}),
-      fetchOpenMeteoWind().catch(function(e){console.warn('Wind error:',e.message);return null;})
-,
+      fetchOpenMeteoWind().catch(function(e){console.warn('Wind error:',e.message);return null;}),
       fetchModelMeta().catch(function(e){return null;})
     ]);
-    const eventsRaw=results[0]; const windLkp=results[1]; const modelMeta=results[2];
-    fcTideEvents=eventsRaw||[];
-    const winStart=new Date(startTime.getTime()-7*3600000);
-    const winEnd=new Date(startTime.getTime()+9*3600000);
-    const windowEvs=fcTideEvents.filter(function(e){return e.time>=winStart&&e.time<=winEnd;});
-    const tbody=document.getElementById('fc-tbody');
-    tbody.innerHTML='';
-    let fcPrevDir=null;
-    rowTimes.forEach(function(t,idx){
-      const isMid=idx===midRowIndex;
-      const isStart=Math.abs(t-startHour)<1800000;
-      const ukT=toUKLocalTime(t);
-      const h=ukT.getUTCHours();
-      const oKey=ukT.toISOString().slice(0,10)+'T'+String(h).padStart(2,'0')+':00';
-      const wind=windLkp?windLkp[oKey]:null;
-      const kts=wind?Math.round(wind.spd):null;
-      const dir=wind?Math.round(wind.dir):null;
-      const bft=kts!==null?knotsToBft(kts):null;
-      const ts=fcTidalState(t,fcTideEvents);
-      const strm=fcEstStream(t,fcTideEvents);
-      const gust=wind?Math.round(wind.gust):null;
-      // Store midpoint data for course screen pre-population
-      // isNearLW = true if within 2 hours either side of any LW event
-      if(isMid){
-        var nearLW=fcTideEvents.some(function(ev){
-          return ev.type==='LowWater'&&Math.abs(ev.time.getTime()-t.getTime())<=7200000;
-        });
-        fcStartData={dir:dir,kts:kts,bft:bft,tideState:ts,tideKts:strm,gust:gust,isNearLW:nearLW};
-      }
-      // Insert HW/LW events that fall in this hour's window
-      const ph=new Date(t.getTime()-3600000);
-      windowEvs.filter(function(ev){return ev.time>ph&&ev.time<=t;}).forEach(function(ev){
-        const evTr=document.createElement('tr');
-        evTr.className='fc-event-row';
-        const isHW=ev.type==='HighWater';
-        const ht=ev.height!==null?' '+ev.height.toFixed(1)+'m':'';
-        const etm=formatUKTime(ev.time);
-        const evLabel=isHW?'High Water':'Low Water';
-        const evCol=isHW?'#4fcfbf':'#8a9fb5';
-        const evBg=isHW?'rgba(39,174,96,.2)':'rgba(150,150,150,.15)';
-        const evBr=isHW?'rgba(39,174,96,.38)':'rgba(150,150,150,.25)';
-        const evCls=isHW?'tide-hw':'tide-lw';
-        var cellStyle='padding:2px 4px;background:var(--navy);border-bottom:1px solid rgba(255,255,255,.04);';
-        var badge='<span class="tide-badge '+evCls+'" style="white-space:nowrap;font-size:16px;">'+etm+' · '+evLabel+ht+'</span>';
-        evTr.innerHTML='<td colspan="6" style="'+cellStyle+'">'+badge+'</td>';
-        tbody.appendChild(evTr);
-      });
-      const tr=document.createElement('tr');
-      // ONLY highlight the midpoint row — no other row gets special background
-      if(isMid){tr.className='fc-mid-row';tr.id='fc-mid-row';}
-      // Mid row: just the time, styled bigger via CSS — no extra label
-      const tLabel=formatUKTime(t);
+    eventsRaw=results[0];
+    windLkp=results[1];
+    modelMeta=results[2];
+  }catch(e){
+    console.warn('Forecast fetch failed',e);
+  }
 
-      // Snap direction to nearest 5° increment for precise arrow
-      const snapDeg=dir!==null?(Math.round(dir/5)*5)%360:null;
-      // Colour-code arrow by trend vs previous period
-      let arrowCol='#e8a020'; // default amber
-      if(snapDeg!==null&&fcPrevDir!==null){
-        let diff=snapDeg-fcPrevDir;
-        while(diff>180)diff-=360;
-        while(diff<-180)diff+=360;
-        if(diff>2)arrowCol='#4ec87a';       // veering (increasing) — green
-        else if(diff<-2)arrowCol='#e05050'; // backing (decreasing) — red
-      }
-      if(snapDeg!==null)fcPrevDir=snapDeg;
-      const wArr=snapDeg!==null?'<div class="fc-wind-cell">'+makeWindArrow(snapDeg,arrowCol)+'<div class="fc-wind-card" style="color:'+arrowCol+'">'+degToCard(snapDeg)+' '+snapDeg+'°</div></div>':'\u2014';
-      const kCls=kts===null?'':kts<8?'wind-light':kts<15?'wind-mod':kts<21?'wind-fresh':'wind-strong';
-      const ktsStr=kts!==null?'<span class="'+kCls+'">'+kts+'</span>':'\u2014';
-      const gCls=gustClass(gust);
-      const gStr=gust!==null?'<span class="'+gCls+'">'+gust+'</span>':'\u2014';
-      const wxSym=wind?wmoSymbol(wind.wx):'\u2014';
-      tr.innerHTML='<td class="fc-time-cell">'+tLabel+'</td><td>'+wArr+'</td>'
-        +'<td class="fc-wind-spd">'+ktsStr+'</td>'
-        +'<td class="gust-cell">'+gStr+'</td>'
-        +'<td class="fc-wx-cell">'+wxSym+'</td>'
-        +'<td>'+tideBadgeHTML(ts,t)+'</td>';
-      tbody.appendChild(tr);
-    });
-    document.getElementById('fc-loading').style.display='none';
-    document.getElementById('fc-table-wrap').style.display='';
-    var hdr=document.querySelector('.fc-tbl-hdr');if(hdr)hdr.style.display='';
-    document.getElementById('fc-next-btn').disabled=false;
-
-    if(modelMeta){
-      var mtag=document.getElementById('fc-model-tag');
-      if(mtag){
-        // Determine which model covers the selected date
-        var selDate=new Date(document.getElementById('fc-date').value+'T12:00:00');
-        var hoursAhead=(selDate-new Date())/3600000;
-        var modelName=hoursAhead<=54?'UKV 2km':'Global 10km';
-        mtag.textContent='Last update '+modelMeta.runLabel;
-      }
+  if(!eventsRaw&&!windLkp){
+    const snap=await loadForecastSnapshot();
+    if(snap){
+      eventsRaw=deserializeTideEvents(snap.tides);
+      windLkp=snap.windLkp;
+      modelMeta=snap.modelMeta||modelMeta;
+      fromCache=true;
     }
-    // Scroll highlighted row to vertical centre of table wrap
-    setTimeout(function(){scrollMidRowToCenter();},50);
-  } catch(err){
+  }
+
+  if(!eventsRaw&&!windLkp){
+    document.getElementById('fc-loading').style.display='none';
+    const el=document.getElementById('fc-error');
+    el.textContent='No forecast data — connect to refresh or use cached data after one online visit.';
+    el.style.display='block';
+    document.getElementById('fc-next-btn').disabled=false;
+    return;
+  }
+
+  try{
+    paintForecastTable(startTime,durationVal,eventsRaw,windLkp,modelMeta);
+    if(fromCache){
+      const el=document.getElementById('fc-error');
+      el.textContent='Offline — showing cached forecast & tide data';
+      el.style.display='block';
+    }else{
+      await saveForecastSnapshot({
+        savedAt:new Date().toISOString(),
+        dateVal:dateVal,
+        timeVal:timeVal,
+        durationVal:durationVal,
+        tides:serializeTideEvents(eventsRaw),
+        windLkp:windLkp,
+        modelMeta:modelMeta
+      });
+    }
+  }catch(err){
     document.getElementById('fc-loading').style.display='none';
     const el=document.getElementById('fc-error');
     el.textContent='Error: '+err.message;
@@ -2319,8 +2408,70 @@ document.getElementById('cs-back-btn').addEventListener('click',function(){
   document.getElementById('fc-screen').classList.add('active');
 });
 
+// Re-colour last-update tag while app stays open
+setInterval(function(){
+  if(_lastModelMeta) updateLastUpdateTag(_lastModelMeta);
+},60000);
+
+// ── Landscape device clock (local time, no network) ──
+(function initLandscapeClock(){
+  var overlay=document.getElementById('landscape-clock');
+  var hEl=document.getElementById('lc-h');
+  var mEl=document.getElementById('lc-m');
+  var sEl=document.getElementById('lc-s');
+  var dateEl=document.getElementById('lc-date');
+  var tickTimer=null;
+
+  function pad(n){return String(n).padStart(2,'0');}
+
+  function tick(){
+    var now=new Date();
+    hEl.textContent=pad(now.getHours());
+    mEl.textContent=pad(now.getMinutes());
+    sEl.textContent=pad(now.getSeconds());
+    dateEl.textContent=now.toLocaleDateString(undefined,{
+      weekday:'long',day:'numeric',month:'long'
+    });
+  }
+
+  function isLandscape(){
+    return window.matchMedia('(orientation: landscape)').matches;
+  }
+
+  function updateClockMode(){
+    if(isLandscape()){
+      overlay.classList.add('active');
+      document.body.classList.add('lc-mode');
+      overlay.setAttribute('aria-hidden','false');
+      tick();
+      if(!tickTimer) tickTimer=setInterval(tick,1000);
+    }else{
+      overlay.classList.remove('active');
+      document.body.classList.remove('lc-mode');
+      overlay.setAttribute('aria-hidden','true');
+      if(tickTimer){clearInterval(tickTimer);tickTimer=null;}
+    }
+  }
+
+  window.addEventListener('orientationchange',updateClockMode);
+  window.addEventListener('resize',updateClockMode);
+  updateClockMode();
+})();
+
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('./sw.js').catch(function(e){
+    console.warn('Service worker registration failed',e);
+  });
+}
+
 </script>
 
 </div></div><!-- /app-shell -->
+
+<div id="landscape-clock" aria-hidden="true">
+  <div class="lc-time" id="lc-time"><span id="lc-h">00</span><span class="lc-sep">:</span><span id="lc-m">00</span><span class="lc-sep">:</span><span id="lc-s">00</span></div>
+  <div class="lc-date" id="lc-date"></div>
+</div>
+
 </body>
 </html>
