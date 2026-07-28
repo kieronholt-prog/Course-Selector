@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob:; connect-src 'self' https://api.open-meteo.com https://wsc-tidal-proxy.kieronholt.workers.dev; worker-src 'self'; manifest-src 'self'">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="WSC Courses">
@@ -1803,12 +1804,11 @@ function openCsMap(letter){
 // ═══════════════════════════════════════════════════════
 // FORECAST SCREEN — API calls & logic
 // ═══════════════════════════════════════════════════════
-const APP_VERSION = 'v3.53 · 28 Jul 2026';
-const FC_DATA_CACHE = 'wsc-data-v3.53';
+const APP_VERSION = 'v3.54 · 28 Jul 2026';
+const FC_DATA_CACHE = 'wsc-data-v3.54';
 const FC_SNAPSHOT_URL = '/__wsc_forecast_snapshot';
 const FC_SNAPSHOT_LS = 'wsc_forecast_snapshot_v1';
-const ADMIRALTY_KEY  = '2ee4d4218fd040678f0cf6886bacc624';
-const ADMIRALTY_STATION = '0062'; // Southampton
+const ADMIRALTY_STATION = '0062'; // Southampton — tides via Cloudflare Worker (API key never in the client)
 const FC_LAT  = 50.855;  // Hamble Point buoy
 const FC_LON  = -1.307;
 

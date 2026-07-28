@@ -1,7 +1,7 @@
 /* WSC Course Selector — service worker (shell + forecast/tide API cache) */
-const SHELL_CACHE = 'wsc-shell-v3.53';
-const DATA_CACHE = 'wsc-data-v3.53';
-const FONT_CACHE = 'wsc-fonts-v3.53';
+const SHELL_CACHE = 'wsc-shell-v3.54';
+const DATA_CACHE = 'wsc-data-v3.54';
+const FONT_CACHE = 'wsc-fonts-v3.54';
 const SHELL_ASSETS = ['./', './index.html', './sw.js'];
 const FONT_CSS = 'https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500&display=swap';
 
